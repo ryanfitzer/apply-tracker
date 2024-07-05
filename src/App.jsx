@@ -3,14 +3,15 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 import AddJob from "./components/AddJob";
+import DialogModal from "./components/DialogModal";
 import Job from "./components/job";
 
 const App = () => {
     const [localData, setLocalData] = useState(null);
     const [currentJob, setCurrentJob] = useState(null);
+    const [isOpened, setIsOpened] = useState(false);
 
     useEffect(() => {
-        console.log("useEffect");
         const localStorageTracker = localStorage.getItem("applyTracker");
 
         if (!localStorageTracker) {
@@ -44,6 +45,7 @@ const App = () => {
         setLocalData((prevLocalData) => {
             return [...prevLocalData, jobData];
         });
+        setIsOpened(false);
     };
 
     const saveJob = (jobData) => {
@@ -65,6 +67,7 @@ const App = () => {
         });
 
         setCurrentJob(null);
+        setIsOpened(false);
     };
 
     const removeJob = (jobId) => {
@@ -83,15 +86,24 @@ const App = () => {
     const editJob = (jobData) => {
         const thing = findJob(jobData);
         setCurrentJob(thing);
+        setIsOpened(true);
     };
 
     const clearCurrentJob = () => {
         setCurrentJob(null);
     };
 
+    const closeModal = () => {
+        setCurrentJob(null);
+        setIsOpened(false);
+    };
+
     return (
         <div>
-            <button onClick={clearAllJobs}>Clear</button>
+            <div className="flex gap-3 px-4 py-2 justify-between">
+                <button onClick={() => setIsOpened(true)}>Add Job</button>
+                <button onClick={clearAllJobs}>Clear All Jobs</button>
+            </div>
             <ul className="flex flex-wrap">
                 {localData &&
                     localData.map((job) => (
@@ -104,14 +116,14 @@ const App = () => {
                         </li>
                     ))}
             </ul>
-            <div>
+            <DialogModal isOpened={isOpened} closeModal={closeModal}>
                 <AddJob
                     addJob={addJob}
                     saveJob={saveJob}
                     currentJob={currentJob}
                     clearCurrentJob={clearCurrentJob}
                 />
-            </div>
+            </DialogModal>
         </div>
     );
 };

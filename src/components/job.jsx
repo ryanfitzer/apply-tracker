@@ -43,7 +43,9 @@ const Job = ({ job, removeJob, editJob }) => {
                 </label>
             </div> */}
             <div>
-                <button onClick={removeJobClick}>Remove</button>
+                <button className="border-2 bac" onClick={removeJobClick}>
+                    Remove
+                </button>
                 <button onClick={editJobClick}>Edit</button>
             </div>
         </div>
