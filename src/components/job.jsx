@@ -1,3 +1,5 @@
+import Moment from "react-moment";
+
 const Job = ({ job, removeJob, editJob }) => {
     const removeJobClick = () => {
         removeJob(job.jobId);
@@ -8,10 +10,19 @@ const Job = ({ job, removeJob, editJob }) => {
     };
 
     return (
-        <>
-            <div>{job.jobTitle}</div>
-            <div>{job.jobCompany}</div>
-            <div>{job.jobApplyDate}</div>
+        <div className="border-2 border-sky-300 rounded-sm p-2">
+            <div className="">
+                <p>Title</p>
+                <p>{job.jobTitle}</p>
+            </div>
+            <div>
+                <p>Company</p>
+                <p>{job.jobCompany}</p>
+            </div>
+            <div>
+                <p>Date Applied</p>
+                <Moment format="DD.MMM.YYYY">{job.jobApplyDate}</Moment>
+            </div>
             {/* <div>
                 <p>Status</p>
                 <label>
@@ -35,7 +46,7 @@ const Job = ({ job, removeJob, editJob }) => {
                 <button onClick={removeJobClick}>Remove</button>
                 <button onClick={editJobClick}>Edit</button>
             </div>
-        </>
+        </div>
     );
 };
 

@@ -92,10 +92,10 @@ const App = () => {
     return (
         <div>
             <button onClick={clearAllJobs}>Clear</button>
-            <ul>
+            <ul className="flex flex-wrap">
                 {localData &&
                     localData.map((job) => (
-                        <li>
+                        <li className="w-1/3 p-3">
                             <Job
                                 job={job}
                                 removeJob={removeJob}
