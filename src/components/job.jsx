@@ -21,7 +21,10 @@ const Job = ({ job, removeJob, editJob }) => {
             </div>
             <div>
                 <p>Date Applied</p>
-                <Moment format="DD.MMM.YYYY">{job.jobApplyDate}</Moment>
+                <p>
+                    <Moment format="DD.MMM.YYYY">{job.jobApplyDate}</Moment>
+                    &nbsp;(<Moment fromNow>{job.jobApplyDate}</Moment>)
+                </p>
             </div>
             {/* <div>
                 <p>Status</p>
