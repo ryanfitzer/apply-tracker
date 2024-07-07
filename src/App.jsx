@@ -87,8 +87,26 @@ const App = () => {
         setIsOpened(false);
     };
 
-    const getJobList = () => {
-        return Object.values(localData);
+    const getJobList = (jobFilter = "") => {
+        const jobsSort = (jobsToSort) => {
+            return jobsToSort.sort((a, b) => {
+                if (a.jobTitle.toUpperCase() > b.jobTitle.toUpperCase()) {
+                    return 1;
+                }
+
+                return -1;
+            });
+        };
+
+        return jobsSort(
+            Object.values(localData).filter((job) => {
+                if (jobFilter) {
+                    return job.jobStatus === jobFilter;
+                }
+
+                return job.jobStatus !== "denied";
+            })
+        );
     };
 
     return (
@@ -100,6 +118,20 @@ const App = () => {
             <ul className="flex flex-wrap">
                 {localData &&
                     getJobList().map((job) => (
+                        <li className="w-1/3 p-3" key={job.jobId}>
+                            <Job
+                                job={job}
+                                removeJob={removeJob}
+                                editJob={editJob}
+                                updateJobStatus={updateJobStatus}
+                            />
+                        </li>
+                    ))}
+            </ul>
+            <p className="px-4">Denied</p>
+            <ul className="flex flex-wrap">
+                {localData &&
+                    getJobList("denied").map((job) => (
                         <li className="w-1/3 p-3" key={job.jobId}>
                             <Job
                                 job={job}
