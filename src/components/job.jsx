@@ -13,6 +13,29 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
         updateJobStatus(job.jobId, event.target.value);
     };
 
+    const jobStatusList = [
+        {
+            title: "Applied",
+            status: "applied"
+        },
+        {
+            title: "Interviewed Scheduled",
+            status: "interviewScheduled"
+        },
+        {
+            title: "Interviewed",
+            status: "interviewed"
+        },
+        {
+            title: "On Hold",
+            status: "onHold"
+        },
+        {
+            title: "Denied",
+            status: "denied"
+        }
+    ];
+
     return (
         <div className="border-2 border-sky-300 rounded-sm p-2">
             <div className="">
@@ -33,56 +56,25 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
             <div>
                 <p>Status</p>
                 <form>
-                    <label>
-                        Applied
-                        <input
-                            type="radio"
-                            name="jobStatus"
-                            value="applied"
-                            checked={job.jobStatus === "applied"}
-                            onClick={updateJobStatusClick}
-                        />
-                    </label>
-                    <label>
-                        Interview Scheduled
-                        <input
-                            type="radio"
-                            name="jobStatus"
-                            value="interviewScheduled"
-                            checked={job.jobStatus === "interviewScheduled"}
-                            onClick={updateJobStatusClick}
-                        />
-                    </label>
-                    <label>
-                        Interviewed
-                        <input
-                            type="radio"
-                            name="jobStatus"
-                            value="interviewed"
-                            checked={job.jobStatus === "interviewed"}
-                            onClick={updateJobStatusClick}
-                        />
-                    </label>
-                    <label>
-                        On Hold
-                        <input
-                            type="radio"
-                            name="jobStatus"
-                            value="onHold"
-                            checked={job.jobStatus === "onHold"}
-                            onClick={updateJobStatusClick}
-                        />
-                    </label>
-                    <label>
-                        Denied
-                        <input
-                            type="radio"
-                            name="jobStatus"
-                            value="denied"
-                            checked={job.jobStatus === "denied"}
-                            onClick={updateJobStatusClick}
-                        />
-                    </label>
+                    {jobStatusList.map((status) => {
+                        return (
+                            <label>
+                                <p
+                                    className={`${job.jobStatus === status.status ? "font-bold" : "cursor-pointer"}`}
+                                >
+                                    {status.title}
+                                </p>
+                                <input
+                                    className="hidden"
+                                    type="radio"
+                                    name="jobStatus"
+                                    value={status.status}
+                                    checked={job.jobStatus === status.status}
+                                    onClick={updateJobStatusClick}
+                                />
+                            </label>
+                        );
+                    })}
                 </form>
             </div>
             <div>
