@@ -49,6 +49,18 @@ const App = () => {
         setIsOpened(false);
     };
 
+    const updateJobStatus = (jobId, jobStatus) => {
+        setLocalData((prevLocalData) => {
+            return {
+                ...prevLocalData,
+                [jobId]: {
+                    ...prevLocalData[jobId],
+                    jobStatus
+                }
+            };
+        });
+    };
+
     const removeJob = (jobId) => {
         setLocalData((prevLocalData) => {
             const { [jobId]: _, ...result } = prevLocalData;
@@ -89,6 +101,7 @@ const App = () => {
                                 job={job}
                                 removeJob={removeJob}
                                 editJob={editJob}
+                                updateJobStatus={updateJobStatus}
                             />
                         </li>
                     ))}
