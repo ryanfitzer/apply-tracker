@@ -27,43 +27,22 @@ const App = () => {
         }
     }, [localData]);
 
-    const findJob = (jobId) => {
-        return localData.reduce((acc, cur) => {
-            if (acc) {
-                return acc;
-            }
-
-            if (cur.jobId === jobId) {
-                return cur;
-            }
-
-            return null;
-        }, null);
-    };
-
-    const addJob = (jobData) => {
+    const addJob = (newJobData) => {
         setLocalData((prevLocalData) => {
-            return [...prevLocalData, jobData];
+            return {
+                ...prevLocalData,
+                [newJobData.jobId]: newJobData
+            };
         });
         setIsOpened(false);
     };
 
     const saveJob = (jobData) => {
-        if (!findJob(jobData.jobId)) {
-            alert("WTF");
-            return;
-        }
-
-        const newData = [...localData].map((job) => {
-            if (job.jobId === jobData.jobId) {
-                return jobData;
-            }
-
-            return job;
-        });
-
-        setLocalData(() => {
-            return newData;
+        setLocalData((prevLocalData) => {
+            return {
+                ...prevLocalData,
+                [jobData.jobId]: jobData
+            };
         });
 
         setCurrentJob(null);
@@ -71,21 +50,19 @@ const App = () => {
     };
 
     const removeJob = (jobId) => {
-        console.log("jobid", jobId);
         setLocalData((prevLocalData) => {
-            return prevLocalData.filter((job) => {
-                return job.jobId !== jobId;
-            });
+            const { [jobId]: _, ...result } = prevLocalData;
+
+            return result;
         });
     };
 
     const clearAllJobs = () => {
-        setLocalData([]);
+        setLocalData({});
     };
 
-    const editJob = (jobData) => {
-        const thing = findJob(jobData);
-        setCurrentJob(thing);
+    const editJob = (jobId) => {
+        setCurrentJob(localData[jobId]);
         setIsOpened(true);
     };
 
@@ -106,7 +83,7 @@ const App = () => {
             </div>
             <ul className="flex flex-wrap">
                 {localData &&
-                    localData.map((job) => (
+                    Object.values(localData).map((job) => (
                         <li className="w-1/3 p-3">
                             <Job
                                 job={job}
