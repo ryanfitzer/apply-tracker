@@ -24,6 +24,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
         const newJob = { ...formData };
 
         if (!currentJob) {
+            newJob.jobStatus = "applied";
             newJob.jobId = uuid();
             addJob(newJob);
         } else {
