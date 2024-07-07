@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import uuid from "react-uuid";
 
 const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
+    let currentDate = new Date();
+    currentDate = currentDate.toISOString().split("T")[0];
+
     const [formData, setFormData] = useState({
         jobTitle: "",
         jobCompany: "",
@@ -96,6 +99,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     id="jobApplyDate"
                     value={formData.jobApplyDate}
                     onChange={updateField}
+                    max={currentDate}
                     required
                 />
             </label>
