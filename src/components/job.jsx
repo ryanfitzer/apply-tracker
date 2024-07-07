@@ -49,6 +49,7 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
                         <a
                             href={job.jobLink}
                             target="_blank"
+                            rel="noreferrer"
                             className="text-blue-500"
                         >
                             {job.jobTitle}
@@ -67,6 +68,7 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
                         <a
                             href={job.jobCompanyLink}
                             target="_blank"
+                            rel="noreferrer"
                             className="text-blue-500"
                         >
                             {job.jobCompany}
