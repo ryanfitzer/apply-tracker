@@ -2,22 +2,28 @@ import { useEffect, useState } from "react";
 
 import uuid from "react-uuid";
 
+const defaultJob = {
+    jobTitle: "",
+    jobCompany: "",
+    jobApplyDate: "",
+    jobCompanyLink: "",
+    jobLink: ""
+};
+
 const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
     let currentDate = new Date();
     currentDate = currentDate.toISOString().split("T")[0];
 
-    const [formData, setFormData] = useState({
-        jobTitle: "",
-        jobCompany: "",
-        jobApplyDate: ""
-    });
+    const [formData, setFormData] = useState(defaultJob);
 
     useEffect(() => {
         if (currentJob) {
             setFormData({
                 jobTitle: currentJob.jobTitle,
                 jobCompany: currentJob.jobCompany,
-                jobApplyDate: currentJob.jobApplyDate
+                jobApplyDate: currentJob.jobApplyDate,
+                jobCompanyLink: currentJob.jobCompanyLink,
+                jobLink: currentJob.jobLink
             });
         }
     }, [currentJob]);
@@ -37,11 +43,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
             saveJob(newJob);
         }
 
-        setFormData({
-            jobTitle: "",
-            jobCompany: "",
-            jobApplyDate: ""
-        });
+        setFormData(defaultJob);
     };
 
     const updateField = (event) => {
@@ -58,19 +60,14 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
     };
 
     const clearForm = () => {
-        setFormData({
-            jobTitle: "",
-            jobCompany: "",
-            jobApplyDate: ""
-        });
-
+        setFormData(defaultJob);
         clearCurrentJob();
     };
 
     return (
         <form onSubmit={submitJob} id="jobForm">
             <label htmlFor="jobTitle">
-                <p>Title</p>
+                <p>Job Title*</p>
                 <input
                     type="text"
                     name="jobTitle"
@@ -80,8 +77,18 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     required
                 />
             </label>
+            <label htmlFor="jobLink">
+                <p>Job Link</p>
+                <input
+                    type="text"
+                    name="jobLink"
+                    id="jobLink"
+                    value={formData.jobLink}
+                    onChange={updateField}
+                />
+            </label>
             <label htmlFor="jobCompany">
-                <p>Company</p>
+                <p>Company*</p>
                 <input
                     type="text"
                     name="jobCompany"
@@ -91,8 +98,18 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     required
                 />
             </label>
+            <label htmlFor="jobCompanyLink">
+                <p>Company Link</p>
+                <input
+                    type="text"
+                    name="jobCompanyLink"
+                    id="jobCompanyLink"
+                    value={formData.jobCompanyLink}
+                    onChange={updateField}
+                />
+            </label>
             <label htmlFor="jobApplyDate">
-                <p>Data Applied</p>
+                <p>Data Applied*</p>
                 <input
                     type="date"
                     name="jobApplyDate"

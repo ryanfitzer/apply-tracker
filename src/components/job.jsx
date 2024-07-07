@@ -42,28 +42,57 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
     ];
 
     return (
-        <div className="border-2 border-sky-300 rounded-sm p-2">
+        <div className="border-2 border-sky-300 rounded-md p-2">
             <div className="">
-                <p>Title</p>
-                <p>{job.jobTitle}</p>
+                <h2 className="text-xl font-bold">
+                    {job.jobLink ? (
+                        <a
+                            href={job.jobLink}
+                            target="_blank"
+                            className="text-blue-500"
+                        >
+                            {job.jobTitle}
+                            <span className="align-super text-xs">
+                                &#x1F517;
+                            </span>
+                        </a>
+                    ) : (
+                        job.jobTitle
+                    )}
+                </h2>
             </div>
             <div>
-                <p>Company</p>
-                <p>{job.jobCompany}</p>
-            </div>
-            <div>
-                <p>Date Applied</p>
                 <p>
-                    <Moment format="DD.MMM.YYYY">{job.jobApplyDate}</Moment>
-                    &nbsp;(<Moment fromNow>{job.jobApplyDate}</Moment>)
+                    {job.jobCompanyLink ? (
+                        <a
+                            href={job.jobCompanyLink}
+                            target="_blank"
+                            className="text-blue-500"
+                        >
+                            {job.jobCompany}
+                            <span className="align-super text-xs">
+                                &#x1F517;
+                            </span>
+                        </a>
+                    ) : (
+                        job.jobCompany
+                    )}
                 </p>
             </div>
             <div>
-                <p>Status</p>
+                <p className="text-gray-400">
+                    Applied on&nbsp;
+                    <Moment format="DD.MMM.YYYY">
+                        {job.jobApplyDate}
+                    </Moment>, <Moment fromNow>{job.jobApplyDate}</Moment>
+                </p>
+            </div>
+            <div>
+                <p className="font-bold">Status</p>
                 <form>
                     {jobStatusList.map((status) => {
                         return (
-                            <label>
+                            <label key={status.status}>
                                 <p
                                     className={`${job.jobStatus === status.status ? "font-bold " + status.color : "cursor-pointer"}`}
                                 >

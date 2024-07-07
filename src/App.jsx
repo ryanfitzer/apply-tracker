@@ -87,6 +87,10 @@ const App = () => {
         setIsOpened(false);
     };
 
+    const getJobList = () => {
+        return Object.values(localData);
+    };
+
     return (
         <div>
             <div className="flex gap-3 px-4 py-2 justify-between">
@@ -95,8 +99,8 @@ const App = () => {
             </div>
             <ul className="flex flex-wrap">
                 {localData &&
-                    Object.values(localData).map((job) => (
-                        <li className="w-1/3 p-3">
+                    getJobList().map((job) => (
+                        <li className="w-1/3 p-3" key={job.jobId}>
                             <Job
                                 job={job}
                                 removeJob={removeJob}
