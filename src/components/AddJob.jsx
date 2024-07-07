@@ -28,6 +28,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
             newJob.jobId = uuid();
             addJob(newJob);
         } else {
+            newJob.jobStatus = currentJob.jobStatus;
             newJob.jobId = currentJob.jobId;
             console.log(newJob);
             saveJob(newJob);

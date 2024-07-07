@@ -16,23 +16,28 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
     const jobStatusList = [
         {
             title: "Applied",
-            status: "applied"
+            status: "applied",
+            color: "text-green-500"
         },
         {
             title: "Interviewed Scheduled",
-            status: "interviewScheduled"
+            status: "interviewScheduled",
+            color: "text-blue-400"
         },
         {
             title: "Interviewed",
-            status: "interviewed"
+            status: "interviewed",
+            color: "text-blue-500"
         },
         {
             title: "On Hold",
-            status: "onHold"
+            status: "onHold",
+            color: "text-orange-400"
         },
         {
             title: "Denied",
-            status: "denied"
+            status: "denied",
+            color: "text-red-400"
         }
     ];
 
@@ -60,7 +65,7 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
                         return (
                             <label>
                                 <p
-                                    className={`${job.jobStatus === status.status ? "font-bold" : "cursor-pointer"}`}
+                                    className={`${job.jobStatus === status.status ? "font-bold " + status.color : "cursor-pointer"}`}
                                 >
                                     {status.title}
                                 </p>
