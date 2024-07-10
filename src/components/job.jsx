@@ -89,6 +89,14 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
                     </Moment>, <Moment fromNow>{job.jobApplyDate}</Moment>
                 </p>
             </div>
+            {job.jobSalary && job.jobSalaryType && (
+                <div>
+                    <p className="text-gray-400">
+                        ${job.jobSalary}&nbsp;
+                        {job.jobSalaryType === "yr" ? "a year" : "an hour"}
+                    </p>
+                </div>
+            )}
             <div>
                 <p className="font-bold">Status</p>
                 <form>

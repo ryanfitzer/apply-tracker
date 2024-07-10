@@ -15,7 +15,7 @@ const DialogModal = ({ children, isOpened, closeModal }) => {
         <dialog
             ref={dialogRef}
             onClose={closeModal}
-            className="backdrop:backdrop-blur-sm p-2"
+            className="backdrop:backdrop-blur-sm p-2 rounded"
         >
             <div className="flex justify-end">
                 <button onClick={closeModal}>X</button>

@@ -7,7 +7,9 @@ const defaultJob = {
     jobCompany: "",
     jobApplyDate: "",
     jobCompanyLink: "",
-    jobLink: ""
+    jobLink: "",
+    jobSalary: "",
+    jobSalaryType: "yr"
 };
 
 const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
@@ -23,7 +25,9 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                 jobCompany: currentJob.jobCompany,
                 jobApplyDate: currentJob.jobApplyDate,
                 jobCompanyLink: currentJob.jobCompanyLink,
-                jobLink: currentJob.jobLink
+                jobLink: currentJob.jobLink,
+                jobSalary: currentJob.jobSalary,
+                jobSalaryType: currentJob.jobSalaryType
             });
         }
     }, [currentJob]);
@@ -39,7 +43,6 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
         } else {
             newJob.jobStatus = currentJob.jobStatus;
             newJob.jobId = currentJob.jobId;
-            console.log(newJob);
             saveJob(newJob);
         }
 
@@ -65,10 +68,11 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
     };
 
     return (
-        <form onSubmit={submitJob} id="jobForm">
-            <label htmlFor="jobTitle">
+        <form onSubmit={submitJob} id="jobForm" className="w-96">
+            <label htmlFor="jobTitle" className="mb-2 block">
                 <p>Job Title*</p>
                 <input
+                    className="w-full border-2"
                     type="text"
                     name="jobTitle"
                     id="jobTitle"
@@ -77,9 +81,10 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     required
                 />
             </label>
-            <label htmlFor="jobLink">
+            <label htmlFor="jobLink" className="mb-2 block">
                 <p>Job Link</p>
                 <input
+                    className="w-full border-2"
                     type="text"
                     name="jobLink"
                     id="jobLink"
@@ -87,9 +92,10 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     onChange={updateField}
                 />
             </label>
-            <label htmlFor="jobCompany">
+            <label htmlFor="jobCompany" className="mb-2 block">
                 <p>Company*</p>
                 <input
+                    className="w-full border-2"
                     type="text"
                     name="jobCompany"
                     id="jobCompany"
@@ -98,9 +104,10 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     required
                 />
             </label>
-            <label htmlFor="jobCompanyLink">
+            <label htmlFor="jobCompanyLink" className="mb-2 block">
                 <p>Company Link</p>
                 <input
+                    className="w-full border-2"
                     type="text"
                     name="jobCompanyLink"
                     id="jobCompanyLink"
@@ -108,9 +115,10 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     onChange={updateField}
                 />
             </label>
-            <label htmlFor="jobApplyDate">
+            <label htmlFor="jobApplyDate" className="mb-2 block">
                 <p>Data Applied*</p>
                 <input
+                    className="w-full border-2"
                     type="date"
                     name="jobApplyDate"
                     id="jobApplyDate"
@@ -120,6 +128,34 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     required
                 />
             </label>
+            <div className="flex mb-2 w-full justify-between gap-4">
+                <label htmlFor="jobSalary" className="w-full">
+                    <p>Salary</p>
+                    <input
+                        className="w-full border-2"
+                        type="input"
+                        name="jobSalary"
+                        id="jobSalary"
+                        value={formData.jobSalary}
+                        onChange={updateField}
+                        required
+                    />
+                </label>
+
+                <label htmlFor="jobSalaryType" className="flex-shrink-0 w-24">
+                    <p>Salary Type</p>
+                    <select
+                        className="w-full border-2"
+                        name="jobSalaryType"
+                        id="jobSalaryType"
+                        onChange={updateField}
+                        value={formData.jobSalaryType}
+                    >
+                        <option value="yr">Yearly</option>
+                        <option value="hr">Hourly</option>
+                    </select>
+                </label>
+            </div>
             <div>
                 <button type="button" onClick={clearForm}>
                     Clear
