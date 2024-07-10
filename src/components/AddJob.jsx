@@ -72,7 +72,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
             <label htmlFor="jobTitle" className="mb-2 block">
                 <p>Job Title*</p>
                 <input
-                    className="w-full border-2"
+                    className="w-full border-2 px-2"
                     type="text"
                     name="jobTitle"
                     id="jobTitle"
@@ -84,7 +84,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
             <label htmlFor="jobLink" className="mb-2 block">
                 <p>Job Link</p>
                 <input
-                    className="w-full border-2"
+                    className="w-full border-2 px-2"
                     type="text"
                     name="jobLink"
                     id="jobLink"
@@ -95,7 +95,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
             <label htmlFor="jobCompany" className="mb-2 block">
                 <p>Company*</p>
                 <input
-                    className="w-full border-2"
+                    className="w-full border-2 px-2"
                     type="text"
                     name="jobCompany"
                     id="jobCompany"
@@ -107,7 +107,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
             <label htmlFor="jobCompanyLink" className="mb-2 block">
                 <p>Company Link</p>
                 <input
-                    className="w-full border-2"
+                    className="w-full border-2 px-2"
                     type="text"
                     name="jobCompanyLink"
                     id="jobCompanyLink"
@@ -118,7 +118,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
             <label htmlFor="jobApplyDate" className="mb-2 block">
                 <p>Data Applied*</p>
                 <input
-                    className="w-full border-2"
+                    className="w-full border-2 px-2"
                     type="date"
                     name="jobApplyDate"
                     id="jobApplyDate"
@@ -128,12 +128,12 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     required
                 />
             </label>
-            <div className="flex mb-2 w-full justify-between gap-4">
+            <div className="flex w-full justify-between gap-4">
                 <label htmlFor="jobSalary" className="w-full">
                     <p>Salary</p>
                     <input
-                        className="w-full border-2"
-                        type="input"
+                        className="w-full border-2 px-2"
+                        type="number"
                         name="jobSalary"
                         id="jobSalary"
                         value={formData.jobSalary}
@@ -141,11 +141,10 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                         required
                     />
                 </label>
-
                 <label htmlFor="jobSalaryType" className="flex-shrink-0 w-24">
                     <p>Salary Type</p>
                     <select
-                        className="w-full border-2"
+                        className="w-full border-2 px-2"
                         name="jobSalaryType"
                         id="jobSalaryType"
                         onChange={updateField}
@@ -156,11 +155,17 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     </select>
                 </label>
             </div>
-            <div>
-                <button type="button" onClick={clearForm}>
+            <div className="flex justify-around border-t-2 py-2 mt-4">
+                <button
+                    className="bg-slate-200 w-32 py-2 font-bold"
+                    type="button"
+                    onClick={clearForm}
+                >
                     Clear
                 </button>
-                <button>{currentJob ? "Save" : "Add"}</button>
+                <button className="bg-blue-300 text-white w-32 py-2 font-bold">
+                    {currentJob ? "Save" : "Add"}
+                </button>
             </div>
         </form>
     );

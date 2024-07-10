@@ -113,7 +113,9 @@ const App = () => {
     return (
         <div>
             <div className="flex gap-3 px-4 py-2 justify-between">
-                <button onClick={() => setIsOpened(true)}>Add Job</button>
+                <div>
+                    <button onClick={() => setIsOpened(true)}>Add Job</button>
+                </div>
                 <button onClick={clearAllJobs}>Clear All Jobs</button>
             </div>
             <ResponsiveMasonry
@@ -147,7 +149,11 @@ const App = () => {
                         </li>
                     ))}
             </ul>
-            <DialogModal isOpened={isOpened} closeModal={closeModal}>
+            <DialogModal
+                isOpened={isOpened}
+                closeModal={closeModal}
+                title={currentJob ? "Edit Job" : "Add Job"}
+            >
                 <AddJob
                     addJob={addJob}
                     saveJob={saveJob}
