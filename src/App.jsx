@@ -1,5 +1,6 @@
 import "./App.css";
 
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { useEffect, useState } from "react";
 
 import AddJob from "./components/AddJob";
@@ -115,19 +116,23 @@ const App = () => {
                 <button onClick={() => setIsOpened(true)}>Add Job</button>
                 <button onClick={clearAllJobs}>Clear All Jobs</button>
             </div>
-            <ul className="flex flex-wrap">
-                {localData &&
-                    getJobList().map((job) => (
-                        <li className="w-1/3 p-3" key={job.jobId}>
-                            <Job
-                                job={job}
-                                removeJob={removeJob}
-                                editJob={editJob}
-                                updateJobStatus={updateJobStatus}
-                            />
-                        </li>
-                    ))}
-            </ul>
+            <ResponsiveMasonry
+                columnsCountBreakPoints={{ 350: 1, 750: 2, 1150: 3, 1640: 4 }}
+            >
+                <Masonry>
+                    {localData &&
+                        getJobList().map((job) => (
+                            <div className="p-3" key={job.jobId}>
+                                <Job
+                                    job={job}
+                                    removeJob={removeJob}
+                                    editJob={editJob}
+                                    updateJobStatus={updateJobStatus}
+                                />
+                            </div>
+                        ))}
+                </Masonry>
+            </ResponsiveMasonry>
             <p className="px-4">Denied</p>
             <ul className="flex flex-wrap">
                 {localData &&
