@@ -63,11 +63,15 @@ const App = () => {
     };
 
     const removeJob = (jobId) => {
-        setLocalData((prevLocalData) => {
-            const { [jobId]: _, ...result } = prevLocalData;
+        const confirm = window.confirm("are you sure?");
 
-            return result;
-        });
+        if (confirm) {
+            setLocalData((prevLocalData) => {
+                const { [jobId]: _, ...result } = prevLocalData;
+
+                return result;
+            });
+        }
     };
 
     const clearAllJobs = () => {

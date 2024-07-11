@@ -121,11 +121,19 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
                     })}
                 </form>
             </div>
-            <div>
-                <button className="border-2 bac" onClick={removeJobClick}>
+            <div className="flex justify-around border-t-2 border-solid mt-2 pt-2">
+                <button
+                    className="bg-slate-200 w-32 py-2 font-bold"
+                    onClick={removeJobClick}
+                >
                     Remove
                 </button>
-                <button onClick={editJobClick}>Edit</button>
+                <button
+                    className="bg-blue-300 text-white w-32 py-2 font-bold"
+                    onClick={editJobClick}
+                >
+                    Edit
+                </button>
             </div>
         </div>
     );
