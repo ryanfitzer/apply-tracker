@@ -140,19 +140,23 @@ const App = () => {
                 </Masonry>
             </ResponsiveMasonry>
             <p className="px-4">Denied</p>
-            <ul className="flex flex-wrap">
-                {localData &&
-                    getJobList("denied").map((job) => (
-                        <li className="w-1/3 p-3" key={job.jobId}>
-                            <Job
-                                job={job}
-                                removeJob={removeJob}
-                                editJob={editJob}
-                                updateJobStatus={updateJobStatus}
-                            />
-                        </li>
-                    ))}
-            </ul>
+            <ResponsiveMasonry
+                columnsCountBreakPoints={{ 350: 1, 750: 2, 1150: 3, 1640: 4 }}
+            >
+                <Masonry>
+                    {localData &&
+                        getJobList("denied").map((job) => (
+                            <div className="p-3" key={job.jobId}>
+                                <Job
+                                    job={job}
+                                    removeJob={removeJob}
+                                    editJob={editJob}
+                                    updateJobStatus={updateJobStatus}
+                                />
+                            </div>
+                        ))}
+                </Masonry>
+            </ResponsiveMasonry>
             <DialogModal
                 isOpened={isOpened}
                 closeModal={closeModal}
