@@ -42,7 +42,9 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
     ];
 
     return (
-        <div className="border-2 border-sky-300 rounded-md p-2">
+        <div
+            className={`border-2 rounded-md p-2 ${job.jobStatus === "denied" ? "border-red-300 bg-red-50" : "border-sky-300"}`}
+        >
             <div className="">
                 <h2 className="text-xl font-bold">
                     {job.jobLink ? (
