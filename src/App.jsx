@@ -30,11 +30,6 @@ const App = () => {
     useEffect(() => {
         if (localData) {
             localStorage.setItem("applyTracker", JSON.stringify(localData));
-        }
-    }, [localData]);
-
-    useEffect(() => {
-        if (localData) {
             const sortedJobs = Object.values(localData).sort((a, b) => {
                 if (sortData.sortType !== "jobApplyDate") {
                     if (
@@ -45,27 +40,16 @@ const App = () => {
                     }
 
                     return sortData.sortDir === "asc" ? -1 : 1;
-                } else {
-                    const date =
-                        new Date(b.jobApplyDate) - new Date(a.jobApplyDate);
-                    if (sortData.sortDir === "asc") {
-                        if (date < 0) {
-                            return 1;
-                        }
-
-                        return -1;
-                    }
-
-                    if (sortData.sortDir === "desc") {
-                        if (date < 0) {
-                            return -1;
-                        }
-
-                        return 1;
-                    }
                 }
 
-                return 0;
+                const date =
+                    new Date(b.jobApplyDate) - new Date(a.jobApplyDate);
+
+                if (date < 0) {
+                    return sortData.sortDir === "asc" ? 1 : -1;
+                }
+
+                return sortData.sortDir === "asc" ? -1 : 1;
             });
 
             setJobsData(() => {
