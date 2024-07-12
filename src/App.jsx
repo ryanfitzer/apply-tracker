@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import AddJob from "./components/AddJob";
 import DialogModal from "./components/DialogModal";
 import Job from "./components/job";
+import JobsTable from "./components/JobTable";
 
 const App = () => {
     const [localData, setLocalData] = useState(null);
@@ -16,6 +17,7 @@ const App = () => {
         sortType: "jobTitle"
     });
     const [jobsData, setJobsData] = useState([]);
+    const [viewAs, setViewAs] = useState("tiles");
 
     useEffect(() => {
         const localStorageTracker = localStorage.getItem("applyTracker");
@@ -165,27 +167,56 @@ const App = () => {
                             </label>
                         </form>
                     </div>
+                    <div className="ml-2 border-l-2 pl-2">
+                        View As:
+                        <select
+                            value={viewAs}
+                            onChange={(event) => setViewAs(event.target.value)}
+                        >
+                            <option value="tiles">Tiles</option>
+                            <option value="table">Table</option>
+                        </select>
+                    </div>
                 </div>
 
                 <button onClick={clearAllJobs}>Clear All Jobs</button>
             </div>
-            <ResponsiveMasonry
-                columnsCountBreakPoints={{ 350: 1, 750: 2, 1150: 3, 1640: 4 }}
-            >
-                <Masonry>
-                    {jobsData &&
-                        jobsData.map((job) => (
-                            <div className="p-3" key={job.jobId}>
-                                <Job
-                                    job={job}
-                                    removeJob={removeJob}
-                                    editJob={editJob}
-                                    updateJobStatus={updateJobStatus}
-                                />
-                            </div>
-                        ))}
-                </Masonry>
-            </ResponsiveMasonry>
+            {jobsData && (
+                <>
+                    {viewAs === "table" ? (
+                        <div>
+                            <JobsTable
+                                jobs={jobsData}
+                                removeJob={removeJob}
+                                editJob={editJob}
+                                updateJobStatus={updateJobStatus}
+                            />
+                        </div>
+                    ) : (
+                        <ResponsiveMasonry
+                            columnsCountBreakPoints={{
+                                350: 1,
+                                750: 2,
+                                1150: 3,
+                                1640: 4
+                            }}
+                        >
+                            <Masonry>
+                                {jobsData.map((job) => (
+                                    <div className="p-3" key={job.jobId}>
+                                        <Job
+                                            job={job}
+                                            removeJob={removeJob}
+                                            editJob={editJob}
+                                            updateJobStatus={updateJobStatus}
+                                        />
+                                    </div>
+                                ))}
+                            </Masonry>
+                        </ResponsiveMasonry>
+                    )}
+                </>
+            )}
             <DialogModal
                 isOpened={isOpened}
                 closeModal={closeModal}

@@ -1,3 +1,4 @@
+import JobStatus from "./JobStatus";
 import Moment from "react-moment";
 
 const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
@@ -101,27 +102,7 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
             )}
             <div>
                 <p className="font-bold">Status</p>
-                <form>
-                    {jobStatusList.map((status) => {
-                        return (
-                            <label key={status.status}>
-                                <p
-                                    className={`${job.jobStatus === status.status ? "font-bold " + status.color : "cursor-pointer"}`}
-                                >
-                                    {status.title}
-                                </p>
-                                <input
-                                    className="hidden"
-                                    type="radio"
-                                    name="jobStatus"
-                                    value={status.status}
-                                    checked={job.jobStatus === status.status}
-                                    onClick={updateJobStatusClick}
-                                />
-                            </label>
-                        );
-                    })}
-                </form>
+                <JobStatus job={job} updateJobStatus={updateJobStatus} />
             </div>
             <div className="flex justify-around border-t-2 border-solid mt-2 pt-2">
                 <button
