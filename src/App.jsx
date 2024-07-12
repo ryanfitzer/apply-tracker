@@ -11,12 +11,17 @@ const App = () => {
     const [localData, setLocalData] = useState(null);
     const [currentJob, setCurrentJob] = useState(null);
     const [isOpened, setIsOpened] = useState(false);
+    const [sortData, setSortData] = useState({
+        sortDir: "asc",
+        sortType: "jobTitle"
+    });
+    const [jobsData, setJobsData] = useState([]);
 
     useEffect(() => {
         const localStorageTracker = localStorage.getItem("applyTracker");
 
         if (!localStorageTracker) {
-            setLocalData([]);
+            setLocalData({});
         } else {
             setLocalData(JSON.parse(localStorageTracker));
         }
@@ -27,6 +32,47 @@ const App = () => {
             localStorage.setItem("applyTracker", JSON.stringify(localData));
         }
     }, [localData]);
+
+    useEffect(() => {
+        if (localData) {
+            const sortedJobs = Object.values(localData).sort((a, b) => {
+                if (sortData.sortType !== "jobApplyDate") {
+                    if (
+                        a[sortData.sortType].toUpperCase() >
+                        b[sortData.sortType].toUpperCase()
+                    ) {
+                        return sortData.sortDir === "asc" ? 1 : -1;
+                    }
+
+                    return sortData.sortDir === "asc" ? -1 : 1;
+                } else {
+                    const date =
+                        new Date(b.jobApplyDate) - new Date(a.jobApplyDate);
+                    if (sortData.sortDir === "asc") {
+                        if (date < 0) {
+                            return 1;
+                        }
+
+                        return -1;
+                    }
+
+                    if (sortData.sortDir === "desc") {
+                        if (date < 0) {
+                            return -1;
+                        }
+
+                        return 1;
+                    }
+                }
+
+                return 0;
+            });
+
+            setJobsData(() => {
+                return sortedJobs;
+            });
+        }
+    }, [sortData, localData]);
 
     const addJob = (newJobData) => {
         setLocalData((prevLocalData) => {
@@ -92,60 +138,59 @@ const App = () => {
         setIsOpened(false);
     };
 
-    const getJobList = (jobFilter = "") => {
-        const jobsSort = (jobsToSort) => {
-            return jobsToSort.sort((a, b) => {
-                if (a.jobTitle.toUpperCase() > b.jobTitle.toUpperCase()) {
-                    return 1;
-                }
+    const changeSortData = (event) => {
+        const {
+            target: { id, value }
+        } = event;
 
-                return -1;
-            });
-        };
-
-        return jobsSort(
-            Object.values(localData).filter((job) => {
-                if (jobFilter) {
-                    return job.jobStatus === jobFilter;
-                }
-
-                return job.jobStatus !== "denied";
-            })
-        );
+        setSortData((prevSortData) => {
+            return {
+                ...prevSortData,
+                [id]: value
+            };
+        });
     };
 
     return (
         <div>
             <div className="flex gap-3 px-4 py-2 justify-between">
-                <div>
+                <div className="flex">
                     <button onClick={() => setIsOpened(true)}>Add Job</button>
+                    <div className="ml-2 border-l-2 pl-2">
+                        <form>
+                            <label>
+                                <span>Sort By: </span>
+                                <select
+                                    name="sortType"
+                                    id="sortType"
+                                    onChange={changeSortData}
+                                >
+                                    <option value="jobTitle">
+                                        Default (Title)
+                                    </option>
+                                    <option value="jobApplyDate">Date</option>
+                                </select>
+                                <select
+                                    name="sortDir"
+                                    id="sortDir"
+                                    onChange={changeSortData}
+                                >
+                                    <option value="asc">Ascending</option>
+                                    <option value="desc">Descending</option>
+                                </select>
+                            </label>
+                        </form>
+                    </div>
                 </div>
+
                 <button onClick={clearAllJobs}>Clear All Jobs</button>
             </div>
             <ResponsiveMasonry
                 columnsCountBreakPoints={{ 350: 1, 750: 2, 1150: 3, 1640: 4 }}
             >
                 <Masonry>
-                    {localData &&
-                        getJobList().map((job) => (
-                            <div className="p-3" key={job.jobId}>
-                                <Job
-                                    job={job}
-                                    removeJob={removeJob}
-                                    editJob={editJob}
-                                    updateJobStatus={updateJobStatus}
-                                />
-                            </div>
-                        ))}
-                </Masonry>
-            </ResponsiveMasonry>
-            <p className="px-4">Denied</p>
-            <ResponsiveMasonry
-                columnsCountBreakPoints={{ 350: 1, 750: 2, 1150: 3, 1640: 4 }}
-            >
-                <Masonry>
-                    {localData &&
-                        getJobList("denied").map((job) => (
+                    {jobsData &&
+                        jobsData.map((job) => (
                             <div className="p-3" key={job.jobId}>
                                 <Job
                                     job={job}
