@@ -7,6 +7,7 @@ import AddJob from "./components/AddJob";
 import DialogModal from "./components/DialogModal";
 import Job from "./components/job";
 import JobsTable from "./components/JobTable";
+import Version from "./version.json";
 
 const App = () => {
     const [localData, setLocalData] = useState(null);
@@ -138,8 +139,8 @@ const App = () => {
     };
 
     return (
-        <div>
-            <div className="flex gap-3 px-4 py-2 justify-between">
+        <>
+            <header className="flex gap-3 px-4 py-2 justify-between">
                 <div className="flex">
                     <button onClick={() => setIsOpened(true)}>Add Job</button>
                     <div className="ml-2 border-l-2 pl-2">
@@ -180,43 +181,50 @@ const App = () => {
                 </div>
 
                 <button onClick={clearAllJobs}>Clear All Jobs</button>
-            </div>
-            {jobsData && (
-                <>
-                    {viewAs === "table" ? (
-                        <div>
-                            <JobsTable
-                                jobs={jobsData}
-                                removeJob={removeJob}
-                                editJob={editJob}
-                                updateJobStatus={updateJobStatus}
-                            />
-                        </div>
-                    ) : (
-                        <ResponsiveMasonry
-                            columnsCountBreakPoints={{
-                                350: 1,
-                                750: 2,
-                                1150: 3,
-                                1640: 4
-                            }}
-                        >
-                            <Masonry>
-                                {jobsData.map((job) => (
-                                    <div className="p-3" key={job.jobId}>
-                                        <Job
-                                            job={job}
-                                            removeJob={removeJob}
-                                            editJob={editJob}
-                                            updateJobStatus={updateJobStatus}
-                                        />
-                                    </div>
-                                ))}
-                            </Masonry>
-                        </ResponsiveMasonry>
-                    )}
-                </>
-            )}
+            </header>
+            <main>
+                {jobsData && (
+                    <>
+                        {viewAs === "table" ? (
+                            <div>
+                                <JobsTable
+                                    jobs={jobsData}
+                                    removeJob={removeJob}
+                                    editJob={editJob}
+                                    updateJobStatus={updateJobStatus}
+                                />
+                            </div>
+                        ) : (
+                            <ResponsiveMasonry
+                                columnsCountBreakPoints={{
+                                    350: 1,
+                                    750: 2,
+                                    1150: 3,
+                                    1640: 4
+                                }}
+                            >
+                                <Masonry>
+                                    {jobsData.map((job) => (
+                                        <div className="p-3" key={job.jobId}>
+                                            <Job
+                                                job={job}
+                                                removeJob={removeJob}
+                                                editJob={editJob}
+                                                updateJobStatus={
+                                                    updateJobStatus
+                                                }
+                                            />
+                                        </div>
+                                    ))}
+                                </Masonry>
+                            </ResponsiveMasonry>
+                        )}
+                    </>
+                )}
+            </main>
+            <footer className="h-6 px-4">
+                <p className="text-xs">Version: {Version.version}</p>
+            </footer>
             <DialogModal
                 isOpened={isOpened}
                 closeModal={closeModal}
@@ -229,7 +237,7 @@ const App = () => {
                     clearCurrentJob={clearCurrentJob}
                 />
             </DialogModal>
-        </div>
+        </>
     );
 };
 
