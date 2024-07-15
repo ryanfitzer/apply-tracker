@@ -133,12 +133,11 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     <p>Salary</p>
                     <input
                         className="w-full border-2 px-2"
-                        type="number"
+                        type="text"
                         name="jobSalary"
                         id="jobSalary"
                         value={formData.jobSalary}
                         onChange={updateField}
-                        required
                     />
                 </label>
                 <label htmlFor="jobSalaryType" className="flex-shrink-0 w-24">
