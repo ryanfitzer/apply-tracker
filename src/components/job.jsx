@@ -10,38 +10,6 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
         editJob(job.jobId);
     };
 
-    const updateJobStatusClick = (event) => {
-        updateJobStatus(job.jobId, event.target.value);
-    };
-
-    const jobStatusList = [
-        {
-            title: "Applied",
-            status: "applied",
-            color: "text-green-500"
-        },
-        {
-            title: "Interviewed Scheduled",
-            status: "interviewScheduled",
-            color: "text-blue-400"
-        },
-        {
-            title: "Interviewed",
-            status: "interviewed",
-            color: "text-blue-500"
-        },
-        {
-            title: "On Hold",
-            status: "onHold",
-            color: "text-orange-400"
-        },
-        {
-            title: "Denied",
-            status: "denied",
-            color: "text-red-400"
-        }
-    ];
-
     return (
         <div
             className={`border-2 rounded-md p-2 ${job.jobStatus === "denied" ? "border-red-300 bg-red-50" : "border-sky-300"}`}
