@@ -1,5 +1,7 @@
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
+import { applicationsActions } from "../store/applications-slice";
 import uuid from "react-uuid";
 
 const defaultJob = {
@@ -12,14 +14,19 @@ const defaultJob = {
     jobSalaryType: "yr"
 };
 
-const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
+const AddJob = () => {
+    const dispatch = useDispatch();
     let currentDate = new Date();
     currentDate = currentDate.toISOString().split("T")[0];
 
     const [formData, setFormData] = useState(defaultJob);
+    const applicationItems = useSelector((state) => state.appList);
 
     useEffect(() => {
-        if (currentJob) {
+        if (applicationItems.editingJob) {
+            const currentJob =
+                applicationItems.items[applicationItems.editingJob];
+
             setFormData({
                 jobTitle: currentJob.jobTitle,
                 jobCompany: currentJob.jobCompany,
@@ -30,22 +37,24 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                 jobSalaryType: currentJob.jobSalaryType
             });
         }
-    }, [currentJob]);
+    }, [applicationItems]);
 
     const submitJob = (event) => {
         event.preventDefault();
         const newJob = { ...formData };
 
-        if (!currentJob) {
+        if (!applicationItems.editingJob) {
             newJob.jobStatus = "applied";
             newJob.jobId = uuid();
-            addJob(newJob);
         } else {
+            const currentJob =
+                applicationItems.items[applicationItems.editingJob];
             newJob.jobStatus = currentJob.jobStatus;
             newJob.jobId = currentJob.jobId;
-            saveJob(newJob);
         }
 
+        dispatch(applicationsActions.addItem(newJob));
+        dispatch(applicationsActions.clearEditingJob());
         setFormData(defaultJob);
     };
 
@@ -64,7 +73,6 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
 
     const clearForm = () => {
         setFormData(defaultJob);
-        clearCurrentJob();
     };
 
     return (
@@ -122,7 +130,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     type="date"
                     name="jobApplyDate"
                     id="jobApplyDate"
-                    value={formData.jobApplyDate}
+                    value={formData.jobApplyDate || currentDate}
                     onChange={updateField}
                     max={currentDate}
                     required
@@ -163,7 +171,7 @@ const AddJob = ({ addJob, saveJob, currentJob, clearCurrentJob }) => {
                     Clear
                 </button>
                 <button className="bg-blue-300 text-white w-32 py-2 font-bold">
-                    {currentJob ? "Save" : "Add"}
+                    Save
                 </button>
             </div>
         </form>

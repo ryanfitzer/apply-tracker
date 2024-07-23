@@ -1,4 +1,8 @@
-const JobStatus = ({ job, updateJobStatus }) => {
+import { applicationsActions } from "../store/applications-slice";
+import { useDispatch } from "react-redux";
+
+const JobStatus = ({ job }) => {
+    const dispatch = useDispatch();
     const jobStatusList = {
         applied: {
             title: "Applied",
@@ -27,6 +31,15 @@ const JobStatus = ({ job, updateJobStatus }) => {
         }
     };
 
+    const updateJobStatus = (event) => {
+        dispatch(
+            applicationsActions.updateItemStatus({
+                jobId: job.jobId,
+                status: event.target.value
+            })
+        );
+    };
+
     return (
         <>
             <select
@@ -34,9 +47,7 @@ const JobStatus = ({ job, updateJobStatus }) => {
                 id="jobStatus"
                 name="jobStatus"
                 value={job.jobStatus}
-                onChange={(event) => {
-                    updateJobStatus(job.jobId, event.target.value);
-                }}
+                onChange={updateJobStatus}
             >
                 {Object.values(jobStatusList).map((status) => {
                     return (

@@ -1,7 +1,11 @@
 import { useEffect, useRef } from "react";
 
+import { uiActions } from "../store/ui-slice";
+import { useDispatch } from "react-redux";
+
 const DialogModal = ({ children, isOpened, closeModal, title }) => {
     const dialogRef = useRef();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (isOpened) {
@@ -19,7 +23,10 @@ const DialogModal = ({ children, isOpened, closeModal, title }) => {
         >
             <div className="flex justify-between border-b-2 pb-2 mb-4">
                 <p className="font-bold text-2xl">{title}</p>
-                <button onClick={closeModal} className="pl-5 text-lg">
+                <button
+                    onClick={() => dispatch(uiActions.toggleModal(false))}
+                    className="pl-5 text-lg"
+                >
                     &#x2716;
                 </button>
             </div>

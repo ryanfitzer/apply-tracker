@@ -1,7 +1,7 @@
 import JobStatus from "./JobStatus";
 import Moment from "react-moment";
 
-const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
+const Job = ({ job, removeJob, editJob }) => {
     const removeJobClick = () => {
         removeJob(job.jobId);
     };
@@ -70,7 +70,7 @@ const Job = ({ job, removeJob, editJob, updateJobStatus }) => {
             )}
             <div>
                 <p className="font-bold">Status</p>
-                <JobStatus job={job} updateJobStatus={updateJobStatus} />
+                <JobStatus job={job} />
             </div>
             <div className="flex justify-around border-t-2 border-solid mt-2 pt-2">
                 <button
