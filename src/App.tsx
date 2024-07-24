@@ -1,5 +1,6 @@
 import "./App.css";
 
+import { AppListState, JobType, UiState } from "./lib/types";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import {
     fetchApplicationData,
@@ -8,6 +9,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import AddJob from "./components/AddJob";
+import { AppDispatch } from "./store";
+import { ChangeEvent } from "react";
 import DialogModal from "./components/DialogModal";
 import Job from "./components/job";
 import JobsTable from "./components/JobTable";
@@ -17,9 +20,9 @@ import { uiActions } from "./store/ui-slice";
 import { useEffect } from "react";
 
 const App = () => {
-    const dispatch = useDispatch();
-    const applicationItems = useSelector((state) => state.appList);
-    const uiItem = useSelector((state) => state.ui);
+    const dispatch = useDispatch<AppDispatch>();
+    const applicationItems = useSelector((state: AppListState) => state.appList);
+    const uiItem = useSelector((state: UiState) => state.ui);
 
     useEffect(() => {
         dispatch(fetchApplicationData());
@@ -27,18 +30,17 @@ const App = () => {
 
     useEffect(() => {
         if (applicationItems.isChanged) {
-            dispatch(uiActions.toggleModal(false));
             dispatch(saveApplicationdata(applicationItems));
         }
     }, [applicationItems, dispatch]);
 
-    const sortItems = (items) => {
+    const sortItems = (items: JobType[]) => {
         if (!items) {
             return [];
         }
         return Object.values(items).sort((a, b) => {
-            const sortBy = applicationItems.sort.by;
-            const sortDir = applicationItems.sort.dir;
+            const sortBy: string = applicationItems.sort.by;
+            const sortDir: string = applicationItems.sort.dir;
             if (sortBy !== "jobApplyDate") {
                 if (a[sortBy].toUpperCase() > b[sortBy].toUpperCase()) {
                     return sortDir === "asc" ? 1 : -1;
@@ -47,7 +49,7 @@ const App = () => {
                 return sortDir === "asc" ? -1 : 1;
             }
 
-            const date = new Date(b.jobApplyDate) - new Date(a.jobApplyDate);
+            const date = Number(new Date(b.jobApplyDate)) - Number(new Date(a.jobApplyDate));
 
             if (date < 0) {
                 return sortDir === "asc" ? 1 : -1;
@@ -57,7 +59,7 @@ const App = () => {
         });
     };
 
-    const removeJob = (jobId) => {
+    const removeJob = (jobId: string) => {
         const confirm = window.confirm("are you sure?");
 
         if (confirm) {
@@ -73,12 +75,7 @@ const App = () => {
         }
     };
 
-    const editJob = (jobId) => {
-        dispatch(applicationsActions.setItemToEdit(jobId));
-        dispatch(uiActions.toggleModal(true));
-    };
-
-    const changeSortData = (event) => {
+    const changeSortData = (event: ChangeEvent<HTMLSelectElement>) => {
         const {
             target: { id, value }
         } = event;
@@ -146,14 +143,16 @@ const App = () => {
                 <button onClick={clearAllJobs}>Clear All Jobs</button>
             </header>
             <main>
-                {Object.values(applicationItems.items).length && (
+                {/* Need to compare against 0 to make sure 0 does now show up
+                  * on the UI.
+                */}
+                {Object.values(applicationItems.items).length > 0 && (
                     <>
                         {applicationItems.viewAs === "table" ? (
                             <div>
                                 <JobsTable
                                     jobs={sortItems(applicationItems.items)}
                                     removeJob={removeJob}
-                                    editJob={editJob}
                                 />
                             </div>
                         ) : (
@@ -175,7 +174,6 @@ const App = () => {
                                                 <Job
                                                     job={job}
                                                     removeJob={removeJob}
-                                                    editJob={editJob}
                                                 />
                                             </div>
                                         )
@@ -204,3 +202,4 @@ const App = () => {
 };
 
 export default App;
+

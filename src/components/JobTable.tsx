@@ -1,7 +1,33 @@
-import JobStatus from "./JobStatus";
-import Moment from "react-moment";
+import { format, formatDistanceToNowStrict } from "date-fns";
 
-const JobsTable = ({ jobs, editJob, removeJob, updateJobStatus }) => {
+import JobStatus from "./JobStatus";
+import { JobType } from "../lib/types";
+import { applicationsActions } from "../store/applications-slice";
+import { uiActions } from "../store/ui-slice";
+import { useDispatch } from "react-redux";
+
+interface Thing {
+    jobs: JobType[],
+    removeJob: (arg0: string) => void;
+}
+
+const JobsTable = ({ jobs, removeJob }: Thing) => {
+    const dispatch = useDispatch();
+    const editJobClick = (jobId: string) => {
+        dispatch(applicationsActions.setItemToEdit(jobId));
+        dispatch(uiActions.toggleModal(true));
+    };
+    const getDateDisplay = (applyDate: string) => {
+        const dateFormatted = format(new Date(applyDate), "ddMMMyyyy");
+        const relative = formatDistanceToNowStrict(applyDate);
+
+        return (
+            <p>
+                {dateFormatted}<br />{relative} ago
+            </p>
+        );
+    };
+
     return (
         <table className="w-full">
             <thead>
@@ -21,22 +47,11 @@ const JobsTable = ({ jobs, editJob, removeJob, updateJobStatus }) => {
                             <td className="align-text-top">{job.jobTitle}</td>
                             <td className="align-text-top">{job.jobCompany}</td>
                             <td className="align-text-top">
-                                <p>
-                                    <Moment format="DD.MMM.YYYY">
-                                        {job.jobApplyDate}
-                                    </Moment>
-                                    <br />
-                                    <Moment fromNow className="text-sm">
-                                        {job.jobApplyDate}
-                                    </Moment>
-                                </p>
+                                {getDateDisplay(job.jobApplyDate)}
                             </td>
                             <td className="align-text-top">{job.jobSalary}</td>
                             <td className="align-text-top">
-                                <JobStatus
-                                    job={job}
-                                    updateJobStatus={updateJobStatus}
-                                />
+                                <JobStatus job={job} />
                             </td>
                             <td className="align-text-top">
                                 <button
@@ -47,7 +62,7 @@ const JobsTable = ({ jobs, editJob, removeJob, updateJobStatus }) => {
                                 </button>
                                 <button
                                     className="bg-blue-300 text-white w-32 py-2 font-bold"
-                                    onClick={() => editJob(job.jobId)}
+                                    onClick={() => editJobClick(job.jobId)}
                                 >
                                     Edit
                                 </button>

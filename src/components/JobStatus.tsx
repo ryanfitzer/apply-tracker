@@ -1,37 +1,52 @@
+import { JobStatusType, JobType } from "../lib/types";
+
+import { ChangeEvent } from "react";
 import { applicationsActions } from "../store/applications-slice";
 import { useDispatch } from "react-redux";
 
-const JobStatus = ({ job }) => {
+interface Thing {
+    job: JobType;
+}
+
+interface JobStatusList {
+    [key: string]: {
+        title: string;
+        status: JobStatusType,
+        color: string;
+    };
+}
+
+const JobStatus = ({ job }: Thing) => {
     const dispatch = useDispatch();
-    const jobStatusList = {
+    const jobStatusList: JobStatusList = {
         applied: {
             title: "Applied",
-            status: "applied",
+            status: JobStatusType.APPLIED,
             color: "text-green-500"
         },
         interviewScheduled: {
             title: "Interviewed Scheduled",
-            status: "interviewScheduled",
+            status: JobStatusType.INTERVIEWED_SCHEDULED,
             color: "text-blue-400"
         },
         interviewed: {
             title: "Interviewed",
-            status: "interviewed",
+            status: JobStatusType.INTERVIEWED,
             color: "text-blue-500"
         },
         onHold: {
             title: "On Hold",
-            status: "onHold",
+            status: JobStatusType.ON_HOLD,
             color: "text-orange-400"
         },
         denied: {
             title: "Denied",
-            status: "denied",
+            status: JobStatusType.DENIED,
             color: "text-red-400"
         }
     };
 
-    const updateJobStatus = (event) => {
+    const updateJobStatus = (event: ChangeEvent<HTMLSelectElement>) => {
         dispatch(
             applicationsActions.updateItemStatus({
                 jobId: job.jobId,

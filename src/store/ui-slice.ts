@@ -5,6 +5,7 @@ const uiSlice = createSlice({
     initialState: { modalIsVisible: false },
     reducers: {
         toggleModal(state, action) {
+            console.log("modalopen", action);
             state.modalIsVisible = action.payload;
         }
     }

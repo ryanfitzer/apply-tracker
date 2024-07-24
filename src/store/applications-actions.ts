@@ -1,3 +1,4 @@
+import { AppListType } from "../lib/types";
 import { applicationsActions } from "./applications-slice";
 
 export const fetchApplicationData = () => {
@@ -13,16 +14,20 @@ export const fetchApplicationData = () => {
                     sort: parsed.sort || {
                         by: "jobApplyDate",
                         dir: "desc"
-                    }
+                    },
+                    viewAs: parsed.viewAs
                 })
             );
         }
     };
 };
 
-export const saveApplicationdata = (appItems) => {
+export const saveApplicationdata = (appItems: AppListType) => {
     return async () => {
         const { items, sort, viewAs } = appItems;
-        localStorage.setItem("applyTracker", JSON.stringify({ items, sort, viewAs }));
+        localStorage.setItem(
+            "applyTracker",
+            JSON.stringify({ items, sort, viewAs })
+        );
     };
 };

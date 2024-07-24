@@ -1,14 +1,28 @@
-import JobStatus from "./JobStatus";
-import Moment from "react-moment";
+import { format, formatDistanceToNowStrict } from "date-fns";
 
-const Job = ({ job, removeJob, editJob }) => {
+import JobStatus from "./JobStatus";
+import { JobType } from "../lib/types";
+import { applicationsActions } from "../store/applications-slice";
+import { uiActions } from "../store/ui-slice";
+import { useDispatch } from "react-redux";
+
+interface Thing {
+    job: JobType;
+    removeJob: (arg0: string) => void;
+}
+
+const Job = ({ job, removeJob }: Thing) => {
+    const dispatch = useDispatch();
+    const { jobId } = job;
     const removeJobClick = () => {
         removeJob(job.jobId);
     };
-
     const editJobClick = () => {
-        editJob(job.jobId);
+        dispatch(applicationsActions.setItemToEdit(jobId));
+        dispatch(uiActions.toggleModal(true));
     };
+    const dateFormatted = format(new Date(job.jobApplyDate), "ddMMMyyyy");
+    const relative = formatDistanceToNowStrict(job.jobApplyDate);
 
     return (
         <div
@@ -20,7 +34,7 @@ const Job = ({ job, removeJob, editJob }) => {
                         <a
                             href={job.jobLink}
                             target="_blank"
-                            rel="noreferrer"
+                            rel="noopener noreferrer"
                             className="text-blue-500"
                         >
                             {job.jobTitle}
@@ -39,7 +53,7 @@ const Job = ({ job, removeJob, editJob }) => {
                         <a
                             href={job.jobCompanyLink}
                             target="_blank"
-                            rel="noreferrer"
+                            rel="noopener noreferrer"
                             className="text-blue-500"
                         >
                             {job.jobCompany}
@@ -54,10 +68,7 @@ const Job = ({ job, removeJob, editJob }) => {
             </div>
             <div>
                 <p className="text-gray-400">
-                    Applied on&nbsp;
-                    <Moment format="DD.MMM.YYYY">
-                        {job.jobApplyDate}
-                    </Moment>, <Moment fromNow>{job.jobApplyDate}</Moment>
+                    Applied on {dateFormatted}, {relative} ago
                 </p>
             </div>
             {job.jobSalary && job.jobSalaryType && (

@@ -4,14 +4,16 @@ import { uiActions } from "../store/ui-slice";
 import { useDispatch } from "react-redux";
 
 const DialogModal = ({ children, isOpened, closeModal, title }) => {
-    const dialogRef = useRef();
+    const dialogRef = useRef<HTMLDialogElement>(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (isOpened) {
-            dialogRef.current.showModal();
-        } else {
-            dialogRef.current.close();
+        if (dialogRef.current) {
+            if (isOpened) {
+                dialogRef.current.showModal();
+            } else {
+                dialogRef.current.close();
+            }
         }
     }, [isOpened]);
 

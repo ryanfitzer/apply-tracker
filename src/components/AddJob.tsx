@@ -1,7 +1,9 @@
+import { AppListState, JobStatusType, JobType } from "../lib/types";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 
 import { applicationsActions } from "../store/applications-slice";
+import { uiActions } from "../store/ui-slice";
 import uuid from "react-uuid";
 
 const defaultJob = {
@@ -11,20 +13,22 @@ const defaultJob = {
     jobCompanyLink: "",
     jobLink: "",
     jobSalary: "",
-    jobSalaryType: "yr"
+    jobSalaryType: "",
+    jobStatus: "",
+    jobId: ""
 };
 
 const AddJob = () => {
     const dispatch = useDispatch();
-    let currentDate = new Date();
-    currentDate = currentDate.toISOString().split("T")[0];
+    const currentDate: Date = new Date();
+    const currentDateParsed: string = currentDate.toISOString().split("T")[0];
 
     const [formData, setFormData] = useState(defaultJob);
-    const applicationItems = useSelector((state) => state.appList);
+    const applicationItems = useSelector((state: AppListState) => state.appList);
 
     useEffect(() => {
         if (applicationItems.editingJob) {
-            const currentJob =
+            const currentJob: JobType =
                 applicationItems.items[applicationItems.editingJob];
 
             setFormData({
@@ -34,7 +38,9 @@ const AddJob = () => {
                 jobCompanyLink: currentJob.jobCompanyLink,
                 jobLink: currentJob.jobLink,
                 jobSalary: currentJob.jobSalary,
-                jobSalaryType: currentJob.jobSalaryType
+                jobSalaryType: currentJob.jobSalaryType,
+                jobId: currentJob.jobId,
+                jobStatus: currentJob.jobStatus
             });
         }
     }, [applicationItems]);
@@ -44,7 +50,7 @@ const AddJob = () => {
         const newJob = { ...formData };
 
         if (!applicationItems.editingJob) {
-            newJob.jobStatus = "applied";
+            newJob.jobStatus = JobStatusType.APPLIED;
             newJob.jobId = uuid();
         } else {
             const currentJob =
@@ -53,12 +59,13 @@ const AddJob = () => {
             newJob.jobId = currentJob.jobId;
         }
 
-        dispatch(applicationsActions.addItem(newJob));
+        dispatch(applicationsActions.addItem(newJob as JobType));
         dispatch(applicationsActions.clearEditingJob());
+        dispatch(uiActions.toggleModal(false));
         setFormData(defaultJob);
     };
 
-    const updateField = (event) => {
+    const updateField = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {
             target: { id, value }
         } = event;
@@ -130,9 +137,9 @@ const AddJob = () => {
                     type="date"
                     name="jobApplyDate"
                     id="jobApplyDate"
-                    value={formData.jobApplyDate || currentDate}
+                    value={formData.jobApplyDate || currentDateParsed}
                     onChange={updateField}
-                    max={currentDate}
+                    max={currentDateParsed}
                     required
                 />
             </label>
