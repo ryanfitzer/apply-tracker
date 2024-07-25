@@ -1,6 +1,8 @@
 import { AppListSort, JobType, ReplaceAppData } from "../lib/types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+import { RootState } from "@reduxjs/toolkit/query";
+
 const applicationsSlice = createSlice({
     name: "applications",
     initialState: {
@@ -63,6 +65,8 @@ const applicationsSlice = createSlice({
     }
 });
 
+export const selectApplicationItems = (state) => state.items;
+export const selectApplicationEditing = (state) => state.editingJob;
 export const applicationsActions = applicationsSlice.actions;
 
 export default applicationsSlice;

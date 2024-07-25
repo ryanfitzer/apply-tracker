@@ -1,8 +1,8 @@
-import { AppListState, JobStatusType, JobType } from "../lib/types";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { JobStatusType, JobType } from "../lib/types";
+import { applicationsActions, selectApplicationEditing, selectApplicationItems } from "../store/applications-slice";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 
-import { applicationsActions } from "../store/applications-slice";
 import { uiActions } from "../store/ui-slice";
 import uuid from "react-uuid";
 
@@ -19,17 +19,18 @@ const defaultJob = {
 };
 
 const AddJob = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const currentDate: Date = new Date();
     const currentDateParsed: string = currentDate.toISOString().split("T")[0];
 
     const [formData, setFormData] = useState(defaultJob);
-    const applicationItems = useSelector((state: AppListState) => state.appList);
+    const applicationItems = useAppSelector(selectApplicationItems);
+    const editingJob = useAppSelector(selectApplicationEditing);
 
     useEffect(() => {
-        if (applicationItems.editingJob) {
+        if (editingJob) {
             const currentJob: JobType =
-                applicationItems.items[applicationItems.editingJob];
+                applicationItems[applicationItems.editingJob];
 
             setFormData({
                 jobTitle: currentJob.jobTitle,
@@ -43,18 +44,18 @@ const AddJob = () => {
                 jobStatus: currentJob.jobStatus
             });
         }
-    }, [applicationItems]);
+    }, [applicationItems, editingJob]);
 
     const submitJob = (event) => {
         event.preventDefault();
         const newJob = { ...formData };
 
-        if (!applicationItems.editingJob) {
+        if (!editingJob) {
             newJob.jobStatus = JobStatusType.APPLIED;
             newJob.jobId = uuid();
         } else {
             const currentJob =
-                applicationItems.items[applicationItems.editingJob];
+                applicationItems[editingJob];
             newJob.jobStatus = currentJob.jobStatus;
             newJob.jobId = currentJob.jobId;
         }
@@ -93,6 +94,7 @@ const AddJob = () => {
                     id="jobTitle"
                     value={formData.jobTitle}
                     onChange={updateField}
+                    data-testid="jobTitle"
                     required
                 />
             </label>

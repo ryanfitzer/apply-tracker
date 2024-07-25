@@ -7,7 +7,7 @@
         "lib": ["ES2020", "DOM", "DOM.Iterable"],
         "module": "ESNext",
         "skipLibCheck": true,
-        "types": [],
+        "types": ["vitest/globals", "@testing-library/jest-dom"],
 
         /* Bundler mode */
         "moduleResolution": "bundler",
@@ -25,7 +25,7 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": false
     },
-    "include": ["src"],
+    "include": ["src", "setupTest.ts"],
     "exclude": [
         "node_modules",
         "./node_modules",
