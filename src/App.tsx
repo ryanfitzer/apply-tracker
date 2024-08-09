@@ -1,27 +1,31 @@
 import "./App.css";
 
-import { AppListState, JobType, UiState } from "./lib/types";
+import { JobType, UiState } from "./lib/types";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { applicationsActions, selectApplicationEditing, selectApplicationItems, selectApplicationListIsChanged, selectApplicationListViewAs, selectApplicationSort } from "./store/applications-slice";
 import {
     fetchApplicationData,
     saveApplicationdata
 } from "./store/applications-actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 
 import AddJob from "./components/AddJob";
-import { AppDispatch } from "./store";
 import { ChangeEvent } from "react";
 import DialogModal from "./components/DialogModal";
 import Job from "./components/job";
 import JobsTable from "./components/JobTable";
 import Version from "./version.json";
-import { applicationsActions } from "./store/applications-slice";
 import { uiActions } from "./store/ui-slice";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const App = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const applicationItems = useSelector((state: AppListState) => state.appList);
+    const dispatch = useAppDispatch();
+    const applicationListIsChanged = useAppSelector(selectApplicationListIsChanged);
+    const applicationListSort = useAppSelector(selectApplicationSort);
+    const applicationListEditing = useAppSelector(selectApplicationEditing);
+    const applicationListItems = useAppSelector(selectApplicationItems);
+    const applicationListViewAs = useAppSelector(selectApplicationListViewAs);
     const uiItem = useSelector((state: UiState) => state.ui);
 
     useEffect(() => {
@@ -29,18 +33,22 @@ const App = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        if (applicationItems.isChanged) {
-            dispatch(saveApplicationdata(applicationItems));
+        if (applicationListIsChanged) {
+            dispatch(saveApplicationdata({
+                items: applicationListItems,
+                sort: applicationListSort,
+                viewAs: applicationListViewAs
+            }));
         }
-    }, [applicationItems, dispatch]);
+    }, [applicationListIsChanged, dispatch, applicationListItems, applicationListSort, applicationListViewAs]);
 
     const sortItems = (items: JobType[]) => {
         if (!items) {
             return [];
         }
         return Object.values(items).sort((a, b) => {
-            const sortBy: string = applicationItems.sort.by;
-            const sortDir: string = applicationItems.sort.dir;
+            const sortBy: string = applicationListSort.by;
+            const sortDir: string = applicationListSort.dir;
             if (sortBy !== "jobApplyDate") {
                 if (a[sortBy].toUpperCase() > b[sortBy].toUpperCase()) {
                     return sortDir === "asc" ? 1 : -1;
@@ -82,15 +90,15 @@ const App = () => {
 
         dispatch(
             applicationsActions.sortItemList({
-                by: id === "sortBy" ? value : applicationItems.sort.by,
-                dir: id === "sortDir" ? value : applicationItems.sort.dir
+                by: id === "sortBy" ? value : applicationListSort.by,
+                dir: id === "sortDir" ? value : applicationListSort.dir
             })
         );
     };
 
     return (
-        <>
-            <header className="flex gap-3 px-4 py-2 justify-between">
+        <div className="flex flex-col h-full">
+            <header className="flex gap-3 px-4 py-2 justify-between h-10">
                 <div className="flex">
                     <button
                         onClick={() => dispatch(uiActions.toggleModal(true))}
@@ -105,7 +113,7 @@ const App = () => {
                                     name="sortBy"
                                     id="sortBy"
                                     onChange={changeSortData}
-                                    value={applicationItems.sort.by}
+                                    value={applicationListSort.by}
                                 >
                                     <option value="jobTitle">Title</option>
                                     <option value="jobApplyDate">Date</option>
@@ -114,7 +122,7 @@ const App = () => {
                                     name="sortDir"
                                     id="sortDir"
                                     onChange={changeSortData}
-                                    value={applicationItems.sort.dir}
+                                    value={applicationListSort.dir}
                                 >
                                     <option value="asc">Ascending</option>
                                     <option value="desc">Descending</option>
@@ -125,7 +133,7 @@ const App = () => {
                     <div className="ml-2 border-l-2 pl-2">
                         View As:
                         <select
-                            value={applicationItems.viewAs}
+                            value={applicationListViewAs}
                             onChange={(event) =>
                                 dispatch(
                                     applicationsActions.setViewAs(
@@ -142,16 +150,16 @@ const App = () => {
 
                 <button onClick={clearAllJobs}>Clear All Jobs</button>
             </header>
-            <main>
+            <main className="h-full overflow-y-auto">
                 {/* Need to compare against 0 to make sure 0 does now show up
                   * on the UI.
                 */}
-                {Object.values(applicationItems.items).length > 0 && (
+                {Object.values(applicationListItems).length > 0 && (
                     <>
-                        {applicationItems.viewAs === "table" ? (
+                        {applicationListViewAs === "table" ? (
                             <div>
                                 <JobsTable
-                                    jobs={sortItems(applicationItems.items)}
+                                    jobs={sortItems(applicationListItems)}
                                     removeJob={removeJob}
                                 />
                             </div>
@@ -165,7 +173,7 @@ const App = () => {
                                 }}
                             >
                                 <Masonry>
-                                    {sortItems(applicationItems.items).map(
+                                    {sortItems(applicationListItems).map(
                                         (job) => (
                                             <div
                                                 className="p-3"
@@ -184,7 +192,7 @@ const App = () => {
                     </>
                 )}
             </main>
-            <footer className="h-6 px-4">
+            <footer className="h-10 px-4">
                 <p className="text-xs">Version: {Version.version}</p>
             </footer>
             <DialogModal
@@ -193,11 +201,11 @@ const App = () => {
                     dispatch(uiActions.toggleModal(false));
                     dispatch(applicationsActions.clearEditingJob());
                 }}
-                title={applicationItems.editingJob ? "Edit Job" : "Add Job"}
+                title={applicationListEditing ? "Edit Job" : "Add Job"}
             >
                 <AddJob />
             </DialogModal>
-        </>
+        </div>
     );
 };
 

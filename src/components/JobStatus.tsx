@@ -2,7 +2,7 @@ import { JobStatusType, JobType } from "../lib/types";
 
 import { ChangeEvent } from "react";
 import { applicationsActions } from "../store/applications-slice";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../hooks/hooks";
 
 interface Thing {
     job: JobType;
@@ -17,7 +17,7 @@ interface JobStatusList {
 }
 
 const JobStatus = ({ job }: Thing) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const jobStatusList: JobStatusList = {
         applied: {
             title: "Applied",

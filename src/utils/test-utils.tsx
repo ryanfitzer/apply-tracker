@@ -22,6 +22,7 @@ export function renderWithProviders(
         ...renderOptions
     }: ExtendedRenderOptions = {}
 ) {
+    console.log('store', store);
     function Wrapper({ children }: PropsWithChildren<any>): JSX.Element {
         return <Provider store={store}>{children}</Provider>;
     }

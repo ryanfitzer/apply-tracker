@@ -20,17 +20,16 @@ const defaultJob = {
 
 const AddJob = () => {
     const dispatch = useAppDispatch();
-    const currentDate: Date = new Date();
-    const currentDateParsed: string = currentDate.toISOString().split("T")[0];
-
     const [formData, setFormData] = useState(defaultJob);
     const applicationItems = useAppSelector(selectApplicationItems);
     const editingJob = useAppSelector(selectApplicationEditing);
+    const currentDate: Date = new Date();
+    const currentDateParsed: string = currentDate.toISOString().split("T")[0];
 
     useEffect(() => {
         if (editingJob) {
             const currentJob: JobType =
-                applicationItems[applicationItems.editingJob];
+                applicationItems[editingJob];
 
             setFormData({
                 jobTitle: currentJob.jobTitle,
@@ -43,8 +42,15 @@ const AddJob = () => {
                 jobId: currentJob.jobId,
                 jobStatus: currentJob.jobStatus
             });
+        } else {
+            const newDefaultJob = {
+                ...defaultJob,
+                jobApplyDate: currentDateParsed,
+                jobSalaryType: "yr",
+            };
+            setFormData(newDefaultJob);
         }
-    }, [applicationItems, editingJob]);
+    }, [applicationItems, editingJob, currentDateParsed]);
 
     const submitJob = (event) => {
         event.preventDefault();
@@ -118,6 +124,7 @@ const AddJob = () => {
                     id="jobCompany"
                     value={formData.jobCompany}
                     onChange={updateField}
+                    data-testid="jobCompany"
                     required
                 />
             </label>
@@ -139,9 +146,10 @@ const AddJob = () => {
                     type="date"
                     name="jobApplyDate"
                     id="jobApplyDate"
-                    value={formData.jobApplyDate || currentDateParsed}
+                    value={formData.jobApplyDate}
                     onChange={updateField}
                     max={currentDateParsed}
+                    data-testid="jobApplyDate"
                     required
                 />
             </label>
@@ -179,7 +187,7 @@ const AddJob = () => {
                 >
                     Clear
                 </button>
-                <button className="bg-blue-300 text-white w-32 py-2 font-bold">
+                <button data-testid="buttonSubmit" className="bg-blue-300 text-white w-32 py-2 font-bold">
                     Save
                 </button>
             </div>

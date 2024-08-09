@@ -11,6 +11,7 @@ const uiSlice = createSlice({
     }
 });
 
+export const selectToggleModal = (state) => state.toggleModal;
 export const uiActions = uiSlice.actions;
 
 export default uiSlice;

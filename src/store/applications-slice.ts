@@ -1,20 +1,20 @@
 import { AppListSort, JobType, ReplaceAppData } from "../lib/types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { RootState } from "@reduxjs/toolkit/query";
+export const appListInitialState = {
+    isChanged: false,
+    items: {},
+    sort: {
+        by: "",
+        dir: ""
+    },
+    viewAs: "tiles",
+    editingJob: ""
+};
 
 const applicationsSlice = createSlice({
     name: "applications",
-    initialState: {
-        isChanged: false,
-        items: {},
-        sort: {
-            by: "",
-            dir: ""
-        },
-        viewAs: "tiles",
-        editingJob: ""
-    },
+    initialState: appListInitialState,
     reducers: {
         replaceApplications(state, { payload }: PayloadAction<ReplaceAppData>) {
             state.items = payload.items;
@@ -65,8 +65,13 @@ const applicationsSlice = createSlice({
     }
 });
 
-export const selectApplicationItems = (state) => state.items;
-export const selectApplicationEditing = (state) => state.editingJob;
+export const selectApplicationList = (state) => state.appList;
+export const selectApplicationListIsChanged = (state) =>
+    state.appList.isChanged;
+export const selectApplicationSort = (state) => state.appList.sort;
+export const selectApplicationItems = (state) => state.appList.items;
+export const selectApplicationEditing = (state) => state.appList.editingJob;
+export const selectApplicationListViewAs = (state) => state.appList.viewAs;
 export const applicationsActions = applicationsSlice.actions;
 
 export default applicationsSlice;
