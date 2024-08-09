@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { JobStatusType, JobType } from "../lib/types";
+import { JobSalaryType, JobStatusType, JobType } from "../lib/types";
 import { applicationsActions, selectApplicationEditing, selectApplicationItems } from "../store/applications-slice";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 
@@ -57,6 +57,7 @@ const AddJob = () => {
         const newJob = { ...formData };
 
         if (!editingJob) {
+            console.log('here');
             newJob.jobStatus = JobStatusType.APPLIED;
             newJob.jobId = uuid();
         } else {
@@ -163,6 +164,7 @@ const AddJob = () => {
                         id="jobSalary"
                         value={formData.jobSalary}
                         onChange={updateField}
+                        data-testid="jobSalary"
                     />
                 </label>
                 <label htmlFor="jobSalaryType" className="flex-shrink-0 w-24">
@@ -173,9 +175,10 @@ const AddJob = () => {
                         id="jobSalaryType"
                         onChange={updateField}
                         value={formData.jobSalaryType}
+                        data-testid="jobSalaryType"
                     >
-                        <option value="yr">Yearly</option>
-                        <option value="hr">Hourly</option>
+                        <option value={JobSalaryType.YR}>Yearly</option>
+                        <option value={JobSalaryType.HR}>Hourly</option>
                     </select>
                 </label>
             </div>
@@ -184,6 +187,7 @@ const AddJob = () => {
                     className="bg-slate-200 w-32 py-2 font-bold"
                     type="button"
                     onClick={clearForm}
+                    data-testid="buttonClear"
                 >
                     Clear
                 </button>
