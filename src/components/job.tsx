@@ -1,10 +1,10 @@
-import { format, formatDistanceToNowStrict } from "date-fns";
+import { format, formatDistanceToNowStrict, parseISO } from "date-fns";
 
 import JobStatus from "./JobStatus";
 import { JobType } from "../lib/types";
 import { applicationsActions } from "../store/applications-slice";
 import { uiActions } from "../store/ui-slice";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../hooks/hooks";
 
 interface Thing {
     job: JobType;
@@ -12,7 +12,7 @@ interface Thing {
 }
 
 const Job = ({ job, removeJob }: Thing) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const { jobId } = job;
     const removeJobClick = () => {
         removeJob(job.jobId);
@@ -21,7 +21,7 @@ const Job = ({ job, removeJob }: Thing) => {
         dispatch(applicationsActions.setItemToEdit(jobId));
         dispatch(uiActions.toggleModal(true));
     };
-    const dateFormatted = format(new Date(job.jobApplyDate), "ddMMMyyyy");
+    const dateFormatted = format(parseISO(job.jobApplyDate), "ddMMMyyyy");
     const relative = formatDistanceToNowStrict(job.jobApplyDate);
 
     return (

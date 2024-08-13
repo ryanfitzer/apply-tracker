@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 
 import { uiActions } from "../store/ui-slice";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../hooks/hooks";
 
 const DialogModal = ({ children, isOpened, closeModal, title }) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (dialogRef.current) {

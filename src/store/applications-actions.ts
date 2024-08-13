@@ -1,5 +1,12 @@
-import { AppListType } from "../lib/types";
+import { AppListSort, JobType } from "../lib/types";
+
 import { applicationsActions } from "./applications-slice";
+
+interface AppListTypeSave {
+    sort: AppListSort;
+    viewAs: string;
+    items: JobType[];
+}
 
 export const fetchApplicationData = () => {
     return async (dispatch) => {
@@ -22,7 +29,7 @@ export const fetchApplicationData = () => {
     };
 };
 
-export const saveApplicationdata = (appItems: AppListType) => {
+export const saveApplicationdata = (appItems: AppListTypeSave) => {
     return async () => {
         const { items, sort, viewAs } = appItems;
         localStorage.setItem(

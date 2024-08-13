@@ -4,7 +4,7 @@ import JobStatus from "./JobStatus";
 import { JobType } from "../lib/types";
 import { applicationsActions } from "../store/applications-slice";
 import { uiActions } from "../store/ui-slice";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../hooks/hooks";
 
 interface Thing {
     jobs: JobType[],
@@ -12,7 +12,7 @@ interface Thing {
 }
 
 const JobsTable = ({ jobs, removeJob }: Thing) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const editJobClick = (jobId: string) => {
         dispatch(applicationsActions.setItemToEdit(jobId));
         dispatch(uiActions.toggleModal(true));
