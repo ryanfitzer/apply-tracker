@@ -18,8 +18,10 @@ import Version from "./version.json";
 import { uiActions } from "./store/ui-slice";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const App = () => {
+    const { i18n, t } = useTranslation();
     const dispatch = useAppDispatch();
     const applicationListIsChanged = useAppSelector(selectApplicationListIsChanged);
     const applicationListSort = useAppSelector(selectApplicationSort);
@@ -96,6 +98,11 @@ const App = () => {
         );
     };
 
+    const onChangeLang = (event) => {
+        const lang_code = event.target.value;
+        i18n.changeLanguage(lang_code);
+    };
+
     return (
         <div className="flex flex-col h-full">
             <header className="flex gap-3 px-4 py-2 justify-between h-10">
@@ -103,7 +110,7 @@ const App = () => {
                     <button
                         onClick={() => dispatch(uiActions.toggleModal(true))}
                     >
-                        Add Job
+                        {t("addJob")}
                     </button>
                     <div className="ml-2 border-l-2 pl-2">
                         <form>
@@ -145,6 +152,14 @@ const App = () => {
                             <option value="tiles">Tiles</option>
                             <option value="table">Table</option>
                         </select>
+                    </div>
+                    <div>
+                        Language
+                        <input type="radio" name="lang" value="en" onClick={onChangeLang}
+                            defaultChecked={i18n.language === "en"} />EN
+                        {/* Using Greek language code for now till able to
+                        make a new code. */}
+                        <input type="radio" name="lang" value="el" onClick={onChangeLang} defaultChecked={i18n.language === "el"} />Satire
                     </div>
                 </div>
 
@@ -201,7 +216,7 @@ const App = () => {
                     dispatch(uiActions.toggleModal(false));
                     dispatch(applicationsActions.clearEditingJob());
                 }}
-                title={applicationListEditing ? "Edit Job" : "Add Job"}
+                title={applicationListEditing ? "Edit Job" : t("addJob")}
             >
                 <AddJob />
             </DialogModal>
