@@ -25,6 +25,7 @@ export enum JobSalaryType {
 
 export interface UiState {
     ui: {
+        chartsModalIsVisible: boolean;
         modalIsVisible: boolean;
     };
 }

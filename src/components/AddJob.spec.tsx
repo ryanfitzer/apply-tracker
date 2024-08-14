@@ -1,7 +1,9 @@
+import { ActionCreatorWithPayload, ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 import { JobSalaryType, JobStatusType, JobType } from "../lib/types";
 import { appListInitialState, applicationsActions } from "../store/applications-slice";
 
 import AddJob from "./AddJob";
+import { MockInstance } from "vitest";
 import { fireEvent } from "@testing-library/react";
 import { renderWithProviders } from "../utils/test-utils";
 import { uiActions } from "../store/ui-slice";
@@ -11,9 +13,9 @@ vi.mock("react-uuid");
 const mockedUuid = uuid as jest.Mock;
 
 describe("AddJob Component", () => {
-    let mockAddItem: any;
-    let mockClearEditingJob: any;
-    let mockToggleModal: any;
+    let mockAddItem: MockInstance<ActionCreatorWithPayload<JobType, "applications/addItem">>;
+    let mockClearEditingJob: MockInstance<ActionCreatorWithoutPayload<"applications/clearEditingJob">>;
+    let mockToggleModal: MockInstance<ActionCreatorWithoutPayload<"ui/toggleModal">>;
     beforeEach(() => {
         vi.useFakeTimers();
         mockAddItem = vi.spyOn(applicationsActions, 'addItem');
@@ -84,7 +86,8 @@ describe("AddJob Component", () => {
         const originalState = {
             preloadedState: {
                 ui: {
-                    modalIsVisible: true
+                    modalIsVisible: true,
+                    chartsModalIsVisible: false
                 },
                 appList: {
                     ...appListInitialState,

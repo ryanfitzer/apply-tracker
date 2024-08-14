@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 
 import AddJob from "./components/AddJob";
 import { ChangeEvent } from "react";
+import Charts from "./components/Charts";
 import DialogModal from "./components/DialogModal";
 import Job from "./components/job";
 import JobsTable from "./components/JobTable";
@@ -153,13 +154,17 @@ const App = () => {
                             <option value="table">Table</option>
                         </select>
                     </div>
-                    <div>
+                    <div className="ml-2 border-l-2 pl-2">
                         Language
                         <input type="radio" name="lang" value="en" onClick={onChangeLang}
                             defaultChecked={i18n.language === "en"} />EN
                         {/* Using Greek language code for now till able to
                         make a new code. */}
                         <input type="radio" name="lang" value="el" onClick={onChangeLang} defaultChecked={i18n.language === "el"} />Satire
+                    </div>
+                    <div className="ml-2 border-l-2 pl-2">
+                        <p onClick={
+                            () => dispatch(uiActions.toggleChartsModal(true))}>View Stats</p>
                     </div>
                 </div>
 
@@ -219,6 +224,15 @@ const App = () => {
                 title={applicationListEditing ? "Edit Job" : t("addJob")}
             >
                 <AddJob />
+            </DialogModal>
+            <DialogModal
+                isOpened={uiItem.chartsModalIsVisible}
+                closeModal={() => {
+                    dispatch(uiActions.toggleChartsModal(false));
+                }}
+                title="Stats"
+            >
+                <Charts />
             </DialogModal>
         </div>
     );
