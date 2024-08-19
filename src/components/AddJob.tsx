@@ -168,7 +168,6 @@ const AddJob = () => {
                         value={formData.jobSalaryMin}
                         onChange={updateField}
                         data-testid="jobSalaryMin"
-                        placeholder="Min"
                     />
                 </label>
                 <label htmlFor="jobSalaryMax" className="w-full">
@@ -181,7 +180,6 @@ const AddJob = () => {
                         value={formData.jobSalaryMax}
                         onChange={updateField}
                         data-testid="jobSalaryMax"
-                        placeholder="Max"
                     />
                 </label>
                 <label htmlFor="jobSalaryType" className="flex-shrink-0 w-24">
