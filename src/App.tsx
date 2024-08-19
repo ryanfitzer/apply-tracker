@@ -1,6 +1,7 @@
 import "./App.css";
 
-import { JobType, UiState } from "./lib/types";
+import { ChangeEvent, useMemo } from "react";
+import { JobType, SortDirection, UiState } from "./lib/types";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { applicationsActions, selectApplicationEditing, selectApplicationItems, selectApplicationListIsChanged, selectApplicationListViewAs, selectApplicationSort } from "./store/applications-slice";
 import {
@@ -10,10 +11,9 @@ import {
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 
 import AddJob from "./components/AddJob";
-import { ChangeEvent } from "react";
 import Charts from "./components/Charts";
 import DialogModal from "./components/DialogModal";
-import Job from "./components/job";
+import Job from "./components/Job";
 import JobsTable from "./components/JobTable";
 import Version from "./version.json";
 import { uiActions } from "./store/ui-slice";
@@ -30,9 +30,9 @@ const App = () => {
     const applicationListItems = useAppSelector(selectApplicationItems);
     const applicationListViewAs = useAppSelector(selectApplicationListViewAs);
     const uiItem = useSelector((state: UiState) => state.ui);
-
-    useEffect(() => {
-        dispatch(fetchApplicationData());
+    useMemo(() => {
+        const query = new URLSearchParams(document.location.search);
+        dispatch(fetchApplicationData(!!query.get("demo")));
     }, [dispatch]);
 
     useEffect(() => {
@@ -54,19 +54,19 @@ const App = () => {
             const sortDir: string = applicationListSort.dir;
             if (sortBy !== "jobApplyDate") {
                 if (a[sortBy].toUpperCase() > b[sortBy].toUpperCase()) {
-                    return sortDir === "asc" ? 1 : -1;
+                    return sortDir === SortDirection.ASCENDING ? 1 : -1;
                 }
 
-                return sortDir === "asc" ? -1 : 1;
+                return sortDir === SortDirection.ASCENDING ? -1 : 1;
             }
 
             const date = Number(new Date(b.jobApplyDate)) - Number(new Date(a.jobApplyDate));
 
             if (date < 0) {
-                return sortDir === "asc" ? 1 : -1;
+                return sortDir === SortDirection.ASCENDING ? 1 : -1;
             }
 
-            return sortDir === "asc" ? -1 : 1;
+            return sortDir === SortDirection.ASCENDING ? -1 : 1;
         });
     };
 
@@ -132,8 +132,8 @@ const App = () => {
                                     onChange={changeSortData}
                                     value={applicationListSort.dir}
                                 >
-                                    <option value="asc">Ascending</option>
-                                    <option value="desc">Descending</option>
+                                    <option value={SortDirection.ASCENDING}>Ascending</option>
+                                    <option value={SortDirection.DESCENDING}>Descending</option>
                                 </select>
                             </label>
                         </form>

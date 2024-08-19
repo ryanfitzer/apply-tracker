@@ -4,7 +4,7 @@ import { ChangeEvent } from "react";
 import { applicationsActions } from "../store/applications-slice";
 import { useAppDispatch } from "../hooks/hooks";
 
-interface Thing {
+interface JobStatusInput {
     job: JobType;
 }
 
@@ -16,7 +16,7 @@ interface JobStatusList {
     };
 }
 
-const JobStatus = ({ job }: Thing) => {
+const JobStatus = ({ job }: JobStatusInput) => {
     const dispatch = useAppDispatch();
     const jobStatusList: JobStatusList = {
         applied: {
