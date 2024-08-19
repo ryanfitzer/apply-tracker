@@ -1,6 +1,7 @@
 import "./App.css";
 
-import { JobType, UiState } from "./lib/types";
+import { ChangeEvent, useMemo } from "react";
+import { JobType, SortDirection, UiState } from "./lib/types";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { applicationsActions, selectApplicationEditing, selectApplicationItems, selectApplicationListIsChanged, selectApplicationListViewAs, selectApplicationSort } from "./store/applications-slice";
 import {
@@ -10,16 +11,18 @@ import {
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 
 import AddJob from "./components/AddJob";
-import { ChangeEvent } from "react";
+import Charts from "./components/Charts";
 import DialogModal from "./components/DialogModal";
-import Job from "./components/job";
+import Job from "./components/Job";
 import JobsTable from "./components/JobTable";
 import Version from "./version.json";
 import { uiActions } from "./store/ui-slice";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const App = () => {
+    const { i18n, t } = useTranslation();
     const dispatch = useAppDispatch();
     const applicationListIsChanged = useAppSelector(selectApplicationListIsChanged);
     const applicationListSort = useAppSelector(selectApplicationSort);
@@ -27,9 +30,9 @@ const App = () => {
     const applicationListItems = useAppSelector(selectApplicationItems);
     const applicationListViewAs = useAppSelector(selectApplicationListViewAs);
     const uiItem = useSelector((state: UiState) => state.ui);
-
-    useEffect(() => {
-        dispatch(fetchApplicationData());
+    useMemo(() => {
+        const query = new URLSearchParams(document.location.search);
+        dispatch(fetchApplicationData(!!query.get("demo")));
     }, [dispatch]);
 
     useEffect(() => {
@@ -51,19 +54,19 @@ const App = () => {
             const sortDir: string = applicationListSort.dir;
             if (sortBy !== "jobApplyDate") {
                 if (a[sortBy].toUpperCase() > b[sortBy].toUpperCase()) {
-                    return sortDir === "asc" ? 1 : -1;
+                    return sortDir === SortDirection.ASCENDING ? 1 : -1;
                 }
 
-                return sortDir === "asc" ? -1 : 1;
+                return sortDir === SortDirection.ASCENDING ? -1 : 1;
             }
 
             const date = Number(new Date(b.jobApplyDate)) - Number(new Date(a.jobApplyDate));
 
             if (date < 0) {
-                return sortDir === "asc" ? 1 : -1;
+                return sortDir === SortDirection.ASCENDING ? 1 : -1;
             }
 
-            return sortDir === "asc" ? -1 : 1;
+            return sortDir === SortDirection.ASCENDING ? -1 : 1;
         });
     };
 
@@ -96,6 +99,11 @@ const App = () => {
         );
     };
 
+    const onChangeLang = (event) => {
+        const lang_code = event.target.value;
+        i18n.changeLanguage(lang_code);
+    };
+
     return (
         <div className="flex flex-col h-full">
             <header className="flex gap-3 px-4 py-2 justify-between h-10">
@@ -103,7 +111,7 @@ const App = () => {
                     <button
                         onClick={() => dispatch(uiActions.toggleModal(true))}
                     >
-                        Add Job
+                        {t("addJob")}
                     </button>
                     <div className="ml-2 border-l-2 pl-2">
                         <form>
@@ -124,8 +132,8 @@ const App = () => {
                                     onChange={changeSortData}
                                     value={applicationListSort.dir}
                                 >
-                                    <option value="asc">Ascending</option>
-                                    <option value="desc">Descending</option>
+                                    <option value={SortDirection.ASCENDING}>Ascending</option>
+                                    <option value={SortDirection.DESCENDING}>Descending</option>
                                 </select>
                             </label>
                         </form>
@@ -145,6 +153,18 @@ const App = () => {
                             <option value="tiles">Tiles</option>
                             <option value="table">Table</option>
                         </select>
+                    </div>
+                    <div className="ml-2 border-l-2 pl-2">
+                        Language
+                        <input type="radio" name="lang" value="en" onClick={onChangeLang}
+                            defaultChecked={i18n.language === "en"} />EN
+                        {/* Using Greek language code for now till able to
+                        make a new code. */}
+                        <input type="radio" name="lang" value="el" onClick={onChangeLang} defaultChecked={i18n.language === "el"} />Satire
+                    </div>
+                    <div className="ml-2 border-l-2 pl-2">
+                        <p onClick={
+                            () => dispatch(uiActions.toggleChartsModal(true))}>View Stats</p>
                     </div>
                 </div>
 
@@ -201,9 +221,18 @@ const App = () => {
                     dispatch(uiActions.toggleModal(false));
                     dispatch(applicationsActions.clearEditingJob());
                 }}
-                title={applicationListEditing ? "Edit Job" : "Add Job"}
+                title={applicationListEditing ? "Edit Job" : t("addJob")}
             >
                 <AddJob />
+            </DialogModal>
+            <DialogModal
+                isOpened={uiItem.chartsModalIsVisible}
+                closeModal={() => {
+                    dispatch(uiActions.toggleChartsModal(false));
+                }}
+                title="Stats"
+            >
+                <Charts />
             </DialogModal>
         </div>
     );

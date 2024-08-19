@@ -1,11 +1,7 @@
 import { useEffect, useRef } from "react";
 
-import { uiActions } from "../store/ui-slice";
-import { useAppDispatch } from "../hooks/hooks";
-
 const DialogModal = ({ children, isOpened, closeModal, title }) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
-    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (dialogRef.current) {
@@ -26,7 +22,7 @@ const DialogModal = ({ children, isOpened, closeModal, title }) => {
             <div className="flex justify-between border-b-2 pb-2 mb-4">
                 <p className="font-bold text-2xl">{title}</p>
                 <button
-                    onClick={() => dispatch(uiActions.toggleModal(false))}
+                    onClick={closeModal}
                     className="pl-5 text-lg"
                 >
                     &#x2716;

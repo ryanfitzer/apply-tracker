@@ -8,6 +8,8 @@ export interface JobType {
     jobCompany: string;
     jobSalaryType: JobSalaryType;
     jobSalary: string;
+    jobSalaryMin: number;
+    jobSalaryMax: number;
 }
 
 export enum JobStatusType {
@@ -23,8 +25,14 @@ export enum JobSalaryType {
     HR = "hr"
 }
 
+export enum SortDirection {
+    ASCENDING = "asc",
+    DESCENDING = "desc"
+}
+
 export interface UiState {
     ui: {
+        chartsModalIsVisible: boolean;
         modalIsVisible: boolean;
     };
 }
@@ -43,7 +51,7 @@ export interface AppListState {
 
 export interface AppListSort {
     by: string;
-    dir: string;
+    dir: SortDirection;
 }
 
 export interface ReplaceAppData {

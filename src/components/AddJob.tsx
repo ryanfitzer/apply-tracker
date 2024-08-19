@@ -4,6 +4,7 @@ import { applicationsActions, selectApplicationEditing, selectApplicationItems }
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 
 import { uiActions } from "../store/ui-slice";
+import { useTranslation } from "react-i18next";
 import uuid from "react-uuid";
 
 const defaultJob = {
@@ -12,13 +13,15 @@ const defaultJob = {
     jobApplyDate: "",
     jobCompanyLink: "",
     jobLink: "",
-    jobSalary: "",
+    jobSalaryMin: 0,
+    jobSalaryMax: 0,
     jobSalaryType: "",
     jobStatus: "",
     jobId: ""
 };
 
 const AddJob = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const [formData, setFormData] = useState(defaultJob);
     const applicationItems = useAppSelector(selectApplicationItems);
@@ -37,7 +40,8 @@ const AddJob = () => {
                 jobApplyDate: currentJob.jobApplyDate,
                 jobCompanyLink: currentJob.jobCompanyLink,
                 jobLink: currentJob.jobLink,
-                jobSalary: currentJob.jobSalary,
+                jobSalaryMin: currentJob.jobSalaryMin,
+                jobSalaryMax: currentJob.jobSalaryMax,
                 jobSalaryType: currentJob.jobSalaryType,
                 jobId: currentJob.jobId,
                 jobStatus: currentJob.jobStatus
@@ -57,7 +61,6 @@ const AddJob = () => {
         const newJob = { ...formData };
 
         if (!editingJob) {
-            console.log('here');
             newJob.jobStatus = JobStatusType.APPLIED;
             newJob.jobId = uuid();
         } else {
@@ -93,7 +96,7 @@ const AddJob = () => {
     return (
         <form onSubmit={submitJob} id="jobForm" className="w-96">
             <label htmlFor="jobTitle" className="mb-2 block">
-                <p>Job Title*</p>
+                <p>{t("jobTitle")}*</p>
                 <input
                     className="w-full border-2 px-2"
                     type="text"
@@ -106,7 +109,7 @@ const AddJob = () => {
                 />
             </label>
             <label htmlFor="jobLink" className="mb-2 block">
-                <p>Job Link</p>
+                <p>{t("jobLink")}</p>
                 <input
                     className="w-full border-2 px-2"
                     type="text"
@@ -117,7 +120,7 @@ const AddJob = () => {
                 />
             </label>
             <label htmlFor="jobCompany" className="mb-2 block">
-                <p>Company*</p>
+                <p>{t("jobCompany")}*</p>
                 <input
                     className="w-full border-2 px-2"
                     type="text"
@@ -130,7 +133,7 @@ const AddJob = () => {
                 />
             </label>
             <label htmlFor="jobCompanyLink" className="mb-2 block">
-                <p>Company Link</p>
+                <p>{t("jobCompanyLink")}</p>
                 <input
                     className="w-full border-2 px-2"
                     type="text"
@@ -141,7 +144,7 @@ const AddJob = () => {
                 />
             </label>
             <label htmlFor="jobApplyDate" className="mb-2 block">
-                <p>Data Applied*</p>
+                <p>{t("jobApplyDate")}*</p>
                 <input
                     className="w-full border-2 px-2"
                     type="date"
@@ -155,20 +158,32 @@ const AddJob = () => {
                 />
             </label>
             <div className="flex w-full justify-between gap-4">
-                <label htmlFor="jobSalary" className="w-full">
-                    <p>Salary</p>
+                <label htmlFor="jobSalaryMin" className="w-full">
+                    <p>{t("jobSalaryMin")}</p>
                     <input
                         className="w-full border-2 px-2"
-                        type="text"
-                        name="jobSalary"
-                        id="jobSalary"
-                        value={formData.jobSalary}
+                        type="number"
+                        name="jobSalaryMin"
+                        id="jobSalaryMin"
+                        value={formData.jobSalaryMin}
                         onChange={updateField}
-                        data-testid="jobSalary"
+                        data-testid="jobSalaryMin"
+                    />
+                </label>
+                <label htmlFor="jobSalaryMax" className="w-full">
+                    <p>{t("jobSalaryMax")}</p>
+                    <input
+                        className="w-full border-2 px-2"
+                        type="number"
+                        name="jobSalaryMax"
+                        id="jobSalaryMax"
+                        value={formData.jobSalaryMax}
+                        onChange={updateField}
+                        data-testid="jobSalaryMax"
                     />
                 </label>
                 <label htmlFor="jobSalaryType" className="flex-shrink-0 w-24">
-                    <p>Salary Type</p>
+                    <p>{t("jobSalaryType")}</p>
                     <select
                         className="w-full border-2 px-2"
                         name="jobSalaryType"
