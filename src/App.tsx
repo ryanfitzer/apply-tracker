@@ -163,8 +163,8 @@ const App = () => {
                         <input type="radio" name="lang" value="el" onClick={onChangeLang} defaultChecked={i18n.language === "el"} />Satire
                     </div>
                     <div className="ml-2 border-l-2 pl-2">
-                        <p onClick={
-                            () => dispatch(uiActions.toggleChartsModal(true))}>View Stats</p>
+                        <button onClick={
+                            () => dispatch(uiActions.toggleChartsModal(true))}>View Stats</button>
                     </div>
                 </div>
 

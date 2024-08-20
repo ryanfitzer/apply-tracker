@@ -1,9 +1,18 @@
+import { JobStatusType } from "./lib/types";
 import LanguageDetector from "i18next-browser-languagedetector";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 const options = {
     order: ["querystring", "navigator"],
     lookupQuerystring: "lng"
+};
+
+const jobStatus = {
+    [JobStatusType.APPLIED]: "Applied",
+    [JobStatusType.DENIED]: "Denied",
+    [JobStatusType.ON_HOLD]: "On Hold",
+    [JobStatusType.INTERVIEWED_SCHEDULED]: "Interviewed Scheldued",
+    [JobStatusType.INTERVIEWED]: "Interviewed"
 };
 
 i18n.use(LanguageDetector)
@@ -27,7 +36,8 @@ i18n.use(LanguageDetector)
                     jobSalary: "Salary",
                     jobSalaryMin: "Salary Min",
                     jobSalaryMax: "Salary Max",
-                    jobSalaryType: "Frequency"
+                    jobSalaryType: "Frequency",
+                    jobStatus
                 }
             },
             el: {
@@ -41,7 +51,8 @@ i18n.use(LanguageDetector)
                     jobSalary: "What they going to pay?",
                     jobSalaryMin: "Salary Min",
                     jobSalaryMax: "Salary Max",
-                    jobSalaryType: "How Often?"
+                    jobSalaryType: "How Often?",
+                    jobStatus
                 }
             }
         }
