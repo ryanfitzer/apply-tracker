@@ -25,6 +25,8 @@ i18n.use(LanguageDetector)
                     jobCompanyLink: "Company Link",
                     jobApplyDate: "Date Applied",
                     jobSalary: "Salary",
+                    jobSalaryMin: "Salary Min",
+                    jobSalaryMax: "Salary Max",
                     jobSalaryType: "Frequency"
                 }
             },
@@ -37,6 +39,8 @@ i18n.use(LanguageDetector)
                     jobCompanyLink: "What's their site?",
                     jobApplyDate: "When did I apply for this?",
                     jobSalary: "What they going to pay?",
+                    jobSalaryMin: "Salary Min",
+                    jobSalaryMax: "Salary Max",
                     jobSalaryType: "How Often?"
                 }
             }

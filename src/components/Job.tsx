@@ -1,5 +1,6 @@
 import { format, formatDistanceToNowStrict, parseISO } from "date-fns";
 
+import JobSalary from "./JobSalary";
 import JobStatus from "./JobStatus";
 import { JobType } from "../lib/types";
 import { applicationsActions } from "../store/applications-slice";
@@ -71,14 +72,7 @@ const Job = ({ job, removeJob }: Thing) => {
                     Applied on {dateFormatted}, {relative} ago
                 </p>
             </div>
-            {job.jobSalary && job.jobSalaryType && (
-                <div>
-                    <p className="text-gray-400">
-                        ${job.jobSalary}&nbsp;
-                        {job.jobSalaryType === "yr" ? "a year" : "an hour"}
-                    </p>
-                </div>
-            )}
+            <JobSalary job={job} />
             <div>
                 <p className="font-bold">Status</p>
                 <JobStatus job={job} />

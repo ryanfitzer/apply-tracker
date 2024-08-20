@@ -13,7 +13,8 @@ const defaultJob = {
     jobApplyDate: "",
     jobCompanyLink: "",
     jobLink: "",
-    jobSalary: "",
+    jobSalaryMin: 0,
+    jobSalaryMax: 0,
     jobSalaryType: "",
     jobStatus: "",
     jobId: ""
@@ -39,7 +40,8 @@ const AddJob = () => {
                 jobApplyDate: currentJob.jobApplyDate,
                 jobCompanyLink: currentJob.jobCompanyLink,
                 jobLink: currentJob.jobLink,
-                jobSalary: currentJob.jobSalary,
+                jobSalaryMin: currentJob.jobSalaryMin,
+                jobSalaryMax: currentJob.jobSalaryMax,
                 jobSalaryType: currentJob.jobSalaryType,
                 jobId: currentJob.jobId,
                 jobStatus: currentJob.jobStatus
@@ -156,16 +158,28 @@ const AddJob = () => {
                 />
             </label>
             <div className="flex w-full justify-between gap-4">
-                <label htmlFor="jobSalary" className="w-full">
-                    <p>{t("jobSalary")}</p>
+                <label htmlFor="jobSalaryMin" className="w-full">
+                    <p>{t("jobSalaryMin")}</p>
                     <input
                         className="w-full border-2 px-2"
-                        type="text"
-                        name="jobSalary"
-                        id="jobSalary"
-                        value={formData.jobSalary}
+                        type="number"
+                        name="jobSalaryMin"
+                        id="jobSalaryMin"
+                        value={formData.jobSalaryMin}
                         onChange={updateField}
-                        data-testid="jobSalary"
+                        data-testid="jobSalaryMin"
+                    />
+                </label>
+                <label htmlFor="jobSalaryMax" className="w-full">
+                    <p>{t("jobSalaryMax")}</p>
+                    <input
+                        className="w-full border-2 px-2"
+                        type="number"
+                        name="jobSalaryMax"
+                        id="jobSalaryMax"
+                        value={formData.jobSalaryMax}
+                        onChange={updateField}
+                        data-testid="jobSalaryMax"
                     />
                 </label>
                 <label htmlFor="jobSalaryType" className="flex-shrink-0 w-24">
