@@ -79,6 +79,8 @@ describe("AddJob Component", () => {
             jobCompanyLink: "https://company.com",
             jobLink: "https://company.com/jobs/123",
             jobSalary: "123,000",
+            jobSalaryMax: 0,
+            jobSalaryMin: 0,
             jobSalaryType: JobSalaryType.YR,
             jobStatus: JobStatusType.APPLIED,
             jobId: "123"
