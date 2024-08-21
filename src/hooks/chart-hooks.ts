@@ -8,11 +8,12 @@ import { useTranslation } from "react-i18next";
 const useCharts = () => {
     const { t } = useTranslation();
     const applicationListItems = useAppSelector(selectApplicationItems);
-    const [chartData, setChartData] = useState([] as string[][]);
+    const [chartData, setChartData] = useState<(string | number)[][]>([]);
     const [loadingChartData, setLoadingChartData] = useState(true);
 
     useEffect(() => {
-        const data = [["Phase", "Number"]];
+        const dataSetsHeader: [string, string] = ["Phase", "Number"];
+        const dataSets: [string, number][] = [];
         const tempData = {
             [JobStatusType.APPLIED]: 0,
             [JobStatusType.DENIED]: 0,
@@ -24,14 +25,12 @@ const useCharts = () => {
             tempData[item.jobStatus] += 1;
         }
 
-        for (const key of Object.keys(tempData)) {
-            data.push([
-                `${t(`jobStatus.${key}`)} (${tempData[key]})`,
-                tempData[key]
-            ]);
+        for (const [key, value] of Object.entries(tempData)) {
+            dataSets.push([`${t(`jobStatus.${key}`)} (${value})`, value]);
         }
 
-        setChartData(data);
+        // @ts-expect-error: Cannot type this effectively, yet.
+        setChartData([dataSetsHeader].concat(dataSets));
         setLoadingChartData(false);
     }, [setChartData, applicationListItems, t]);
 

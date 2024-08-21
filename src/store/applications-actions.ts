@@ -25,7 +25,8 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                         jobApplyDate: "2024-08-16",
                         jobCompanyLink: "",
                         jobLink: "",
-                        jobSalary: "60 - 70",
+                        jobSalaryMin: 70.1,
+                        jobSalaryMax: 0,
                         jobSalaryType: "hr",
                         jobStatus: "applied",
                         jobId: "254cfe80-7efd-3e68-6b8c-eadf3aa2ffda"
@@ -36,7 +37,8 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                         jobApplyDate: "2024-08-01",
                         jobCompanyLink: "",
                         jobLink: "",
-                        jobSalary: "170,000",
+                        jobSalaryMin: 70000,
+                        jobSalaryMax: 120000,
                         jobSalaryType: "yr",
                         jobStatus: "interviewed",
                         jobId: "d74a8833-88c4-d142-bf7b-737d1e74819d"
@@ -47,10 +49,35 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                         jobApplyDate: "2024-07-16",
                         jobCompanyLink: "",
                         jobLink: "",
-                        jobSalary: "140,000",
+                        jobSalaryMin: 140000,
+                        jobSalaryMax: 0,
                         jobSalaryType: "yr",
                         jobStatus: "applied",
                         jobId: "47e1a4cd-5e30-fd9f-9918-7a59e7f63e89"
+                    },
+                    "47e1a4cd-5e30-fd9f-9910-7a59e7f63e89": {
+                        jobTitle: "Angular Engineer",
+                        jobCompany: "Koshka Enterprizes",
+                        jobApplyDate: "2024-07-01",
+                        jobCompanyLink: "",
+                        jobLink: "",
+                        jobSalaryMin: 0,
+                        jobSalaryMax: 140000,
+                        jobSalaryType: "yr",
+                        jobStatus: "denied",
+                        jobId: "47e1a4cd-5e30-fd9f-9910-7a59e7f63e89"
+                    },
+                    "47e1a4cd-5e30-fd9f-9910-7a59e7f63e82": {
+                        jobTitle: "NextJS Engineer",
+                        jobCompany: "Codez",
+                        jobApplyDate: "2024-07-03",
+                        jobCompanyLink: "",
+                        jobLink: "",
+                        jobSalaryMin: 0,
+                        jobSalaryMax: 0,
+                        jobSalaryType: "yr",
+                        jobStatus: "onHold",
+                        jobId: "47e1a4cd-5e30-fd9f-9910-7a59e7f63e82"
                     }
                 },
                 sort: { by: "jobApplyDate", dir: "desc" },
