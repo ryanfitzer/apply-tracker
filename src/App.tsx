@@ -13,9 +13,9 @@ import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import AddJob from "./components/AddJob";
 import Charts from "./components/Charts";
 import DialogModal from "./components/DialogModal";
+import Footer from "./components/Footer";
 import Job from "./components/Job";
 import JobsTable from "./components/JobTable";
-import Version from "./version.json";
 import { uiActions } from "./store/ui-slice";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -212,9 +212,7 @@ const App = () => {
                     </>
                 )}
             </main>
-            <footer className="h-10 px-4">
-                <p className="text-xs">Version: {Version.version}</p>
-            </footer>
+            <Footer />
             <DialogModal
                 isOpened={uiItem.modalIsVisible}
                 closeModal={() => {
