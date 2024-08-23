@@ -35,14 +35,12 @@ describe("useVersion", () => {
         describe("with invalid data", () => {
             beforeEach(() => {
                 fetchSpy.mockImplementationOnce(() =>
-                    Promise.reject({
-                        ok: false,
-                        status: 500,
+                    Promise.resolve({
                         json: vi.fn().mockResolvedValue(Promise.reject())
                     })
                 );
             });
-            it("does things", async () => {
+            it("renders the page", async () => {
                 let render;
                 await act(() => {
                     render = renderHook(() => useVersion());

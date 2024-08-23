@@ -1,8 +1,10 @@
 import type { AppStore, RootState } from '../store';
 import React, { PropsWithChildren } from 'react';
 
+import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import type { RenderOptions } from '@testing-library/react';
+import i18n from '../i18n';
 import { render } from '@testing-library/react';
 import setupStore from '../store';
 
@@ -23,7 +25,7 @@ export function renderWithProviders(
     }: ExtendedRenderOptions = {}
 ) {
     function Wrapper({ children }: PropsWithChildren<any>): JSX.Element {
-        return <Provider store={store}>{children}</Provider>;
+        return <I18nextProvider i18n={i18n}><Provider store={store}>{children}</Provider></I18nextProvider>;
     }
     return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }

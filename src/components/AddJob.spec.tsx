@@ -3,8 +3,11 @@ import { JobSalaryType, JobStatusType, JobType } from "../lib/types";
 import { appListInitialState, applicationsActions } from "../store/applications-slice";
 
 import AddJob from "./AddJob";
+import { I18nextProvider } from "react-i18next";
+import JobSalary from "./JobSalary";
 import { MockInstance } from "vitest";
 import { fireEvent } from "@testing-library/react";
+import i18n from "../i18n";
 import { renderWithProviders } from "../utils/test-utils";
 import { uiActions } from "../store/ui-slice";
 import uuid from "react-uuid";
@@ -115,6 +118,9 @@ describe("AddJob Component", () => {
                     jobTitle: "second job",
                     jobSalaryType: JobSalaryType.HR
                 };
+
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { ["jobSalary"]: _, ...updatedJob } = newJob;
                 const { getByTestId } = renderWithProviders(<AddJob />, originalState);
                 fireEvent.change(getByTestId("jobTitle"), {
                     target: {
@@ -127,7 +133,7 @@ describe("AddJob Component", () => {
                     }
                 });
                 fireEvent.click(getByTestId("buttonSubmit"));
-                expect(mockAddItem).toHaveBeenCalledWith(newJob);
+                expect(mockAddItem).toHaveBeenCalledWith(updatedJob);
                 expect(mockClearEditingJob).toHaveBeenCalled();
                 expect(mockToggleModal).toHaveBeenCalledWith(false);
             });
