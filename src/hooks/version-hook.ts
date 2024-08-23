@@ -11,7 +11,7 @@ const useVersion = () => {
             setVersionData(data?.version);
             setLoadingVersionData(false);
         } catch (e) {
-            // Do nothing for now
+            setVersionData("Error");
             setLoadingVersionData(false);
         }
     }, []);
