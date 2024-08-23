@@ -1,9 +1,12 @@
-import { RenderHookResult, renderHook } from "@testing-library/react";
-
+import { Mock } from "vitest";
 import { act } from "react";
+import { renderHook } from "@testing-library/react";
 import useVersion from "./version-hook";
 
-const fetchSpy = vi.spyOn(global, "fetch");
+// Need to define as mock so we don't need to define all the
+// response properties.
+const fetchSpy = vi.spyOn(global, "fetch") as Mock;
+
 describe("useVersion", () => {
     beforeEach(() => {
         vi.useFakeTimers();
@@ -11,27 +14,34 @@ describe("useVersion", () => {
     describe("calls", () => {
         describe("with valid data", () => {
             beforeEach(() => {
-                fetchSpy.mockResolvedValue({
-                    json: vi.fn().mockResolvedValue({ version: "1234" })
-                });
+                fetchSpy.mockImplementationOnce(() =>
+                    Promise.resolve({
+                        json: vi
+                            .fn()
+                            .mockResolvedValue(
+                                Promise.resolve({ version: "1234" })
+                            )
+                    })
+                );
             });
             it("does things", async () => {
-                let render: RenderHookResult;
+                let render;
                 await act(() => {
                     render = renderHook(() => useVersion());
                 });
-                console.log(render);
                 expect(render.result.current).toEqual(["1234", false]);
             });
         });
         describe("with invalid data", () => {
             beforeEach(() => {
-                fetchSpy.mockResolvedValue({
-                    json: vi.fn().mockResolvedValue(Promise.reject())
-                });
+                fetchSpy.mockImplementationOnce(() =>
+                    Promise.resolve({
+                        json: vi.fn().mockResolvedValue(Promise.reject())
+                    })
+                );
             });
-            it("does things", async () => {
-                let render: RenderHookResult;
+            it("renders the page", async () => {
+                let render;
                 await act(() => {
                     render = renderHook(() => useVersion());
                 });
