@@ -1,5 +1,5 @@
 import { JobStatusType, JobType } from "../lib/types";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { selectApplicationItems } from "../store/applications-slice";
 import { useAppSelector } from "./hooks";
@@ -11,7 +11,7 @@ const useCharts = () => {
     const [chartData, setChartData] = useState<(string | number)[][]>([]);
     const [loadingChartData, setLoadingChartData] = useState(true);
 
-    useEffect(() => {
+    useMemo(() => {
         const dataSetsHeader: [string, string] = ["Phase", "Number"];
         const dataSets: [string, number][] = [];
         const tempData = {
