@@ -37,6 +37,7 @@ i18n.use(LanguageDetector)
                     jobSalaryMin: "Salary Min",
                     jobSalaryMax: "Salary Max",
                     jobSalaryType: "Frequency",
+                    loading: "Loading...",
                     jobStatus
                 }
             },
@@ -52,6 +53,7 @@ i18n.use(LanguageDetector)
                     jobSalaryMin: "Salary Min",
                     jobSalaryMax: "Salary Max",
                     jobSalaryType: "How Often?",
+                    loading: "Loading...",
                     jobStatus
                 }
             }

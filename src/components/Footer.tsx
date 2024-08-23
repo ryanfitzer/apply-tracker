@@ -1,16 +1,18 @@
+import { useTranslation } from "react-i18next";
 import useVersion from "../hooks/version-hook";
 
 const Footer = () => {
+    const { t } = useTranslation();
     const [versionData, loadingVersionData] = useVersion();
 
 
     return (<footer className="h-10 px-4">
-        <p className="text-xs">
+        <p data-testid="version" className="text-xs">
             {
                 !loadingVersionData && <>Version: {versionData}</>
             }
             {
-                loadingVersionData && <>Loading...</>
+                loadingVersionData && <>{t("loading")}</>
             }
         </p>
     </footer>);
