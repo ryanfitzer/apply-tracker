@@ -79,6 +79,7 @@ describe("AddJob Component", () => {
             jobApplyDate: "2024-07-17",
             jobCompanyLink: "https://company.com",
             jobLink: "https://company.com/jobs/123",
+            jobSalary: "",
             jobSalaryMax: 0,
             jobSalaryMin: 0,
             jobSalaryType: JobSalaryType.YR,
