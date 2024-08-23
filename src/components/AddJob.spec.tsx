@@ -62,7 +62,8 @@ describe("AddJob Component", () => {
                 jobApplyDate: "2024-08-09",
                 jobCompanyLink: "",
                 jobLink: "",
-                jobSalary: "",
+                jobSalaryMax: 0,
+                jobSalaryMin: 0,
                 jobSalaryType: JobSalaryType.HR,
                 jobStatus: JobStatusType.APPLIED,
                 jobId: "testid"
@@ -78,7 +79,6 @@ describe("AddJob Component", () => {
             jobApplyDate: "2024-07-17",
             jobCompanyLink: "https://company.com",
             jobLink: "https://company.com/jobs/123",
-            jobSalary: "123,000",
             jobSalaryMax: 0,
             jobSalaryMin: 0,
             jobSalaryType: JobSalaryType.YR,
