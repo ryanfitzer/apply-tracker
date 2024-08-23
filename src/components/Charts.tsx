@@ -1,46 +1,25 @@
-import { useMemo, useState } from "react";
+import { Chart, GoogleChartOptions } from "react-google-charts";
 
-import { Chart } from "react-google-charts";
-import { JobType } from "../lib/types";
-import { selectApplicationItems } from "../store/applications-slice";
-import { useAppSelector } from "../hooks/hooks";
+import useCharts from "../hooks/chart-hooks";
 
 const Charts = () => {
-    const applicationListItems = useAppSelector(selectApplicationItems);
-    const [chartData, setChartData] = useState([] as string[][]);
-
-    useMemo(() => {
-        const data = [["Phase", "Number"]];
-        const tempData = {
-            applied: 0,
-            denied: 0,
-            onHold: 0,
-            interviewScheduled: 0,
-            interviewed: 0
-        };
-        for (const item of Object.values(applicationListItems) as JobType[]) {
-            tempData[item.jobStatus] += 1;
-        }
-
-        for (const key of Object.keys(tempData)) {
-            data.push([key, tempData[key]]);
-        }
-
-        setChartData(data);
-    }, [applicationListItems, setChartData]);
-
+    const [chartData, loadingChartData] = useCharts();
+    const options: GoogleChartOptions = {
+        is3D: true,
+        sliceVisibilityThreshold: 0,
+        width: 500,
+        backgroundColor: ""
+    };
     return (
-        <div>
-            {chartData && <Chart
+        <div className="w-[500px] h-[200px] flex justify-center items-center">
+            {!loadingChartData && <Chart
                 chartType="PieChart"
                 data={chartData}
-                options={{
-                    is3D: true,
-                    sliceVisibilityThreshold: 0
-                }}
-                width="500px"
-                height="200px"
+                options={options}
             />}
+            {loadingChartData && (
+                <p>Loading...</p>
+            )}
         </div>
     );
 };

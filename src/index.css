@@ -15,3 +15,10 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
 }
+
+@layer components {
+    .shadow-box {
+        box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.1),
+            0 0 20px 5px rgba(0, 0, 0, 0.3);
+    }
+}
