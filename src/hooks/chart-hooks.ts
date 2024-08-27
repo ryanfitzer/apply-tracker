@@ -17,6 +17,9 @@ interface ChartDataSets {
     timeline: (string | number | object)[][];
 }
 
+interface CalendarTempDataSet {
+    [key: number]: number;
+}
 const useCharts = () => {
     const { t } = useTranslation();
     const applicationListItems = useAppSelector(selectApplicationItems);
@@ -28,10 +31,15 @@ const useCharts = () => {
     const [loadingChartData, setLoadingChartData] = useState(true);
 
     useMemo(() => {
-        const timelineHeader: [string, string, object] = [
-            "Month/Year",
-            "Number",
-            { role: "style" }
+        const timelineHeader: [object, object] = [
+            {
+                type: "date",
+                id: "Date"
+            },
+            {
+                type: "number",
+                id: "Applications Sent"
+            }
         ];
 
         const dataSetsHeader: [string, string] = ["Phase", "Number"];
@@ -43,26 +51,18 @@ const useCharts = () => {
             [JobStatusType.INTERVIEWED_SCHEDULED]: 0,
             [JobStatusType.INTERVIEWED]: 0
         };
-        const tempTimeData = {};
-        const timelineDataSets: [string, number, string][] = [];
+        const tempTimeData: CalendarTempDataSet = {};
+        const timelineDataSets: [Date, number][] = [];
         for (const item of Object.values(applicationListItems) as JobType[]) {
             tempData[item.jobStatus] += 1;
-            const splitDate = new Date(item.jobApplyDate);
+            const splitDate = new Date(item.jobApplyDate)
+                .toISOString()
+                .slice(0, -1);
 
-            if (!tempTimeData[splitDate.getFullYear()]) {
-                tempTimeData[splitDate.getFullYear()] = {};
-            }
-
-            if (
-                !tempTimeData[splitDate.getFullYear()][splitDate.getUTCMonth()]
-            ) {
-                tempTimeData[splitDate.getFullYear()][
-                    splitDate.getUTCMonth()
-                ] = 1;
+            if (!tempTimeData[splitDate]) {
+                tempTimeData[splitDate] = 1;
             } else {
-                tempTimeData[splitDate.getFullYear()][
-                    splitDate.getUTCMonth()
-                ] += 1;
+                tempTimeData[splitDate] += 1;
             }
         }
 
@@ -70,17 +70,10 @@ const useCharts = () => {
             dataSets.push([`${t(`jobStatus.${key}`)} (${value})`, value]);
         }
 
-        for (const [yearKey, monthValue] of Object.entries(tempTimeData)) {
-            for (const [monthKey, value] of Object.entries(
-                monthValue as object
-            )) {
-                const monthName = +monthKey == 6 ? "July" : "August";
-                timelineDataSets.push([
-                    `${monthName}\n${yearKey} `,
-                    value,
-                    "fill-color: #e5e4e2"
-                ]);
-            }
+        console.log(tempTimeData);
+
+        for (const [dateKey, dateValue] of Object.entries(tempTimeData)) {
+            timelineDataSets.push([new Date(dateKey), dateValue]);
         }
 
         setChartData({

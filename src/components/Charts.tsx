@@ -11,21 +11,19 @@ const Charts = () => {
         backgroundColor: ""
     };
     const timelineOptions: GoogleChartOptions = {
-        title: "Company Performance",
-        is3D: true,
-        backgroundColor: ""
+        title: "Applications Sent",
+        backgroundColor: "",
+        width: 1000
     };
     return (
-        <div className="w-[500px] flex justify-center items-center flex-col">
+        <div className="w-auto flex justify-center items-center flex-col">
             {!loadingChartData && <Chart
                 chartType="PieChart"
                 data={chartData.pie}
                 options={options}
             />}
             {!loadingChartData && <Chart
-                chartType="Bar"
-                width="500px"
-                height="200px"
+                chartType="Calendar"
                 data={chartData.timeline}
                 options={timelineOptions}
             />}
