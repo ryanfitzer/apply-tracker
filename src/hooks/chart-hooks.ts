@@ -70,8 +70,6 @@ const useCharts = () => {
             dataSets.push([`${t(`jobStatus.${key}`)} (${value})`, value]);
         }
 
-        console.log(tempTimeData);
-
         for (const [dateKey, dateValue] of Object.entries(tempTimeData)) {
             timelineDataSets.push([new Date(dateKey), dateValue]);
         }
