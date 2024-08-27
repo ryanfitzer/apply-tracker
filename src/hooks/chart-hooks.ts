@@ -12,22 +12,24 @@ import { selectApplicationItems } from "../store/applications-slice";
 import { useAppSelector } from "./hooks";
 import { useTranslation } from "react-i18next";
 
+type CalendarDataSet = (string | number | object)[][];
+type PieDataSet = (string | number)[][];
+
 interface ChartDataSets {
-    pie: (string | number)[][];
-    timeline: (string | number | object)[][];
+    pie: PieDataSet;
+    timeline: CalendarDataSet;
 }
 
 interface CalendarTempDataSet {
     [key: number]: number;
 }
-const useCharts = () => {
+const useCharts = (): [ChartDataSets, boolean] => {
     const { t } = useTranslation();
     const applicationListItems = useAppSelector(selectApplicationItems);
-    //const [chartData, setChartData] = useState<(string | number)[][]>([]);
     const [chartData, setChartData] = useState({
-        pie: <(string | number)[][]>[],
+        pie: [],
         timeline: []
-    });
+    } as ChartDataSets);
     const [loadingChartData, setLoadingChartData] = useState(true);
 
     useMemo(() => {
@@ -43,7 +45,7 @@ const useCharts = () => {
         ];
 
         const dataSetsHeader: [string, string] = ["Phase", "Number"];
-        const dataSets: [string, number][] = [];
+        const dataSets: PieDataSet = [];
         const tempData = {
             [JobStatusType.APPLIED]: 0,
             [JobStatusType.DENIED]: 0,
