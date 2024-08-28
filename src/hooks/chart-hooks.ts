@@ -17,23 +17,40 @@ type PieDataSet = (string | number)[][];
 
 interface ChartDataSets {
     pie: PieDataSet;
-    timeline: CalendarDataSet;
+    calendar: CalendarDataSet;
 }
 
 interface CalendarTempDataSet {
     [key: number]: number;
 }
+
 const useCharts = (): [ChartDataSets, boolean] => {
     const { t } = useTranslation();
     const applicationListItems = useAppSelector(selectApplicationItems);
     const [chartData, setChartData] = useState({
         pie: [],
-        timeline: []
+        calendar: []
     } as ChartDataSets);
     const [loadingChartData, setLoadingChartData] = useState(true);
+    const addToCalendarTempData = (
+        jobApplyDate: string,
+        tempData: CalendarTempDataSet
+    ): CalendarTempDataSet => {
+        // Need to remove the Z to get the time/date string in local
+        // time.
+        const splitDate = new Date(jobApplyDate).toISOString().slice(0, -1);
+
+        if (!tempData[splitDate]) {
+            tempData[splitDate] = 1;
+        } else {
+            tempData[splitDate] += 1;
+        }
+
+        return tempData;
+    };
 
     useMemo(() => {
-        const timelineHeader: [object, object] = [
+        const calendarHeader: [object, object] = [
             {
                 type: "date",
                 id: "Date"
@@ -43,7 +60,6 @@ const useCharts = (): [ChartDataSets, boolean] => {
                 id: "Applications Sent"
             }
         ];
-
         const dataSetsHeader: [string, string] = ["Phase", "Number"];
         const dataSets: PieDataSet = [];
         const tempData = {
@@ -53,36 +69,30 @@ const useCharts = (): [ChartDataSets, boolean] => {
             [JobStatusType.INTERVIEWED_SCHEDULED]: 0,
             [JobStatusType.INTERVIEWED]: 0
         };
-        const tempTimeData: CalendarTempDataSet = {};
-        const timelineDataSets: [Date, number][] = [];
+        const calendarTempData: CalendarTempDataSet = {};
+        const calendarDataSetList: [Date, number][] = [];
         for (const item of Object.values(applicationListItems) as JobType[]) {
             tempData[item.jobStatus] += 1;
-            const splitDate = new Date(item.jobApplyDate)
-                .toISOString()
-                .slice(0, -1);
 
-            if (!tempTimeData[splitDate]) {
-                tempTimeData[splitDate] = 1;
-            } else {
-                tempTimeData[splitDate] += 1;
-            }
+            // Passing by reference to have some cleaner code.
+            addToCalendarTempData(item.jobApplyDate, calendarTempData);
         }
 
         for (const [key, value] of Object.entries(tempData)) {
             dataSets.push([`${t(`jobStatus.${key}`)} (${value})`, value]);
         }
 
-        for (const [dateKey, dateValue] of Object.entries(tempTimeData)) {
-            timelineDataSets.push([new Date(dateKey), dateValue]);
+        for (const [dateKey, dateValue] of Object.entries(calendarTempData)) {
+            calendarDataSetList.push([new Date(dateKey), dateValue]);
         }
 
         setChartData({
             // @ts-expect-error: Cannot type this effectively, yet.
             pie: [dataSetsHeader].concat(dataSets),
             // @ts-expect-error: Cannot type this effectively, yet.
-            timeline: [timelineHeader].concat(timelineDataSets)
+            calendar: [calendarHeader].concat(calendarDataSetList)
         });
-        setLoadingChartData(false);
+        //setLoadingChartData(false);
     }, [setChartData, applicationListItems, t]);
 
     return [chartData, loadingChartData] as [ChartDataSets, boolean];

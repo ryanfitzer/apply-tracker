@@ -17,17 +17,19 @@ const Charts = () => {
     };
     return (
         <div className="w-auto flex justify-center items-center flex-col">
-            {!loadingChartData && <Chart
-                chartType="PieChart"
-                data={chartData.pie}
-                options={options}
-            />}
-            {!loadingChartData && <Chart
-                chartType="Calendar"
-                data={chartData.timeline}
-                options={timelineOptions}
-            />}
-
+            {!loadingChartData && (
+                <>
+                    <Chart
+                        chartType="PieChart"
+                        data={chartData.pie}
+                        options={options}
+                    /><Chart
+                        chartType="Calendar"
+                        data={chartData.calendar}
+                        options={timelineOptions}
+                    />
+                </>
+            )}
             {loadingChartData && (
                 <p>Loading...</p>
             )}
