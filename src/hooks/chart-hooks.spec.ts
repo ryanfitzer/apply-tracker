@@ -1,35 +1,19 @@
-import { JobSalaryType, JobStatusType } from "../lib/types";
+import {
+    defaultPreloadedState,
+    renderHookWithProviders
+} from "../utils/test-utils";
 
 import { act } from "react";
-import { renderWithProviders } from "../utils/test-utils";
 import useCharts from "./chart-hooks";
 
 describe("chart-hook", () => {
-    it("something", async () => {
-        const blah = {
-            preloadedState: {
-                appList: {
-                    items: {
-                        "123": {
-                            jobTitle: "first job",
-                            jobCompany: "company",
-                            jobApplyDate: "2024-07-17",
-                            jobCompanyLink: "https://company.com",
-                            jobLink: "https://company.com/jobs/123",
-                            jobSalary: "",
-                            jobSalaryMax: 0,
-                            jobSalaryMin: 0,
-                            jobSalaryType: JobSalaryType.YR,
-                            jobStatus: JobStatusType.APPLIED,
-                            jobId: "123"
-                        }
-                    }
-                }
-            }
-        };
+    it("something", () => {
         let render;
-        await act(() => {
-            render = renderWithProviders(() => useCharts(), blah, true);
+        act(() => {
+            render = renderHookWithProviders(
+                () => useCharts(),
+                defaultPreloadedState
+            );
         });
         expect(render.result.current).toEqual([
             {
