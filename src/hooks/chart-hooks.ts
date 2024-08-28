@@ -15,7 +15,17 @@ import { useTranslation } from "react-i18next";
 type CalendarDataSet = (string | number | object)[][];
 type PieDataSet = (string | number)[][];
 
+interface Company {
+    name: string;
+    link: string;
+}
+interface ChartMetaData {
+    total: number;
+    companyList: Company[];
+}
+
 interface ChartDataSets {
+    meta: ChartMetaData;
     pie: PieDataSet;
     calendar: CalendarDataSet;
 }
@@ -28,6 +38,10 @@ const useCharts = (): [ChartDataSets, boolean] => {
     const { t } = useTranslation();
     const applicationListItems = useAppSelector(selectApplicationItems);
     const [chartData, setChartData] = useState({
+        meta: {
+            total: 0,
+            companyList: []
+        },
         pie: [],
         calendar: []
     } as ChartDataSets);
@@ -50,6 +64,7 @@ const useCharts = (): [ChartDataSets, boolean] => {
     };
 
     useMemo(() => {
+        const companyList: Company[] = [];
         const calendarHeader: [object, object] = [
             {
                 type: "date",
@@ -76,6 +91,11 @@ const useCharts = (): [ChartDataSets, boolean] => {
 
             // Passing by reference to have some cleaner code.
             addToCalendarTempData(item.jobApplyDate, calendarTempData);
+
+            companyList.push({
+                name: item.jobCompany,
+                link: item.jobCompanyLink
+            });
         }
 
         for (const [key, value] of Object.entries(tempData)) {
@@ -87,12 +107,16 @@ const useCharts = (): [ChartDataSets, boolean] => {
         }
 
         setChartData({
+            meta: {
+                total: Object.entries(applicationListItems).length,
+                companyList: companyList
+            },
             // @ts-expect-error: Cannot type this effectively, yet.
             pie: [dataSetsHeader].concat(dataSets),
             // @ts-expect-error: Cannot type this effectively, yet.
             calendar: [calendarHeader].concat(calendarDataSetList)
         });
-        //setLoadingChartData(false);
+        setLoadingChartData(false);
     }, [setChartData, applicationListItems, t]);
 
     return [chartData, loadingChartData] as [ChartDataSets, boolean];
