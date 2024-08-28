@@ -17,7 +17,7 @@ type PieDataSet = (string | number)[][];
 
 interface Company {
     name: string;
-    link: string;
+    link?: string;
 }
 interface ChartMetaData {
     total: number;
@@ -62,6 +62,33 @@ const useCharts = (): [ChartDataSets, boolean] => {
 
         return tempData;
     };
+    const addToCompanyList = (
+        companyList: Company[],
+        companyName: string,
+        companyLink?: string
+    ): Company | false => {
+        for (const item of Object.values(companyList)) {
+            console.log(item);
+            if (item.name === companyName) {
+                if (item.link && !companyLink) {
+                    return false;
+                }
+
+                if (!item.link && companyLink) {
+                    item.link = companyLink;
+                    return false;
+                }
+
+                return false;
+            }
+        }
+        const company = {
+            name: companyName,
+            link: companyLink
+        };
+
+        return company;
+    };
 
     useMemo(() => {
         const companyList: Company[] = [];
@@ -92,10 +119,14 @@ const useCharts = (): [ChartDataSets, boolean] => {
             // Passing by reference to have some cleaner code.
             addToCalendarTempData(item.jobApplyDate, calendarTempData);
 
-            companyList.push({
-                name: item.jobCompany,
-                link: item.jobCompanyLink
-            });
+            const newCompany = addToCompanyList(
+                companyList,
+                item.jobCompany,
+                item.jobCompanyLink
+            );
+            if (newCompany) {
+                companyList.push(newCompany);
+            }
         }
 
         for (const [key, value] of Object.entries(tempData)) {
@@ -109,7 +140,13 @@ const useCharts = (): [ChartDataSets, boolean] => {
         setChartData({
             meta: {
                 total: Object.entries(applicationListItems).length,
-                companyList: companyList
+                companyList: companyList.sort((a, b) => {
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+
+                    return -1;
+                })
             },
             // @ts-expect-error: Cannot type this effectively, yet.
             pie: [dataSetsHeader].concat(dataSets),
