@@ -68,7 +68,6 @@ const useCharts = (): [ChartDataSets, boolean] => {
         companyLink?: string
     ): Company | false => {
         for (const item of Object.values(companyList)) {
-            console.log(item);
             if (item.name === companyName) {
                 if (item.link && !companyLink) {
                     return false;
