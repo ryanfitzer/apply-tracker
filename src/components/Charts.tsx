@@ -5,23 +5,24 @@ import useCharts from "../hooks/chart-hooks";
 
 const Charts = () => {
     const [chartData, loadingChartData] = useCharts();
-    const options: GoogleChartOptions = {
+    const pieChartOptions: GoogleChartOptions = {
         is3D: true,
         sliceVisibilityThreshold: 0,
-        width: 500,
-        backgroundColor: ""
+        backgroundColor: "",
+        legend: "none",
     };
-    const timelineOptions: GoogleChartOptions = {
+    const calendarOptions: GoogleChartOptions = {
         title: "Applications Sent",
         backgroundColor: "",
-        width: 1000
+        width: 1000,
+        height: 200
     };
     return (
-        <div className="w-auto flex justify-center items-center flex-col">
+        <div className="flex flex-col w-[1000px] h-full">
             {!loadingChartData && (
                 <div className="flex flex-col">
-                    <div className="flex">
-                        <div>
+                    <div className="flex h-[260px]">
+                        <div className="flex-shrink-0">
                             <p>Total Applications: {chartData.meta.total}</p>
                             <p>Company List</p>
                             <ul className="h-[200px] w-[300px] overflow-y-auto">
@@ -29,21 +30,26 @@ const Charts = () => {
 
                             </ul>
                         </div>
-                        <Chart
-                            chartType="PieChart"
-                            data={chartData.pie}
-                            options={options}
-                        />
+                        <div className="h-full  w-[300px]">
+                            <Chart
+                                chartType="PieChart"
+                                data={chartData.pie}
+                                options={pieChartOptions}
+                                height="260px"
+                                width="300px"
+                                loader={<div>Loading Chart</div>}
+                            />
+                        </div>
                     </div>
                     <Chart
                         chartType="Calendar"
                         data={chartData.calendar}
-                        options={timelineOptions}
+                        options={calendarOptions}
                     />
                 </div>
             )}
             {loadingChartData && (
-                <div>
+                <div className="justify-center items-center flex h-full w-full">
                     <p>Loading...</p>
                 </div>
             )}

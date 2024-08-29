@@ -220,6 +220,7 @@ const App = () => {
                     dispatch(applicationsActions.clearEditingJob());
                 }}
                 title={applicationListEditing ? "Edit Job" : t("addJob")}
+                width="600"
             >
                 <AddJob />
             </DialogModal>
@@ -229,6 +230,7 @@ const App = () => {
                     dispatch(uiActions.toggleChartsModal(false));
                 }}
                 title="Stats"
+                width="1000"
             >
                 <Charts />
             </DialogModal>
