@@ -31,7 +31,7 @@ const DialogModal = ({ children, isOpened, closeModal, title, width = "auto" }) 
                     </button>
                 </div>
                 <div className={`overflow-hidden h-[calc(100%_-_20px)]`}>
-                    <div className="overflow-y-auto w-full h-full">
+                    <div className="overflow-y-auto w-full h-[calc(100%_-_20px)]">
                         {isOpened && children}
                     </div>
                 </div>

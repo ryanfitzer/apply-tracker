@@ -13,12 +13,10 @@ const Charts = () => {
     };
     const calendarOptions: GoogleChartOptions = {
         title: "Applications Sent",
-        backgroundColor: "",
-        width: 1000,
-        height: 200
+        backgroundColor: ""
     };
     return (
-        <div className="flex flex-col w-[1000px] h-full">
+        <div className="flex flex-col h-full overflow-x-hidden">
             {!loadingChartData && (
                 <div className="flex flex-col">
                     <div className="flex h-[260px]">
@@ -30,7 +28,7 @@ const Charts = () => {
 
                             </ul>
                         </div>
-                        <div className="h-full  w-[300px]">
+                        <div className="h-full w-[300px]">
                             <Chart
                                 chartType="PieChart"
                                 data={chartData.pie}
@@ -41,11 +39,15 @@ const Charts = () => {
                             />
                         </div>
                     </div>
-                    <Chart
-                        chartType="Calendar"
-                        data={chartData.calendar}
-                        options={calendarOptions}
-                    />
+                    <div className="overflow-x-auto overflow-y-hidden">
+                        <div className="">
+                            <Chart
+                                chartType="Calendar"
+                                data={chartData.calendar}
+                                options={calendarOptions}
+                            />
+                        </div>
+                    </div>
                 </div>
             )}
             {loadingChartData && (
