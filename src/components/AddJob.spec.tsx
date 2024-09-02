@@ -3,11 +3,8 @@ import { JobSalaryType, JobStatusType, JobType } from "../lib/types";
 import { appListInitialState, applicationsActions } from "../store/applications-slice";
 
 import AddJob from "./AddJob";
-import { I18nextProvider } from "react-i18next";
-import JobSalary from "./JobSalary";
 import { MockInstance } from "vitest";
 import { fireEvent } from "@testing-library/react";
-import i18n from "../i18n";
 import { renderWithProviders } from "../utils/test-utils";
 import { uiActions } from "../store/ui-slice";
 import uuid from "react-uuid";
