@@ -118,6 +118,7 @@ const App = () => {
                             <label>
                                 <span>Sort By: </span>
                                 <select
+                                    className="cursor-pointer"
                                     name="sortBy"
                                     id="sortBy"
                                     onChange={changeSortData}
@@ -127,6 +128,7 @@ const App = () => {
                                     <option value="jobApplyDate">Date</option>
                                 </select>
                                 <select
+                                    className="cursor-pointer"
                                     name="sortDir"
                                     id="sortDir"
                                     onChange={changeSortData}
@@ -138,9 +140,11 @@ const App = () => {
                             </label>
                         </form>
                     </div>
-                    <div className="ml-2 border-l-2 pl-2">
+                    {/* Disabling for now */}
+                    {/* <div className="ml-2 border-l-2 pl-2">
                         View As:
                         <select
+                            className="cursor-pointer"
                             value={applicationListViewAs}
                             onChange={(event) =>
                                 dispatch(
@@ -153,14 +157,18 @@ const App = () => {
                             <option value="tiles">Tiles</option>
                             <option value="table">Table</option>
                         </select>
-                    </div>
+                    </div> */}
                     <div className="ml-2 border-l-2 pl-2">
-                        Language
-                        <input type="radio" name="lang" value="en" onClick={onChangeLang}
-                            defaultChecked={i18n.language === "en"} />EN
-                        {/* Using Greek language code for now till able to
-                        make a new code. */}
-                        <input type="radio" name="lang" value="el" onClick={onChangeLang} defaultChecked={i18n.language === "el"} />Satire
+                        <span>Language: </span>
+                        <label htmlFor="langEn" className="cursor-pointer">
+                            <input className="cursor-pointer" id="langEn" type="radio" name="lang" value="en" onClick={onChangeLang}
+                                defaultChecked={i18n.language === "en"} /><span className="pl-1">EN</span>
+                        </label>
+                        <label htmlFor="langEl" className="ml-4 cursor-pointer">
+                            {/* Using Greek language code for now till able to
+                            make a new code. */}
+                            <input className="cursor-pointer" id="langEl" type="radio" name="lang" value="el" onClick={onChangeLang} defaultChecked={i18n.language === "el"} /><span className="pl-1">Satire</span>
+                        </label>
                     </div>
                     <div className="ml-2 border-l-2 pl-2">
                         <button onClick={
