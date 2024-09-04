@@ -17,7 +17,7 @@ const DialogModal = ({ children, isOpened, closeModal, title, width = "auto" }) 
         <dialog
             ref={dialogRef}
             onClose={closeModal}
-            className={`backdrop:backdrop-blur-sm p-6 rounded shadow-box pt-5 overflow-hidden h-full ${width === "auto" ? "w-auto" : `w-[${width}px]`}`}
+            className={`max-h-[550px] backdrop:backdrop-blur-sm p-6 rounded shadow-box pt-5 overflow-hidden h-full ${width === "auto" ? "w-auto" : `w-[${width}px] max-w-[${width}px]`}`}
 
         >
             <div className="overflow-hidden h-full w-full">

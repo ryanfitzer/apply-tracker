@@ -8,12 +8,12 @@ const Charts = () => {
     const pieChartOptions: GoogleChartOptions = {
         is3D: true,
         sliceVisibilityThreshold: 0,
-        backgroundColor: "",
-        legend: "none",
+        backgroundColor: ""
     };
     const calendarOptions: GoogleChartOptions = {
         title: "Applications Sent",
-        backgroundColor: ""
+        backgroundColor: "",
+        width: 1000
     };
     return (
         <div className="flex flex-col h-full overflow-x-hidden">
@@ -28,13 +28,11 @@ const Charts = () => {
 
                             </ul>
                         </div>
-                        <div className="h-full w-[300px]">
+                        <div className="h-full">
                             <Chart
                                 chartType="PieChart"
                                 data={chartData.pie}
                                 options={pieChartOptions}
-                                height="260px"
-                                width="300px"
                                 loader={<div>Loading Chart</div>}
                             />
                         </div>
