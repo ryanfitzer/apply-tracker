@@ -139,7 +139,7 @@ const useCharts = (): [ChartDataSets, boolean] => {
         setChartData({
             meta: {
                 total: Object.entries(applicationListItems).length,
-                companyList: companyList.sort((a, b) => {
+                companyList: companyList.sort((a: Company, b: Company) => {
                     if (a.name > b.name) {
                         return 1;
                     }
