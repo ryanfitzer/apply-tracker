@@ -43,7 +43,7 @@ const App = () => {
             {
                 const bootStrapped = await dispatch(fetchBootStrapData());
                 if (bootStrapped) {
-                    dispatch(fetchApplicationData(true));
+                    dispatch(fetchApplicationData(false));
                 } else {
                     alert('GistID and/or Access Token are not set.');
                 }
