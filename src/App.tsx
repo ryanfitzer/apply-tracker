@@ -91,49 +91,51 @@ const App = () => {
 
     return (
         <div className="flex flex-col h-full">
-            <Header />
-            <main className="h-full overflow-y-auto">
-                {/* Need to compare against 0 to make sure 0 does now show up
-                  * on the UI.
-                */}
-                {Object.values(applicationListItems).length > 0 && (
-                    <>
-                        {applicationListViewAs === "table" ? (
-                            <div>
-                                <JobsTable
-                                    jobs={sortItems(applicationListItems)}
-                                    removeJob={removeJob}
-                                />
-                            </div>
-                        ) : (
-                            <ResponsiveMasonry
-                                columnsCountBreakPoints={{
-                                    350: 1,
-                                    750: 2,
-                                    1150: 3,
-                                    1640: 4
-                                }}
-                            >
-                                <Masonry>
-                                    {sortItems(applicationListItems).map(
-                                        (job) => (
-                                            <div
-                                                className="p-3"
-                                                key={job.jobId}
-                                            >
-                                                <Job
-                                                    job={job}
-                                                    removeJob={removeJob}
-                                                />
-                                            </div>
-                                        )
-                                    )}
-                                </Masonry>
-                            </ResponsiveMasonry>
-                        )}
-                    </>
-                )}
-            </main>
+            <div className="flex flex-row h-full overflow-hidden sm:flex-col">
+                <Header />
+                <main className="h-full overflow-y-auto w-full">
+                    {/* Need to compare against 0 to make sure 0 does now show up
+                    * on the UI.
+                    */}
+                    {Object.values(applicationListItems).length > 0 && (
+                        <>
+                            {applicationListViewAs === "table" ? (
+                                <div>
+                                    <JobsTable
+                                        jobs={sortItems(applicationListItems)}
+                                        removeJob={removeJob}
+                                    />
+                                </div>
+                            ) : (
+                                <ResponsiveMasonry
+                                    columnsCountBreakPoints={{
+                                        350: 1,
+                                        750: 2,
+                                        1150: 3,
+                                        1640: 4
+                                    }}
+                                >
+                                    <Masonry>
+                                        {sortItems(applicationListItems).map(
+                                            (job) => (
+                                                <div
+                                                    className="p-3"
+                                                    key={job.jobId}
+                                                >
+                                                    <Job
+                                                        job={job}
+                                                        removeJob={removeJob}
+                                                    />
+                                                </div>
+                                            )
+                                        )}
+                                    </Masonry>
+                                </ResponsiveMasonry>
+                            )}
+                        </>
+                    )}
+                </main>
+            </div>
             <Footer />
             <DialogModal
                 isOpened={uiItem.modalIsVisible}

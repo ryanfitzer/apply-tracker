@@ -38,7 +38,9 @@ i18n.use(LanguageDetector)
                     jobSalaryMax: "Salary Max",
                     jobSalaryType: "Frequency",
                     loading: "Loading...",
-                    jobStatus
+                    jobStatus,
+                    stats: "View Stats",
+                    menu: "☰"
                 }
             },
             el: {
@@ -54,7 +56,9 @@ i18n.use(LanguageDetector)
                     jobSalaryMax: "Salary Max",
                     jobSalaryType: "How Often?",
                     loading: "Loading...",
-                    jobStatus
+                    jobStatus,
+                    stats: "Where am I?",
+                    menu: "🍔"
                 }
             }
         }
