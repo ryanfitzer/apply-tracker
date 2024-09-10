@@ -1,6 +1,5 @@
 import "./App.css";
 
-import { ChangeEvent, useMemo } from "react";
 import { JobType, SortDirection, UiState } from "./lib/types";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { applicationsActions, selectApplicationEditing, selectApplicationItems, selectApplicationListIsChanged, selectApplicationListViewAs, selectApplicationSort } from "./store/applications-slice";
@@ -20,6 +19,7 @@ import Job from "./components/Job";
 import JobsTable from "./components/JobTable";
 import { uiActions } from "./store/ui-slice";
 import { useEffect } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
