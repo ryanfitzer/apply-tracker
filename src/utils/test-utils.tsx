@@ -51,7 +51,8 @@ export const defaultPreloadedState = {
     preloadedState: {
         ui: {
             modalIsVisible: true,
-            chartsModalIsVisible: false
+            chartsModalIsVisible: false,
+            showMenu: false
         },
         appList: {
             ...appListInitialState,
