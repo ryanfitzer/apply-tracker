@@ -35,12 +35,19 @@ const App = () => {
 
     useMemo(async () => {
         const query = new URLSearchParams(document.location.search);
-        const things = await dispatch(fetchBootStrapData());
 
-        if (things) {
-            dispatch(fetchApplicationData(!!query.get("demo")));
+        const isDemo = !!query.get("demo");
+        if (isDemo) {
+            dispatch(fetchApplicationData(true));
         } else {
-            alert('GistID and/or Access Token are not set.');
+            {
+                const bootStrapped = await dispatch(fetchBootStrapData());
+                if (bootStrapped) {
+                    dispatch(fetchApplicationData(true));
+                } else {
+                    alert('GistID and/or Access Token are not set.');
+                }
+            }
         }
     }, [dispatch]);
 
