@@ -6,7 +6,8 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { applicationsActions, selectApplicationEditing, selectApplicationItems, selectApplicationListIsChanged, selectApplicationListViewAs, selectApplicationSort } from "./store/applications-slice";
 import {
     fetchApplicationData,
-    saveApplicationdata
+    fetchBootStrapData,
+    saveApplicationData
 } from "./store/applications-actions";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 
@@ -30,18 +31,27 @@ const App = () => {
     const applicationListItems = useAppSelector(selectApplicationItems);
     const applicationListViewAs = useAppSelector(selectApplicationListViewAs);
     const uiItem = useSelector((state: UiState) => state.ui);
-    useMemo(() => {
+
+    useMemo(async () => {
         const query = new URLSearchParams(document.location.search);
-        dispatch(fetchApplicationData(!!query.get("demo")));
+        const things = await dispatch(fetchBootStrapData());
+
+        if (things) {
+            dispatch(fetchApplicationData(!!query.get("demo")));
+        } else {
+            alert('GistID and/or Access Token are not set.');
+        }
     }, [dispatch]);
 
     useEffect(() => {
+        const query = new URLSearchParams(document.location.search);
+
         if (applicationListIsChanged) {
-            dispatch(saveApplicationdata({
+            dispatch(saveApplicationData({
                 items: applicationListItems,
                 sort: applicationListSort,
                 viewAs: applicationListViewAs
-            }));
+            }, !!query.get("demo")));
         }
     }, [applicationListIsChanged, dispatch, applicationListItems, applicationListSort, applicationListViewAs]);
 
