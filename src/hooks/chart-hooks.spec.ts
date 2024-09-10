@@ -22,6 +22,8 @@ describe("chart-hook", () => {
                 defaultPreloadedState
             );
         });
+        const date = new Date("2024-07-17T05:00:00.000Z");
+        vi.setSystemTime(date);
         expect(render.result.current).toEqual([
             {
                 meta: {
@@ -52,7 +54,7 @@ describe("chart-hook", () => {
                             type: "number"
                         }
                     ],
-                    [new Date("2024-07-17T05:00:00.000Z"), 1]
+                    [date, 1]
                 ]
             },
             false
