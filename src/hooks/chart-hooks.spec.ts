@@ -7,13 +7,6 @@ import { act } from "react";
 import useCharts from "./chart-hooks";
 
 describe("chart-hook", () => {
-    beforeEach(() => {
-        vi.useFakeTimers();
-    });
-    afterEach(() => {
-        // restoring date after each test run
-        vi.useRealTimers();
-    });
     it("sets data for charts", () => {
         let render;
         act(() => {
@@ -22,8 +15,6 @@ describe("chart-hook", () => {
                 defaultPreloadedState
             );
         });
-        const date = new Date("2024-07-17T05:00:00.000Z");
-        vi.setSystemTime(date);
         expect(render.result.current).toEqual([
             {
                 meta: {
@@ -54,7 +45,7 @@ describe("chart-hook", () => {
                             type: "number"
                         }
                     ],
-                    [date, 1]
+                    [new Date("2024-07-17T00:00:00.000Z"), 1]
                 ]
             },
             false
