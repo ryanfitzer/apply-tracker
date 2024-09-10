@@ -8,7 +8,7 @@
         "build": "tsc -p tsconfig.app.json && vite build && ./write-version.sh",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview",
-        "test": "vitest --coverage",
+        "test": "TZ=UTC vitest --coverage",
         "start": "npm run dev",
         "coverage": "vitest run --coverage"
     },

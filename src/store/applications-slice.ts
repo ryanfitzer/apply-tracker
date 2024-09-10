@@ -9,7 +9,9 @@ export const appListInitialState = {
         dir: ""
     },
     viewAs: "tiles",
-    editingJob: ""
+    editingJob: "",
+    gistId: "",
+    accessToken: ""
 };
 
 const applicationsSlice = createSlice({
@@ -17,9 +19,19 @@ const applicationsSlice = createSlice({
     initialState: appListInitialState,
     reducers: {
         replaceApplications(state, { payload }: PayloadAction<ReplaceAppData>) {
-            state.items = payload.items;
-            state.sort = payload.sort;
-            state.viewAs = payload.viewAs;
+            return {
+                ...state,
+                items: payload.items,
+                sort: payload.sort,
+                viewAs: payload.viewAs
+            };
+        },
+        addBootStrapData(state, { payload }) {
+            return {
+                ...state,
+                gistId: payload.gistId,
+                accessToken: payload.accessToken
+            };
         },
         addItem(state, { payload }: PayloadAction<JobType>) {
             state.isChanged = true;
@@ -72,6 +84,7 @@ export const selectApplicationSort = (state) => state.appList.sort;
 export const selectApplicationItems = (state) => state.appList.items;
 export const selectApplicationEditing = (state) => state.appList.editingJob;
 export const selectApplicationListViewAs = (state) => state.appList.viewAs;
+export const selectGistId = (state) => state.appList.gistId;
 export const applicationsActions = applicationsSlice.actions;
 
 export default applicationsSlice;

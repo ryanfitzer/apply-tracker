@@ -1,24 +1,57 @@
 import { Chart, GoogleChartOptions } from "react-google-charts";
 
+import Link from "./ui/Link";
 import useCharts from "../hooks/chart-hooks";
 
 const Charts = () => {
     const [chartData, loadingChartData] = useCharts();
-    const options: GoogleChartOptions = {
+    const pieChartOptions: GoogleChartOptions = {
         is3D: true,
         sliceVisibilityThreshold: 0,
-        width: 500,
         backgroundColor: ""
     };
+    const calendarOptions: GoogleChartOptions = {
+        title: "Applications Sent",
+        backgroundColor: "",
+        width: 1000,
+    };
     return (
-        <div className="w-[500px] h-[200px] flex justify-center items-center">
-            {!loadingChartData && <Chart
-                chartType="PieChart"
-                data={chartData}
-                options={options}
-            />}
+        <div className="flex flex-col h-full overflow-x-hidden">
+            {!loadingChartData && (
+                <div className="flex flex-col">
+                    <div className="flex h-[260px] mb-6">
+                        <div className="flex-shrink-0">
+                            <p>Total Applications: {chartData.meta.total}</p>
+                            <p>Company List</p>
+                            <ul className="h-[200px] w-[300px] overflow-y-auto">
+                                {chartData.meta.companyList.map(item => <li className="even:bg-slate-100"><Link text={item.name} link={item.link} /></li>)}
+
+                            </ul>
+                        </div>
+                        <div className="h-full">
+                            <Chart
+                                chartType="PieChart"
+                                data={chartData.pie}
+                                options={pieChartOptions}
+                                loader={<div>Loading Chart</div>}
+                            />
+                        </div>
+                    </div>
+                    <div className="overflow-y-auto overflow-x-hidden h-full">
+                        <div className="">
+                            <Chart
+                                chartType="Calendar"
+                                data={chartData.calendar}
+                                options={calendarOptions}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
             {loadingChartData && (
-                <p>Loading...</p>
+                <div className="justify-center items-center flex h-full w-full">
+                    <p>Loading...</p>
+                </div>
             )}
         </div>
     );

@@ -1,6 +1,8 @@
 import { AppListSort, JobType } from "../lib/types";
 
+import { AppDispatch } from "../store";
 import { applicationsActions } from "./applications-slice";
+import gistFetch from "../lib/gist-fetch";
 
 interface AppListTypeSave {
     sort: AppListSort;
@@ -8,14 +10,40 @@ interface AppListTypeSave {
     items: JobType[];
 }
 
+export const fetchBootStrapData = () => {
+    return async (dispatch: AppDispatch) => {
+        const localStorageTracker = localStorage.getItem(
+            "applyTrackerData"
+        ) as string;
+
+        if (localStorageTracker) {
+            const parsed = JSON.parse(localStorageTracker);
+            return dispatch(
+                applicationsActions.addBootStrapData({
+                    gistId: parsed.gistId,
+                    accessToken: parsed.accessToken
+                })
+            );
+        }
+
+        return false;
+    };
+};
+
 export const fetchApplicationData = (isDemo: boolean = false) => {
-    return async (dispatch) => {
+    return async (dispatch: AppDispatch, getState) => {
         let localStorageTracker: string = "";
 
+        // This is not conventional, but because this should be stored
+        // I'm using getState to grab the items to avoid pulling from
+        // local store all the time.
+        const access_token = getState().appList.accessToken;
+        const gist_id = getState().appList.gistId;
+
         if (!isDemo) {
-            localStorageTracker = localStorage.getItem(
-                "applyTracker"
-            ) as string;
+            const response = await gistFetch(gist_id, access_token, "GET");
+
+            localStorageTracker = response.files.applications.content;
         } else {
             localStorageTracker = JSON.stringify({
                 items: {
@@ -98,16 +126,47 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                     viewAs: parsed.viewAs
                 })
             );
+
+            return true;
         }
+
+        return false;
     };
 };
 
-export const saveApplicationdata = (appItems: AppListTypeSave) => {
-    return async () => {
+export const saveApplicationData = (
+    appItems: AppListTypeSave,
+    isDemo: boolean = false
+) => {
+    // Underscore for function not needed so linter doesn't think
+    // it's not used.
+    return async (_dispatch: AppDispatch, getState) => {
         const { items, sort, viewAs } = appItems;
-        localStorage.setItem(
-            "applyTracker",
-            JSON.stringify({ items, sort, viewAs })
-        );
+
+        if (!isDemo) {
+            // This is not conventional, but because this should be stored
+            // I'm using getState to grab the items to avoid pulling from
+            // local store all the time.
+            const access_token = getState().appList.accessToken;
+            const gist_id = getState().appList.gistId;
+
+            await gistFetch(
+                gist_id,
+                access_token,
+                "PATCH",
+                JSON.stringify({
+                    files: {
+                        applications: {
+                            content: JSON.stringify({ items, sort, viewAs })
+                        }
+                    }
+                })
+            );
+        } else {
+            localStorage.setItem(
+                "applyTracker",
+                JSON.stringify({ items, sort, viewAs })
+            );
+        }
     };
 };
