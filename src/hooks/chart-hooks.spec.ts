@@ -7,7 +7,14 @@ import { act } from "react";
 import useCharts from "./chart-hooks";
 
 describe("chart-hook", () => {
-    it("something", () => {
+    beforeEach(() => {
+        vi.useFakeTimers();
+    });
+    afterEach(() => {
+        // restoring date after each test run
+        vi.useRealTimers();
+    });
+    it("sets data for charts", () => {
         let render;
         act(() => {
             render = renderHookWithProviders(
