@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { JobSalaryType, JobStatusType, JobType } from "../lib/types";
 
-import AddKey from "./add-key/AddKey";
+import AddKey from "./Modal";
 import { applicationsActions } from "../store/applications-slice";
 import { useAppDispatch } from "../hooks/hooks";
 import { useTranslation } from "react-i18next";
@@ -20,7 +20,7 @@ const defaultJob = {
     jobId: ""
 };
 
-const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () => void; }) => {
+const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () => void }) => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const [formData, setFormData] = useState(defaultJob);
@@ -45,7 +45,7 @@ const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () 
             const newDefaultJob = {
                 ...defaultJob,
                 jobApplyDate: currentDateParsed,
-                jobSalaryType: "yr",
+                jobSalaryType: "yr"
             };
             setFormData(newDefaultJob);
         }
@@ -154,7 +154,7 @@ const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () 
                         data-testid="jobSalaryMax"
                     />
                 </label>
-                <label htmlFor="jobSalaryType" className="flex-shrink-0 w-24">
+                <label htmlFor="jobSalaryType" className="w-24 flex-shrink-0">
                     <p>{t("jobSalaryType")}</p>
                     <select
                         className="w-full border-2 px-2"
@@ -168,9 +168,9 @@ const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () 
                     </select>
                 </label>
             </div>
-            <div className="flex justify-around border-t-2 py-2 mt-4">
+            <div className="mt-4 flex justify-around border-t-2 py-2">
                 <AddKey.Close>Close</AddKey.Close>
-                <button data-testid="buttonSubmit" className="bg-blue-300 text-white w-32 py-2 font-bold">
+                <button data-testid="buttonSubmit" className="w-32 bg-blue-300 py-2 font-bold text-white">
                     Save
                 </button>
             </div>
