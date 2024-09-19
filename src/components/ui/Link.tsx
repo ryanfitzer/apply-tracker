@@ -1,3 +1,5 @@
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+
 const Link = ({ text, link }) => {
     return (
         <>
@@ -9,8 +11,8 @@ const Link = ({ text, link }) => {
                     className="text-blue-500"
                 >
                     {text}
-                    <span className="align-super text-xs">
-                        &#x1F517;
+                    <span className="align-bottom text-xs pl-1">
+                        <ExternalLinkIcon className="inline-block" />
                     </span>
                 </a>
             ) : (

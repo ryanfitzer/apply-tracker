@@ -1,11 +1,15 @@
+import * as Dialog from "@radix-ui/react-dialog";
+
+import { Cross1Icon, ExternalLinkIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import { format, formatDistanceToNowStrict, parseISO } from "date-fns";
 
+import AddJob from "./AddJob";
+import AddKey from "./add-key/AddKey";
 import JobSalary from "./JobSalary";
 import JobStatus from "./JobStatus";
 import { JobType } from "../lib/types";
-import { applicationsActions } from "../store/applications-slice";
-import { uiActions } from "../store/ui-slice";
-import { useAppDispatch } from "../hooks/hooks";
+import Link from "./ui/Link";
+import { useState } from "react";
 
 interface Thing {
     job: JobType;
@@ -13,14 +17,10 @@ interface Thing {
 }
 
 const Job = ({ job, removeJob }: Thing) => {
-    const dispatch = useAppDispatch();
-    const { jobId } = job;
+    const [open, setIsOpen] = useState(false);
+
     const removeJobClick = () => {
         removeJob(job.jobId);
-    };
-    const editJobClick = () => {
-        dispatch(applicationsActions.setItemToEdit(jobId));
-        dispatch(uiActions.toggleModal(true));
     };
     const dateFormatted = format(parseISO(job.jobApplyDate), "ddMMMyyyy");
     const relative = formatDistanceToNowStrict(job.jobApplyDate);
@@ -39,8 +39,8 @@ const Job = ({ job, removeJob }: Thing) => {
                             className="text-blue-500"
                         >
                             {job.jobTitle}
-                            <span className="align-super text-xs">
-                                &#x1F517;
+                            <span className="align-super text-xs pl-1">
+                                <ExternalLinkIcon />
                             </span>
                         </a>
                     ) : (
@@ -51,17 +51,7 @@ const Job = ({ job, removeJob }: Thing) => {
             <div>
                 <p>
                     {job.jobCompanyLink ? (
-                        <a
-                            href={job.jobCompanyLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500"
-                        >
-                            {job.jobCompany}
-                            <span className="align-super text-xs">
-                                &#x1F517;
-                            </span>
-                        </a>
+                        <Link text={job.jobCompany} link={job.jobCompanyLink} />
                     ) : (
                         job.jobCompany
                     )}
@@ -84,12 +74,34 @@ const Job = ({ job, removeJob }: Thing) => {
                 >
                     Remove
                 </button>
-                <button
-                    className="bg-blue-300 text-white w-32 py-2 font-bold"
-                    onClick={editJobClick}
-                >
-                    Edit
-                </button>
+
+                <div>
+                    <AddKey open={open} onOpenChange={setIsOpen} >
+                        <AddKey.Button>
+                            <Pencil1Icon />
+                        </AddKey.Button>
+                        <AddKey.Content title="Edit Job">
+                            <AddJob currentJob={job} afterSave={() => setIsOpen(false)} />
+                        </AddKey.Content>
+                    </AddKey>
+                    {/* <Dialog.Root open={open} onOpenChange={setIsOpen}>
+                        <Dialog.Trigger>
+                            <Pencil1Icon />
+                        </Dialog.Trigger>
+                        <Dialog.Portal>
+                            <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+                            <Dialog.Content className="data-[state=open]:animate-[dialog-content-show_300ms] data-[state=closed]:animate-[dialog-content-hide_300ms] bg-white fixed left-1/2 top-1/2 shadow-md rounded-md p-3 -translate-x-1/2 -translate-y-1/2">
+                                <div className="flex justify-between items-center mb-3">
+                                    <Dialog.Title className=" size text-lg">fasdfa</Dialog.Title>
+                                    <Dialog.Close>
+                                        <Cross1Icon className="text-gray-600 hover:text-gray-300" />
+                                    </Dialog.Close>
+                                </div>
+
+                            </Dialog.Content>
+                        </Dialog.Portal>
+                    </Dialog.Root> */}
+                </div>
             </div>
         </div>
     );

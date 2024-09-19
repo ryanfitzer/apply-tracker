@@ -7,7 +7,6 @@ export interface JobType {
     jobCompanyLink: string;
     jobCompany: string;
     jobSalaryType: JobSalaryType;
-    jobSalary: string;
     jobSalaryMin: number;
     jobSalaryMax: number;
 }
