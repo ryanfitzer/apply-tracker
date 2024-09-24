@@ -108,6 +108,7 @@ const useCharts = (): [ChartDataSets, boolean] => {
             [JobStatusType.DENIED]: 0,
             [JobStatusType.ON_HOLD]: 0,
             [JobStatusType.INTERVIEWED_SCHEDULED]: 0,
+            [JobStatusType.INTERVIEWING]: 0,
             [JobStatusType.INTERVIEWED]: 0
         };
         const calendarTempData: CalendarTempDataSet = {};

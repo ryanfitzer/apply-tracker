@@ -29,6 +29,11 @@ const JobStatus = ({ job }: JobStatusInput) => {
             status: JobStatusType.INTERVIEWED_SCHEDULED,
             color: "text-blue-400"
         },
+        interviewing: {
+            title: "Interviewing",
+            status: JobStatusType.INTERVIEWING,
+            color: "text-blue-400"
+        },
         interviewed: {
             title: "Interviewed",
             status: JobStatusType.INTERVIEWED,
