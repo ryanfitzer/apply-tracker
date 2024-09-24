@@ -23,7 +23,7 @@ const ModalContent = ({ title, children }: { title: string; children: ReactNode 
     return (
         <Dialog.Portal>
             <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-            <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1 -translate-y-1/2 rounded-md bg-white p-3 shadow-md">
+            <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-3 shadow-md">
                 <div className="mb-3 flex items-center justify-between">
                     <Dialog.Title className="size text-lg">{title}</Dialog.Title>
                     <Dialog.Close>

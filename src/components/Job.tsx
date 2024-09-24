@@ -15,8 +15,7 @@ interface Thing {
 }
 
 const Job = ({ job, removeJob }: Thing) => {
-    const [open, setIsOpen] = useState(false);
-
+    const [editOpen, setEditIsOpen] = useState(false);
     const removeJobClick = () => {
         removeJob(job.jobId);
     };
@@ -60,7 +59,7 @@ const Job = ({ job, removeJob }: Thing) => {
                 </button>
 
                 <div>
-                    <Modal open={open} onOpenChange={setIsOpen}>
+                    <Modal open={editOpen} onOpenChange={setEditIsOpen}>
                         <Modal.Button>
                             <Pencil1Icon />
                         </Modal.Button>
