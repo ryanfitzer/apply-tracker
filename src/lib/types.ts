@@ -14,7 +14,7 @@ export interface JobType {
 
 export interface Interview {
     date: string;
-    interviwerList: [];
+    interviewerList: [];
     typeList: InterviewType[];
     recruiter: boolean;
     final: boolean;

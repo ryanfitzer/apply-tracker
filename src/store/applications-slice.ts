@@ -71,6 +71,13 @@ const applicationsSlice = createSlice({
             };
             state.isChanged = true;
         },
+        updateInterviewList(state, action) {
+            state.items[action.payload.jobId] = {
+                ...state.items[action.payload.jobId],
+                interviews: action.payload.interviews
+            };
+            state.isChanged = true;
+        },
         clearEditingJob(state) {
             state.editingJob = "";
         }
@@ -78,8 +85,7 @@ const applicationsSlice = createSlice({
 });
 
 export const selectApplicationList = (state) => state.appList;
-export const selectApplicationListIsChanged = (state) =>
-    state.appList.isChanged;
+export const selectApplicationListIsChanged = (state) => state.appList.isChanged;
 export const selectApplicationSort = (state) => state.appList.sort;
 export const selectApplicationItems = (state) => state.appList.items;
 export const selectApplicationEditing = (state) => state.appList.editingJob;

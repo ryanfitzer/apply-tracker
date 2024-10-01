@@ -12,9 +12,7 @@ interface AppListTypeSave {
 
 export const fetchBootStrapData = () => {
     return async (dispatch: AppDispatch) => {
-        const localStorageTracker = localStorage.getItem(
-            "applyTrackerData"
-        ) as string;
+        const localStorageTracker = localStorage.getItem("applyTrackerData") as string;
 
         if (localStorageTracker) {
             const parsed = JSON.parse(localStorageTracker);
@@ -69,7 +67,16 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                         jobSalaryMax: 120000,
                         jobSalaryType: "yr",
                         jobStatus: "interviewed",
-                        jobId: "d74a8833-88c4-d142-bf7b-737d1e74819d"
+                        jobId: "d74a8833-88c4-d142-bf7b-737d1e74819d",
+                        interviews: [
+                            {
+                                date: "2024-08-05",
+                                interviewerList: ["joe", "mike"],
+                                typeList: ["video"],
+                                recruiter: false,
+                                final: true
+                            }
+                        ]
                     },
                     "47e1a4cd-5e30-fd9f-9918-7a59e7f63e89": {
                         jobTitle: "React Engineer",
@@ -134,10 +141,7 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
     };
 };
 
-export const saveApplicationData = (
-    appItems: AppListTypeSave,
-    isDemo: boolean = false
-) => {
+export const saveApplicationData = (appItems: AppListTypeSave, isDemo: boolean = false) => {
     // Underscore for function not needed so linter doesn't think
     // it's not used.
     return async (_dispatch: AppDispatch, getState) => {
@@ -163,10 +167,7 @@ export const saveApplicationData = (
                 })
             );
         } else {
-            localStorage.setItem(
-                "applyTracker",
-                JSON.stringify({ items, sort, viewAs })
-            );
+            localStorage.setItem("applyTracker", JSON.stringify({ items, sort, viewAs }));
         }
     };
 };
