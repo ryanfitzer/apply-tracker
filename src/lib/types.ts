@@ -14,10 +14,11 @@ export interface JobType {
 
 export interface Interview {
     date: string;
-    interviewerList: [];
+    interviewerList: string[];
     typeList: InterviewType[];
     recruiter: boolean;
     final: boolean;
+    interviewId: string;
 }
 
 export enum InterviewType {

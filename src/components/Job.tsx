@@ -55,8 +55,8 @@ const Job = ({ job, removeJob }: Thing) => {
             </div>
             <div>
                 <Modal open={interviewListOpen} onOpenChange={setInterviewListOpen}>
-                    <Modal.Button>
-                        <Pencil1Icon />
+                    <Modal.Button className="flex items-center gap-1">
+                        Interviews ({job.interviews?.length || 0}) <Pencil1Icon />
                     </Modal.Button>
                     <Modal.Content title="Edit Interview List">
                         <InterviewList job={job} afterSave={() => setEditIsOpen(false)} />
