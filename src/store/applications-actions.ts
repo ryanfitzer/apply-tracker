@@ -63,6 +63,18 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                 "denied",
                 "recruiterContacted"
             ];
+            const fakeJobAppliedFrom = [
+                "linkedin",
+                "recruiter",
+                "ziprecruiter",
+                "indeed",
+                "github",
+                "company",
+                "monster",
+                "dice",
+                "other",
+                ""
+            ];
             const getFake = (array: Array<string>): string => {
                 return array[Math.floor(Math.random() * array.length)];
             };
@@ -79,7 +91,8 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                     jobSalaryMax: 0,
                     jobSalaryType: "hr",
                     jobStatus: getFake(fakeJobStatuses),
-                    jobId
+                    jobId,
+                    jobAppliedFrom: getFake(fakeJobAppliedFrom)
                 };
 
                 fakeJobs[jobId] = job;

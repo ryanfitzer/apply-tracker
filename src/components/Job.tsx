@@ -6,6 +6,7 @@ import JobStatus from "./JobStatus";
 import { applicationsActions } from "../store/applications-slice";
 import { uiActions } from "../store/ui-slice";
 import { useAppDispatch } from "../hooks/hooks";
+import { useTranslation } from "react-i18next";
 
 interface Thing {
     job: JobType;
@@ -13,6 +14,7 @@ interface Thing {
 }
 
 const Job = ({ job, removeJob }: Thing) => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const { jobId } = job;
     const removeJobClick = () => {
@@ -96,6 +98,16 @@ const Job = ({ job, removeJob }: Thing) => {
                 </div>
                 <JobSalary job={job} />
             </div>
+            {job.jobAppliedFrom && (
+                <div className="opacity-60">
+                    <p>
+                        Applied through{": "}
+                        {`${t(
+                            `${"jobAppliedFrom"}.${[`${job.jobAppliedFrom}`]}`
+                        )}`}
+                    </p>
+                </div>
+            )}
             <div>
                 <p className="font-bold">Status</p>
                 <JobStatus job={job} />

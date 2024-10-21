@@ -1,7 +1,9 @@
-import { JobStatusType } from "./lib/types";
+import { JobAppliedFrom, JobStatusType } from "./lib/types";
+
 import LanguageDetector from "i18next-browser-languagedetector";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+
 const options = {
     order: ["querystring", "navigator"],
     lookupQuerystring: "lng"
@@ -15,6 +17,18 @@ const jobStatus = {
     [JobStatusType.INTERVIEWED]: "Interviewed",
     [JobStatusType.OFFERED]: "Offered",
     [JobStatusType.RECRUITER_CONTACTED]: "Recruiter Contacted"
+};
+
+const jobAppliedFrom = {
+    [JobAppliedFrom.LINKEDIN]: "LinkedIn",
+    [JobAppliedFrom.RECRUITER]: "Recruiter",
+    [JobAppliedFrom.ZIPRECUITER]: "ZipRecruiter",
+    [JobAppliedFrom.INDEED]: "Indeed",
+    [JobAppliedFrom.GITHUB]: "Github",
+    [JobAppliedFrom.COMPANY]: "Company",
+    [JobAppliedFrom.MONSTER]: "Monster",
+    [JobAppliedFrom.DICE]: "Dice",
+    [JobAppliedFrom.OTHER]: "Other"
 };
 
 i18n.use(LanguageDetector)
@@ -41,6 +55,8 @@ i18n.use(LanguageDetector)
                     jobSalaryType: "Frequency",
                     loading: "Loading...",
                     jobStatus,
+                    jobAppliedFrom: jobAppliedFrom,
+                    jobAppliedFromTitle: "Applied From",
                     stats: "View Stats",
                     menu: "☰"
                 }
@@ -59,6 +75,7 @@ i18n.use(LanguageDetector)
                     jobSalaryType: "How Often?",
                     loading: "Loading...",
                     jobStatus,
+                    jobAppliedFrom: "Applied From",
                     stats: "Where am I?",
                     menu: "🍔"
                 }

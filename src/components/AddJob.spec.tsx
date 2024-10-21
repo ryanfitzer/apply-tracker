@@ -1,6 +1,17 @@
-import { ActionCreatorWithPayload, ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
-import { JobSalaryType, JobStatusType, JobType } from "../lib/types";
-import { appListInitialState, applicationsActions } from "../store/applications-slice";
+import {
+    ActionCreatorWithPayload,
+    ActionCreatorWithoutPayload
+} from "@reduxjs/toolkit";
+import {
+    JobAppliedFrom,
+    JobSalaryType,
+    JobStatusType,
+    JobType
+} from "../lib/types";
+import {
+    appListInitialState,
+    applicationsActions
+} from "../store/applications-slice";
 
 import AddJob from "./AddJob";
 import { MockInstance } from "vitest";
@@ -13,14 +24,20 @@ vi.mock("react-uuid");
 const mockedUuid = uuid as jest.Mock;
 
 describe("AddJob Component", () => {
-    let mockAddItem: MockInstance<ActionCreatorWithPayload<JobType, "applications/addItem">>;
-    let mockClearEditingJob: MockInstance<ActionCreatorWithoutPayload<"applications/clearEditingJob">>;
-    let mockToggleModal: MockInstance<ActionCreatorWithoutPayload<"ui/toggleModal">>;
+    let mockAddItem: MockInstance<
+        ActionCreatorWithPayload<JobType, "applications/addItem">
+    >;
+    let mockClearEditingJob: MockInstance<
+        ActionCreatorWithoutPayload<"applications/clearEditingJob">
+    >;
+    let mockToggleModal: MockInstance<
+        ActionCreatorWithoutPayload<"ui/toggleModal">
+    >;
     beforeEach(() => {
         vi.useFakeTimers();
-        mockAddItem = vi.spyOn(applicationsActions, 'addItem');
-        mockClearEditingJob = vi.spyOn(applicationsActions, 'clearEditingJob');
-        mockToggleModal = vi.spyOn(uiActions, 'toggleModal');
+        mockAddItem = vi.spyOn(applicationsActions, "addItem");
+        mockClearEditingJob = vi.spyOn(applicationsActions, "clearEditingJob");
+        mockToggleModal = vi.spyOn(uiActions, "toggleModal");
 
         // Set system date to 09Aug2024, time does not matter
         // as it's stripped off.
@@ -55,6 +72,11 @@ describe("AddJob Component", () => {
                     value: JobSalaryType.HR
                 }
             });
+            fireEvent.change(getByTestId("jobAppliedFrom"), {
+                target: {
+                    value: JobAppliedFrom.LINKEDIN
+                }
+            });
             fireEvent.click(getByTestId("buttonSubmit"));
             expect(mockAddItem).toHaveBeenCalledWith({
                 jobTitle: "new job",
@@ -66,7 +88,8 @@ describe("AddJob Component", () => {
                 jobSalaryMin: 0,
                 jobSalaryType: JobSalaryType.HR,
                 jobStatus: JobStatusType.APPLIED,
-                jobId: "testid"
+                jobId: "testid",
+                jobAppliedFrom: JobAppliedFrom.LINKEDIN
             });
             expect(mockClearEditingJob).toHaveBeenCalled();
             expect(mockToggleModal).toHaveBeenCalledWith(false);
@@ -84,7 +107,8 @@ describe("AddJob Component", () => {
             jobSalaryMin: 0,
             jobSalaryType: JobSalaryType.YR,
             jobStatus: JobStatusType.APPLIED,
-            jobId: "123"
+            jobId: "123",
+            jobAppliedFrom: JobAppliedFrom.LINKEDIN
         };
         const originalState = {
             preloadedState: {
@@ -103,14 +127,17 @@ describe("AddJob Component", () => {
             }
         };
         it("renders component", () => {
-            const { getByTestId } = renderWithProviders(<AddJob />, originalState);
+            const { getByTestId } = renderWithProviders(
+                <AddJob />,
+                originalState
+            );
 
             expect(getByTestId("jobTitle")).toHaveValue("first job");
             expect(getByTestId("jobCompany")).toHaveValue("company");
             expect(getByTestId("jobApplyDate")).toHaveValue("2024-07-17");
         });
         describe("changes values", () => {
-            it('does something', () => {
+            it("does something", () => {
                 const newJob: JobType = {
                     ...originalJob,
                     jobTitle: "second job",
@@ -119,7 +146,10 @@ describe("AddJob Component", () => {
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { ["jobSalary"]: _, ...updatedJob } = newJob;
-                const { getByTestId } = renderWithProviders(<AddJob />, originalState);
+                const { getByTestId } = renderWithProviders(
+                    <AddJob />,
+                    originalState
+                );
                 fireEvent.change(getByTestId("jobTitle"), {
                     target: {
                         value: "second job"
@@ -138,7 +168,10 @@ describe("AddJob Component", () => {
         });
         describe("pressing clear", () => {
             it("clears the form", () => {
-                const { getByTestId } = renderWithProviders(<AddJob />, originalState);
+                const { getByTestId } = renderWithProviders(
+                    <AddJob />,
+                    originalState
+                );
 
                 fireEvent.click(getByTestId("buttonClear"));
                 expect(getByTestId("jobTitle")).not.toHaveValue();

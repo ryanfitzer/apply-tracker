@@ -1,6 +1,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { JobSalaryType, JobStatusType, JobType } from "../lib/types";
-import { applicationsActions, selectApplicationEditing, selectApplicationItems } from "../store/applications-slice";
+import {
+    JobAppliedFrom,
+    JobSalaryType,
+    JobStatusType,
+    JobType
+} from "../lib/types";
+import {
+    applicationsActions,
+    selectApplicationEditing,
+    selectApplicationItems
+} from "../store/applications-slice";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 
 import { uiActions } from "../store/ui-slice";
@@ -17,7 +26,8 @@ const defaultJob = {
     jobSalaryMax: 0,
     jobSalaryType: "",
     jobStatus: "",
-    jobId: ""
+    jobId: "",
+    jobAppliedFrom: ""
 };
 
 const AddJob = () => {
@@ -31,8 +41,7 @@ const AddJob = () => {
 
     useEffect(() => {
         if (editingJob) {
-            const currentJob: JobType =
-                applicationItems[editingJob];
+            const currentJob: JobType = applicationItems[editingJob];
 
             setFormData({
                 jobTitle: currentJob.jobTitle,
@@ -44,13 +53,14 @@ const AddJob = () => {
                 jobSalaryMax: currentJob.jobSalaryMax,
                 jobSalaryType: currentJob.jobSalaryType,
                 jobId: currentJob.jobId,
-                jobStatus: currentJob.jobStatus
+                jobStatus: currentJob.jobStatus,
+                jobAppliedFrom: currentJob.jobAppliedFrom
             });
         } else {
             const newDefaultJob = {
                 ...defaultJob,
                 jobApplyDate: currentDateParsed,
-                jobSalaryType: "yr",
+                jobSalaryType: "yr"
             };
             setFormData(newDefaultJob);
         }
@@ -64,11 +74,12 @@ const AddJob = () => {
             newJob.jobStatus = JobStatusType.APPLIED;
             newJob.jobId = uuid();
         } else {
-            const currentJob =
-                applicationItems[editingJob];
+            const currentJob = applicationItems[editingJob];
             newJob.jobStatus = currentJob.jobStatus;
             newJob.jobId = currentJob.jobId;
         }
+
+        console.log(newJob);
 
         dispatch(applicationsActions.addItem(newJob as JobType));
         dispatch(applicationsActions.clearEditingJob());
@@ -76,7 +87,9 @@ const AddJob = () => {
         setFormData(defaultJob);
     };
 
-    const updateField = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const updateField = (
+        event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
         const {
             target: { id, value }
         } = event;
@@ -157,6 +170,35 @@ const AddJob = () => {
                     required
                 />
             </label>
+            <label htmlFor="jobAppliedFrom" className="flex-shrink-0 w-24">
+                <p>{t("jobAppliedFromTitle")}</p>
+                <select
+                    className="w-full border-2 px-2"
+                    name="jobAppliedFrom"
+                    id="jobAppliedFrom"
+                    onChange={updateField}
+                    value={formData.jobAppliedFrom}
+                    data-testid="jobAppliedFrom"
+                >
+                    <option value="" disabled>
+                        Select one
+                    </option>
+                    <option value={JobAppliedFrom.COMPANY}>Company</option>
+                    <option value={JobAppliedFrom.DICE}>Dice</option>
+                    <option value={JobAppliedFrom.GITHUB}>Github</option>
+                    <option value={JobAppliedFrom.INDEED}>Indeed</option>
+                    <option value={JobAppliedFrom.LINKEDIN}>
+                        LinkedIn (Easy Apply)
+                    </option>
+                    <option value={JobAppliedFrom.MONSTER}>Monster</option>
+                    <option value={JobAppliedFrom.RECRUITER}>Recruiter</option>
+                    <option value={JobAppliedFrom.ZIPRECUITER}>
+                        ZipRecruiter
+                    </option>
+                    <option disabled>──────────</option>
+                    <option value={JobAppliedFrom.OTHER}>Other</option>
+                </select>
+            </label>
             <div className="flex w-full justify-between gap-4">
                 <label htmlFor="jobSalaryMin" className="w-full">
                     <p>{t("jobSalaryMin")}</p>
@@ -206,7 +248,10 @@ const AddJob = () => {
                 >
                     Clear
                 </button>
-                <button data-testid="buttonSubmit" className="bg-blue-300 text-white w-32 py-2 font-bold">
+                <button
+                    data-testid="buttonSubmit"
+                    className="bg-blue-300 text-white w-32 py-2 font-bold"
+                >
                     Save
                 </button>
             </div>

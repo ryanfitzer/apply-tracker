@@ -10,6 +10,7 @@ export interface JobType {
     jobSalary: string;
     jobSalaryMin: number;
     jobSalaryMax: number;
+    jobAppliedFrom: JobAppliedFrom;
 }
 
 export enum JobStatusType {
@@ -61,4 +62,16 @@ export interface ReplaceAppData {
     items: { [key: string]: JobType };
     sort: AppListSort;
     viewAs: string;
+}
+
+export enum JobAppliedFrom {
+    LINKEDIN = "linkedin",
+    RECRUITER = "recruiter",
+    ZIPRECUITER = "ziprecruiter",
+    INDEED = "indeed",
+    GITHUB = "github",
+    COMPANY = "company",
+    MONSTER = "monster",
+    DICE = "dice",
+    OTHER = "other"
 }
