@@ -2,7 +2,14 @@ import "./App.css";
 
 import { JobType, SortDirection, UiState } from "./lib/types";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import { applicationsActions, selectApplicationEditing, selectApplicationItems, selectApplicationListIsChanged, selectApplicationListViewAs, selectApplicationSort } from "./store/applications-slice";
+import {
+    applicationsActions,
+    selectApplicationEditing,
+    selectApplicationItems,
+    selectApplicationListIsChanged,
+    selectApplicationListViewAs,
+    selectApplicationSort
+} from "./store/applications-slice";
 import {
     fetchApplicationData,
     fetchBootStrapData,
@@ -13,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import AddJob from "./components/AddJob";
 import Charts from "./components/Charts";
 import DialogModal from "./components/DialogModal";
+import FadeUp from "./components/ui/FadeUp";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Job from "./components/Job";
@@ -26,7 +34,9 @@ import { useTranslation } from "react-i18next";
 const App = () => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
-    const applicationListIsChanged = useAppSelector(selectApplicationListIsChanged);
+    const applicationListIsChanged = useAppSelector(
+        selectApplicationListIsChanged
+    );
     const applicationListEditing = useAppSelector(selectApplicationEditing);
     const applicationListSort = useAppSelector(selectApplicationSort);
     const applicationListItems = useAppSelector(selectApplicationItems);
@@ -45,7 +55,7 @@ const App = () => {
                 if (bootStrapped) {
                     dispatch(fetchApplicationData(false));
                 } else {
-                    alert('GistID and/or Access Token are not set.');
+                    alert("GistID and/or Access Token are not set.");
                 }
             }
         }
@@ -55,13 +65,24 @@ const App = () => {
         const query = new URLSearchParams(document.location.search);
 
         if (applicationListIsChanged) {
-            dispatch(saveApplicationData({
-                items: applicationListItems,
-                sort: applicationListSort,
-                viewAs: applicationListViewAs
-            }, !!query.get("demo")));
+            dispatch(
+                saveApplicationData(
+                    {
+                        items: applicationListItems,
+                        sort: applicationListSort,
+                        viewAs: applicationListViewAs
+                    },
+                    !!query.get("demo")
+                )
+            );
         }
-    }, [applicationListIsChanged, dispatch, applicationListItems, applicationListSort, applicationListViewAs]);
+    }, [
+        applicationListIsChanged,
+        dispatch,
+        applicationListItems,
+        applicationListSort,
+        applicationListViewAs
+    ]);
 
     const sortItems = (items: JobType[]) => {
         if (!items) {
@@ -78,7 +99,9 @@ const App = () => {
                 return sortDir === SortDirection.ASCENDING ? -1 : 1;
             }
 
-            const date = Number(new Date(b.jobApplyDate)) - Number(new Date(a.jobApplyDate));
+            const date =
+                Number(new Date(b.jobApplyDate)) -
+                Number(new Date(a.jobApplyDate));
 
             if (date < 0) {
                 return sortDir === SortDirection.ASCENDING ? 1 : -1;
@@ -102,8 +125,8 @@ const App = () => {
                 <Header />
                 <main className="h-full overflow-y-auto w-full">
                     {/* Need to compare against 0 to make sure 0 does now show up
-                    * on the UI.
-                    */}
+                     * on the UI.
+                     */}
                     {Object.values(applicationListItems).length > 0 && (
                         <>
                             {applicationListViewAs === "table" ? (
@@ -129,10 +152,14 @@ const App = () => {
                                                     className="p-3"
                                                     key={job.jobId}
                                                 >
-                                                    <Job
-                                                        job={job}
-                                                        removeJob={removeJob}
-                                                    />
+                                                    <FadeUp>
+                                                        <Job
+                                                            job={job}
+                                                            removeJob={
+                                                                removeJob
+                                                            }
+                                                        />
+                                                    </FadeUp>
                                                 </div>
                                             )
                                         )}
@@ -170,4 +197,3 @@ const App = () => {
 };
 
 export default App;
-

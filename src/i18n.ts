@@ -9,10 +9,12 @@ const options = {
 
 const jobStatus = {
     [JobStatusType.APPLIED]: "Applied",
-    [JobStatusType.DENIED]: "Denied",
+    [JobStatusType.DENIED]: "Rejected",
     [JobStatusType.ON_HOLD]: "On Hold",
     [JobStatusType.INTERVIEWED_SCHEDULED]: "Interviewed Scheldued",
-    [JobStatusType.INTERVIEWED]: "Interviewed"
+    [JobStatusType.INTERVIEWED]: "Interviewed",
+    [JobStatusType.OFFERED]: "Offered",
+    [JobStatusType.RECRUITER_CONTACTED]: "Recruiter Contacted"
 };
 
 i18n.use(LanguageDetector)

@@ -17,7 +17,9 @@ export enum JobStatusType {
     INTERVIEWED_SCHEDULED = "interviewScheduled",
     INTERVIEWED = "interviewed",
     ON_HOLD = "onHold",
-    DENIED = "denied"
+    DENIED = "denied",
+    OFFERED = "offered",
+    RECRUITER_CONTACTED = "recruiterContacted"
 }
 
 export enum JobSalaryType {

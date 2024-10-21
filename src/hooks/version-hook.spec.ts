@@ -25,9 +25,8 @@ describe("useVersion", () => {
                 );
             });
             it("does things", async () => {
-                let render;
-                await act(() => {
-                    render = renderHook(() => useVersion());
+                const render = await act(() => {
+                    return renderHook(() => useVersion());
                 });
                 expect(render.result.current).toEqual(["1234", false]);
             });
@@ -41,9 +40,8 @@ describe("useVersion", () => {
                 );
             });
             it("renders the page", async () => {
-                let render;
-                await act(() => {
-                    render = renderHook(() => useVersion());
+                const render = await act(() => {
+                    return renderHook(() => useVersion());
                 });
                 expect(render.result.current).toEqual(["Error", false]);
             });
