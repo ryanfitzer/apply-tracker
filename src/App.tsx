@@ -20,7 +20,6 @@ import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import AddJob from "./components/AddJob";
 import Charts from "./components/Charts";
 import DialogModal from "./components/DialogModal";
-import FadeUp from "./components/ui/FadeUp";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Job from "./components/Job";
@@ -152,14 +151,10 @@ const App = () => {
                                                     className="p-3"
                                                     key={job.jobId}
                                                 >
-                                                    <FadeUp>
-                                                        <Job
-                                                            job={job}
-                                                            removeJob={
-                                                                removeJob
-                                                            }
-                                                        />
-                                                    </FadeUp>
+                                                    <Job
+                                                        job={job}
+                                                        removeJob={removeJob}
+                                                    />
                                                 </div>
                                             )
                                         )}

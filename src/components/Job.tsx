@@ -48,7 +48,7 @@ const Job = ({ job, removeJob }: Thing) => {
 
     return (
         <div
-            className={`border-4 rounded-md p-2 transition-all duration-500
+            className={`border-4 rounded-md p-2 transition-all duration-300 ease-out
                 ${getColorList(job.jobStatus)}
             }`}
         >
