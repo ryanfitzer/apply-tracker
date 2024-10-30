@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { JobSalaryType, JobStatusType, JobType } from "../lib/types";
+import { JobAppliedFrom, JobSalaryType, JobStatusType, JobType } from "../lib/types";
 
 import AddKey from "./Modal";
 import { applicationsActions } from "../store/applications-slice";
@@ -17,10 +17,12 @@ const defaultJob = {
     jobSalaryMax: 0,
     jobSalaryType: "",
     jobStatus: "",
-    jobId: ""
+    jobId: "",
+    jobAppliedFrom: "",
+    interviews: []
 };
 
-const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () => void }) => {
+const AddJob = ({ currentJob, afterSave }: { currentJob?: JobType; afterSave: () => void }) => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const [formData, setFormData] = useState(defaultJob);
@@ -39,7 +41,9 @@ const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () 
                 jobSalaryMax: currentJob.jobSalaryMax,
                 jobSalaryType: currentJob.jobSalaryType,
                 jobId: currentJob.jobId,
-                jobStatus: currentJob.jobStatus
+                jobStatus: currentJob.jobStatus,
+                jobAppliedFrom: currentJob.jobAppliedFrom,
+                interviews: currentJob.interviews
             });
         } else {
             const newDefaultJob = {
@@ -58,7 +62,7 @@ const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () 
         // Recasting the object to the proper type.
         const newJob2 = { ...newJob } as JobType;
 
-        if (!currentJob.jobId) {
+        if (!currentJob?.jobId) {
             newJob2.jobStatus = JobStatusType.APPLIED;
             newJob2.jobId = uuid();
         } else {
@@ -129,6 +133,31 @@ const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () 
                     required
                 />
             </label>
+            <label htmlFor="jobAppliedFrom" className="w-24 flex-shrink-0">
+                <p>{t("jobAppliedFromTitle")}</p>
+                <select
+                    className="w-full border-2 px-2"
+                    name="jobAppliedFrom"
+                    id="jobAppliedFrom"
+                    onChange={(e) => setFormData({ ...formData, jobAppliedFrom: e.target.value })}
+                    value={formData.jobAppliedFrom}
+                    data-testid="jobAppliedFrom"
+                >
+                    <option value="" disabled>
+                        Select one
+                    </option>
+                    <option value={JobAppliedFrom.COMPANY}>Company</option>
+                    <option value={JobAppliedFrom.DICE}>Dice</option>
+                    <option value={JobAppliedFrom.GITHUB}>Github</option>
+                    <option value={JobAppliedFrom.INDEED}>Indeed</option>
+                    <option value={JobAppliedFrom.LINKEDIN}>LinkedIn (Easy Apply)</option>
+                    <option value={JobAppliedFrom.MONSTER}>Monster</option>
+                    <option value={JobAppliedFrom.RECRUITER}>Recruiter</option>
+                    <option value={JobAppliedFrom.ZIPRECUITER}>ZipRecruiter</option>
+                    <option disabled>──────────</option>
+                    <option value={JobAppliedFrom.OTHER}>Other</option>
+                </select>
+            </label>
             <div className="flex w-full justify-between gap-4">
                 <label htmlFor="jobSalaryMin" className="w-full">
                     <p>{t("jobSalaryMin")}</p>
@@ -160,7 +189,8 @@ const AddJob = ({ currentJob, afterSave }: { currentJob: JobType; afterSave: () 
                         className="w-full border-2 px-2"
                         name="jobSalaryType"
                         id="jobSalaryType"
-                        defaultValue={formData.jobSalaryType}
+                        onChange={(e) => setFormData({ ...formData, jobSalaryType: e.target.value })}
+                        value={formData.jobSalaryType}
                         data-testid="jobSalaryType"
                     >
                         <option value={JobSalaryType.YR}>Yearly</option>

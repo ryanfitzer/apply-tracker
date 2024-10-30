@@ -3,6 +3,7 @@ import { AppListSort, JobType } from "../lib/types";
 import { AppDispatch } from "../store";
 import { applicationsActions } from "./applications-slice";
 import gistFetch from "../lib/gist-fetch";
+import uuid from "react-uuid";
 
 interface AppListTypeSave {
     sort: AppListSort;
@@ -43,32 +44,54 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
 
             localStorageTracker = response.files.applications.content;
         } else {
-            localStorageTracker = JSON.stringify({
-                items: {
-                    "254cfe80-7efd-3e68-6b8c-eadf3aa2ffda": {
-                        jobTitle: "Software Developer",
-                        jobCompany: "Pixel Forge",
-                        jobApplyDate: "2024-08-16",
-                        jobCompanyLink: "",
-                        jobLink: "",
-                        jobSalaryMin: 70.1,
-                        jobSalaryMax: 0,
-                        jobSalaryType: "hr",
-                        jobStatus: "applied",
-                        jobId: "254cfe80-7efd-3e68-6b8c-eadf3aa2ffda"
-                    },
-                    "d74a8833-88c4-d142-bf7b-737d1e74819d": {
-                        jobTitle: "Senior Front-End Engineer",
-                        jobCompany: "Login Loom",
-                        jobApplyDate: "2024-08-01",
-                        jobCompanyLink: "",
-                        jobLink: "",
-                        jobSalaryMin: 70000,
-                        jobSalaryMax: 120000,
-                        jobSalaryType: "yr",
-                        jobStatus: "interviewed",
-                        jobId: "d74a8833-88c4-d142-bf7b-737d1e74819d",
-                        interviews: [
+            const fakeJobs = {};
+            const fakeJobsTitles = [
+                "Software Developer",
+                "Software Engineer",
+                "Senior Front-End Engineer",
+                "React Engineer",
+                "Angular Engineer",
+                "NextJS Engineer",
+                "Senior Front-End React Software Engineer"
+            ];
+            const fakeJobCompanies = ["Pixel Forge", "Login Loom"];
+            const fakeJobStatuses = [
+                "applied",
+                "onHold",
+                "denied",
+                "recruiterContacted"
+            ];
+            const fakeJobAppliedFrom = [
+                "linkedin",
+                "recruiter",
+                "ziprecruiter",
+                "indeed",
+                "github",
+                "company",
+                "monster",
+                "dice",
+                "other",
+                ""
+            ];
+            const getFake = (array: Array<string>): string => {
+                return array[Math.floor(Math.random() * array.length)];
+            };
+
+            for (let i = 0; i < 30; i++) {
+                const jobId = uuid();
+                const job = {
+                    jobTitle: getFake(fakeJobsTitles),
+                    jobCompany: getFake(fakeJobCompanies),
+                    jobApplyDate: "2024-08-16",
+                    jobCompanyLink: "",
+                    jobLink: "",
+                    jobSalaryMin: 70.1,
+                    jobSalaryMax: 0,
+                    jobSalaryType: "hr",
+                    jobStatus: getFake(fakeJobStatuses),
+                    jobId,
+                    jobAppliedFrom: getFake(fakeJobAppliedFrom),
+                    interviews: [
                             {
                                 date: "2024-08-05",
                                 interviewerList: ["joe", "mike"],
@@ -77,44 +100,13 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                                 final: true
                             }
                         ]
-                    },
-                    "47e1a4cd-5e30-fd9f-9918-7a59e7f63e89": {
-                        jobTitle: "React Engineer",
-                        jobCompany: "NovaSoft",
-                        jobApplyDate: "2024-07-16",
-                        jobCompanyLink: "",
-                        jobLink: "",
-                        jobSalaryMin: 140000,
-                        jobSalaryMax: 0,
-                        jobSalaryType: "yr",
-                        jobStatus: "applied",
-                        jobId: "47e1a4cd-5e30-fd9f-9918-7a59e7f63e89"
-                    },
-                    "47e1a4cd-5e30-fd9f-9910-7a59e7f63e89": {
-                        jobTitle: "Angular Engineer",
-                        jobCompany: "Koshka Enterprizes",
-                        jobApplyDate: "2024-07-01",
-                        jobCompanyLink: "",
-                        jobLink: "",
-                        jobSalaryMin: 0,
-                        jobSalaryMax: 140000,
-                        jobSalaryType: "yr",
-                        jobStatus: "denied",
-                        jobId: "47e1a4cd-5e30-fd9f-9910-7a59e7f63e89"
-                    },
-                    "47e1a4cd-5e30-fd9f-9910-7a59e7f63e82": {
-                        jobTitle: "NextJS Engineer",
-                        jobCompany: "Codez",
-                        jobApplyDate: "2024-07-03",
-                        jobCompanyLink: "",
-                        jobLink: "",
-                        jobSalaryMin: 0,
-                        jobSalaryMax: 0,
-                        jobSalaryType: "yr",
-                        jobStatus: "onHold",
-                        jobId: "47e1a4cd-5e30-fd9f-9910-7a59e7f63e82"
-                    }
-                },
+                };
+
+                fakeJobs[jobId] = job;
+            }
+
+            localStorageTracker = JSON.stringify({
+                items: fakeJobs,
                 sort: { by: "jobApplyDate", dir: "desc" },
                 viewAs: "tiles"
             });

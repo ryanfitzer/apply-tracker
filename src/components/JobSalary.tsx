@@ -13,10 +13,14 @@ const thing = {
 
 const JobSalary = ({ job }: JobSalaryInput) => {
     const [viewState, setViewState] = useState(thing);
-    const minimumFractionDigits = job.jobSalaryType === JobSalaryType.HR ? 2 : 0;
+    const minimumFractionDigits =
+        job.jobSalaryType === JobSalaryType.HR ? 2 : 0;
     const jobAmountParser = (amount: number): string => {
         // Need to convert the string to a number first
-        return (+amount).toLocaleString(navigator.language, { minimumFractionDigits, maximumFractionDigits: 2 });
+        return (+amount).toLocaleString(navigator.language, {
+            minimumFractionDigits,
+            maximumFractionDigits: 2
+        });
     };
 
     useMemo(() => {
@@ -49,16 +53,30 @@ const JobSalary = ({ job }: JobSalaryInput) => {
         <>
             {(viewState.showMax || viewState.showMin) && (
                 <div>
-                    <p className="text-gray-400">
-                        {!viewState.showMax && viewState.showMin && (<>Min&nbsp;</>)}
-                        {viewState.showMax && !viewState.showMin && (<>Max&nbsp;</>)}
-                        {viewState.showMin && (<span className="font-semibold">${jobAmountParser(job.jobSalaryMin)}</span>)}
-                        {viewState.showTo && (<span>&nbsp;-&nbsp;</span>)}
-                        {viewState.showMax && (<span className="font-semibold">${jobAmountParser(job.jobSalaryMax)}</span>)}
+                    <p>
+                        {!viewState.showMax && viewState.showMin && (
+                            <>Min&nbsp;</>
+                        )}
+                        {viewState.showMax && !viewState.showMin && (
+                            <>Max&nbsp;</>
+                        )}
+                        {viewState.showMin && (
+                            <span className="font-semibold">
+                                ${jobAmountParser(job.jobSalaryMin)}
+                            </span>
+                        )}
+                        {viewState.showTo && <span>&nbsp;-&nbsp;</span>}
+                        {viewState.showMax && (
+                            <span className="font-semibold">
+                                ${jobAmountParser(job.jobSalaryMax)}
+                            </span>
+                        )}
                         &nbsp;
-                        {job.jobSalaryType === JobSalaryType.YR ? "a year" : "an hour"}
+                        {job.jobSalaryType === JobSalaryType.YR
+                            ? "a year"
+                            : "an hour"}
                     </p>
-                </div >
+                </div>
             )}
         </>
     );

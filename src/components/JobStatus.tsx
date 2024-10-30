@@ -11,23 +11,25 @@ interface JobStatusInput {
 interface JobStatusList {
     [key: string]: {
         title: string;
-        status: JobStatusType,
-        color: string;
+        status: JobStatusType;
+        color?: string;
     };
 }
 
 const JobStatus = ({ job }: JobStatusInput) => {
     const dispatch = useAppDispatch();
     const jobStatusList: JobStatusList = {
+        recruiterContacted: {
+            title: "Recruiter Contacted",
+            status: JobStatusType.RECRUITER_CONTACTED
+        },
         applied: {
             title: "Applied",
-            status: JobStatusType.APPLIED,
-            color: "text-green-500"
+            status: JobStatusType.APPLIED
         },
         interviewScheduled: {
             title: "Interviewed Scheduled",
-            status: JobStatusType.INTERVIEWED_SCHEDULED,
-            color: "text-blue-400"
+            status: JobStatusType.INTERVIEWED_SCHEDULED
         },
         interviewing: {
             title: "Interviewing",
@@ -36,18 +38,19 @@ const JobStatus = ({ job }: JobStatusInput) => {
         },
         interviewed: {
             title: "Interviewed",
-            status: JobStatusType.INTERVIEWED,
-            color: "text-blue-500"
+            status: JobStatusType.INTERVIEWED
+        },
+        offered: {
+            title: "Offered",
+            status: JobStatusType.OFFERED
         },
         onHold: {
             title: "On Hold",
-            status: JobStatusType.ON_HOLD,
-            color: "text-orange-400"
+            status: JobStatusType.ON_HOLD
         },
         denied: {
-            title: "Denied",
-            status: JobStatusType.DENIED,
-            color: "text-red-400"
+            title: "Rejected",
+            status: JobStatusType.DENIED
         }
     };
 
@@ -63,19 +66,15 @@ const JobStatus = ({ job }: JobStatusInput) => {
     return (
         <>
             <select
-                className={`${jobStatusList[job.jobStatus].color}`}
                 id="jobStatus"
                 name="jobStatus"
                 value={job.jobStatus}
                 onChange={updateJobStatus}
+                className="rounded-md border-2 border-gray-500 p-1"
             >
                 {Object.values(jobStatusList).map((status) => {
                     return (
-                        <option
-                            className="text-black"
-                            key={status.status}
-                            value={status.status}
-                        >
+                        <option className="text-black" key={status.status} value={status.status}>
                             {status.title}
                         </option>
                     );

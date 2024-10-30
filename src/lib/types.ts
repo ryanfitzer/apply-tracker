@@ -9,6 +9,7 @@ export interface JobType {
     jobSalaryType: JobSalaryType;
     jobSalaryMin: number;
     jobSalaryMax: number;
+    jobAppliedFrom: JobAppliedFrom;
     interviews?: Interview[];
 }
 
@@ -36,7 +37,9 @@ export enum JobStatusType {
     INTERVIEWING = "interviewing",
     INTERVIEWED = "interviewed",
     ON_HOLD = "onHold",
-    DENIED = "denied"
+    DENIED = "denied",
+    OFFERED = "offered",
+    RECRUITER_CONTACTED = "recruiterContacted"
 }
 
 export enum JobSalaryType {
@@ -78,4 +81,16 @@ export interface ReplaceAppData {
     items: { [key: string]: JobType };
     sort: AppListSort;
     viewAs: string;
+}
+
+export enum JobAppliedFrom {
+    LINKEDIN = "linkedin",
+    RECRUITER = "recruiter",
+    ZIPRECUITER = "ziprecruiter",
+    INDEED = "indeed",
+    GITHUB = "github",
+    COMPANY = "company",
+    MONSTER = "monster",
+    DICE = "dice",
+    OTHER = "other"
 }
