@@ -1,12 +1,13 @@
-import { ChangeEvent, useState } from "react";
 import { SortDirection, UiState } from "../lib/types";
 import { applicationsActions, selectApplicationSort } from "../store/applications-slice";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 
 import AddJob from "./AddJob";
 import Modal from "./Modal";
+import SelectInput from "./ui/SelectInput";
 import { uiActions } from "../store/ui-slice";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const Header = () => {
@@ -23,11 +24,7 @@ const Header = () => {
         }
     };
 
-    const changeSortData = (event: ChangeEvent<HTMLSelectElement>) => {
-        const {
-            target: { id, value }
-        } = event;
-
+    const changeSortData = (id: string, value: string) => {
         dispatch(
             applicationsActions.sortItemList({
                 by: id === "sortBy" ? value : applicationListSort.by,
@@ -73,6 +70,14 @@ const Header = () => {
                     <div className="flex flex-col items-center sm:ml-2 sm:border-l-2 sm:pl-2 md:flex-row">
                         <p>Sort By:</p>
                         <div>
+                            <SelectInput
+                                options={[
+                                    { value: "jobTitle", label: "Title" },
+                                    { value: "jobApplyDate", label: "Date" }
+                                ]}
+                                onChangeData={changeSortData}
+                                name="sortBy"
+                            />
                             <select
                                 className="cursor-pointer"
                                 name="sortBy"
