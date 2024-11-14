@@ -14,7 +14,6 @@ import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 
 import Charts from "./components/Charts";
 import DialogModal from "./components/DialogModal";
-import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Job from "./components/Job";
 import JobsTable from "./components/JobTable";
@@ -135,7 +134,7 @@ const App = () => {
                     )}
                 </main>
             </div>
-            <Footer />
+            {/* <Footer /> */}
             <DialogModal
                 isOpened={uiItem.chartsModalIsVisible}
                 closeModal={() => {
