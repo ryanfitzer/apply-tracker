@@ -19,7 +19,7 @@ const defaultJob = {
     jobStatus: "",
     jobId: "",
     jobAppliedFrom: "",
-    interviews: []
+    interviewList: []
 };
 
 const AddJob = ({ currentJob, afterSave }: { currentJob?: JobType; afterSave: () => void }) => {
@@ -43,7 +43,7 @@ const AddJob = ({ currentJob, afterSave }: { currentJob?: JobType; afterSave: ()
                 jobId: currentJob.jobId,
                 jobStatus: currentJob.jobStatus,
                 jobAppliedFrom: currentJob.jobAppliedFrom,
-                interviews: currentJob.interviews
+                interviewList: currentJob.interviewList
             });
         } else {
             const newDefaultJob = {

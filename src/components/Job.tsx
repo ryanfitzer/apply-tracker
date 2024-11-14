@@ -77,7 +77,7 @@ const Job = ({ job, removeJob }: Thing) => {
                 <p className="font-bold">Status</p>
                 <JobStatus job={job} />
             </div>
-            {/* <div>
+            <div>
                 <Modal open={interviewListOpen} onOpenChange={setInterviewListOpen}>
                     <Modal.Button className="flex items-center gap-1">
                         Interviews ({job.interviewList?.length || 0}) <Pencil1Icon />
@@ -86,7 +86,7 @@ const Job = ({ job, removeJob }: Thing) => {
                         <InterviewList job={job} afterSave={() => setEditIsOpen(false)} />
                     </Modal.Content>
                 </Modal>
-            </div> */}
+            </div>
             <div className="mt-2 flex justify-around border-t-2 border-dotted border-black pt-2">
                 <button className="w-32 bg-slate-200 py-2 font-bold" onClick={removeJobClick}>
                     Remove

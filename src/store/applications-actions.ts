@@ -33,13 +33,12 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
     return async (dispatch: AppDispatch, getState) => {
         let localStorageTracker: string = "";
 
-        // This is not conventional, but because this should be stored
-        // I'm using getState to grab the items to avoid pulling from
-        // local store all the time.
-        const access_token = getState().appList.accessToken;
-        const gist_id = getState().appList.gistId;
-
         if (!isDemo) {
+            // This is not conventional, but because this should be stored
+            // I'm using getState to grab the items to avoid pulling from
+            // local store all the time.
+            const access_token = getState().appList.accessToken;
+            const gist_id = getState().appList.gistId;
             const response = await gistFetch(gist_id, access_token, "GET");
 
             localStorageTracker = response.files.applications.content;
@@ -111,7 +110,7 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                     jobStatus: getFake(fakeJobStatuses),
                     jobId,
                     jobAppliedFrom: getFake(fakeJobAppliedFrom),
-                    interviews:
+                    interviewList:
                         Math.random() > 0.5
                             ? [
                                   {

@@ -10,6 +10,7 @@ export interface JobType {
     jobSalaryMin: number;
     jobSalaryMax: number;
     jobAppliedFrom: JobAppliedFrom;
+    jobHasInterviewed?: boolean; // For easy tracking of having interviewed
     interviewList?: Interview[];
 }
 

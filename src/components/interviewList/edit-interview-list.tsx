@@ -28,11 +28,10 @@ const InterviewList = ({ job, afterSave }: { job: JobType; afterSave: (arg0: boo
         const newJob = { ...job } as JobType;
         newJob.interviewList = [...(newJob.interviewList || []), newInterview] as Interview[];
         dispatch(applicationsActions.updateInterviewList(newJob));
-        afterSave(true);
+        afterSave(false);
         setIsSaving(false);
     };
     const editInterview = (interview: Interview) => () => {
-        console.log(interview);
         setSelectedInterview(interview);
     };
 
@@ -89,7 +88,9 @@ const InterviewList = ({ job, afterSave }: { job: JobType; afterSave: (arg0: boo
                         />
                     </label>
                 </fieldset>
-                <button className="mt-3">Add</button>
+                <button className="mt-3" type="submit">
+                    Add
+                </button>
             </form>
         </>
     );
