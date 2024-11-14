@@ -26,10 +26,5 @@
         "noImplicitAny": false
     },
     "include": ["src", "setupTest.ts"],
-    "exclude": [
-        "node_modules",
-        "./node_modules",
-        "./node_modules/*",
-        "./node_modules/@types/node/index.d.ts"
-    ]
+    "exclude": ["node_modules", "./node_modules", "./node_modules/*", "./node_modules/@types/node/index.d.ts"]
 }
