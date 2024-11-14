@@ -20,24 +20,52 @@ const InterviewList = ({ job, afterSave }: { job: JobType; afterSave: (arg0: boo
         event.preventDefault();
         setIsSaving(true);
         const interviewerList = interviewListRef && interviewListRef.current ? interviewListRef.current.getTags() : [];
-        const newInterview = {
+        const typeList = typeListRef && typeListRef.current ? typeListRef.current.getTags() : [];
+        const interview = {
             ...Object.fromEntries(new FormData(event.currentTarget)),
             interviewerList,
-            interviewId: uuid()
+            typeList,
+            interviewId: selectedInterview?.interviewId || uuid()
         } as Interview;
         const newJob = { ...job } as JobType;
-        newJob.interviewList = [...(newJob.interviewList || []), newInterview] as Interview[];
+
+        if (selectedInterview) {
+            const index = newJob.interviewList?.findIndex(
+                (interview) => interview.interviewId === selectedInterview.interviewId
+            );
+
+            if (index !== undefined && index !== null && index !== -1) {
+                const blah = [...newJob.interviewList];
+                blah[index] = interview;
+
+                newJob.interviewList = blah;
+            }
+        } else {
+            newJob.interviewList = [...(newJob.interviewList || []), interview] as Interview[];
+        }
         dispatch(applicationsActions.updateInterviewList(newJob));
+        event.currentTarget.reset();
         afterSave(false);
         setIsSaving(false);
     };
     const editInterview = (interview: Interview) => () => {
         setSelectedInterview(interview);
     };
+    const deleteInterview = (interview: Interview) => () => {
+        setIsSaving(true);
+        const newJob = { ...job } as JobType;
+        newJob.interviewList = newJob.interviewList?.filter((i) => i.interviewId !== interview.interviewId);
+        dispatch(applicationsActions.updateInterviewList(newJob));
+        setIsSaving(false);
+    };
 
     return (
         <>
-            <InterviewListDisplay interviews={job.interviewList} />
+            <InterviewListDisplay
+                interviews={job.interviewList}
+                editInterview={editInterview}
+                deleteInterview={deleteInterview}
+            />
             <form onSubmit={saveInterview}>
                 <fieldset disabled={saving} className="disabled:pointer-events-none disabled:opacity-50">
                     <label htmlFor="interviewDate" className="mb-2 block">
@@ -48,8 +76,7 @@ const InterviewList = ({ job, afterSave }: { job: JobType; afterSave: (arg0: boo
                             name="date"
                             id="interviewDate"
                             data-testid="jobApplyDate"
-                            value={selectedInterview?.date || new Date().toISOString().split("T")[0]}
-                            onChange={() => {}}
+                            defaultValue={selectedInterview?.date || new Date().toISOString().split("T")[0]}
                             required
                         />
                     </label>
@@ -89,7 +116,7 @@ const InterviewList = ({ job, afterSave }: { job: JobType; afterSave: (arg0: boo
                     </label>
                 </fieldset>
                 <button className="mt-3" type="submit">
-                    Add
+                    {selectedInterview ? "Save" : "Add"}
                 </button>
             </form>
         </>

@@ -11,7 +11,7 @@ export interface JobType {
     jobSalaryMax: number;
     jobAppliedFrom: JobAppliedFrom;
     jobHasInterviewed?: boolean; // For easy tracking of having interviewed
-    interviewList?: Interview[];
+    interviewList: Interview[];
 }
 
 export interface Interview {

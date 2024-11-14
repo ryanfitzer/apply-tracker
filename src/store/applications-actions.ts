@@ -118,7 +118,8 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                                       interviewerList: ["joe", "mike"],
                                       typeList: ["video"],
                                       recruiter: false,
-                                      final: true
+                                      final: true,
+                                      interviewId: uuid()
                                   }
                               ]
                             : []

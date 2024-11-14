@@ -1,20 +1,36 @@
+import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
+
 import DateFormatted from "../ui/DateFormatted";
 import { Interview } from "../../lib/types";
 
-const InterviewListDisplay = ({ interviews }: { interviews: Interview[] | undefined }) => {
+const InterviewListDisplay = ({
+    interviews,
+    editInterview,
+    deleteInterview
+}: {
+    interviews: Interview[] | undefined;
+    editInterview: (arg0: Interview) => () => void;
+    deleteInterview: (arg0: Interview) => () => void;
+}) => {
     return (
         <>
             <p>Interview List</p>
-            {interviews && interviews.length && (
+            {interviews && interviews.length > 0 && (
                 <ul>
                     {interviews.map((interview) => {
                         return (
-                            <div key={interview.interviewId}>
-                                <li>
+                            <li key={interview.interviewId}>
+                                <div className="flex">
+                                    <button onClick={editInterview(interview)} className="cursor-pointer">
+                                        <Pencil1Icon />
+                                    </button>
+                                    <button onClick={deleteInterview(interview)} className="cursor-pointer">
+                                        <TrashIcon />
+                                    </button>
                                     <p>
                                         <DateFormatted date={interview.date} dateType="Interviewed" />
                                     </p>
-                                </li>
+                                </div>
                                 <ul className="mb-2 flex gap-4">
                                     {interview.interviewerList?.map((interviewer, index) => {
                                         return (
@@ -39,7 +55,7 @@ const InterviewListDisplay = ({ interviews }: { interviews: Interview[] | undefi
                                         );
                                     })}
                                 </ul>
-                            </div>
+                            </li>
                         );
                     })}
                 </ul>
