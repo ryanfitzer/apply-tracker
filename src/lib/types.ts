@@ -10,7 +10,7 @@ export interface JobType {
     jobSalaryMin: number;
     jobSalaryMax: number;
     jobAppliedFrom: JobAppliedFrom;
-    interviews?: Interview[];
+    interviewList?: Interview[];
 }
 
 export interface Interview {

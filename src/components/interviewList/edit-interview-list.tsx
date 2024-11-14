@@ -5,7 +5,7 @@ import { Interview, JobType } from "../../lib/types";
 import TagInput, { TagInputComponent } from "../ui/TagInput";
 
 import { CheckIcon } from "@radix-ui/react-icons";
-import DateFormatted from "../ui/DateFormatted";
+import InterviewListDisplay from "./interview-list";
 import { applicationsActions } from "../../store/applications-slice";
 import { useAppDispatch } from "../../hooks/hooks";
 import uuid from "react-uuid";
@@ -26,57 +26,19 @@ const InterviewList = ({ job, afterSave }: { job: JobType; afterSave: (arg0: boo
             interviewId: uuid()
         } as Interview;
         const newJob = { ...job } as JobType;
-        newJob.interviews = [...(newJob.interviews || []), newInterview] as Interview[];
+        newJob.interviewList = [...(newJob.interviewList || []), newInterview] as Interview[];
         dispatch(applicationsActions.updateInterviewList(newJob));
         afterSave(true);
         setIsSaving(false);
     };
-    const editJob = (interview: Interview) => () => {
+    const editInterview = (interview: Interview) => () => {
         console.log(interview);
         setSelectedInterview(interview);
     };
 
     return (
         <>
-            <p>Interview List</p>
-            <ul>
-                {job.interviews?.map((interview) => {
-                    return (
-                        <div key={interview.interviewId} onClick={editJob(interview)}>
-                            <li>
-                                <p>
-                                    <DateFormatted date={interview.date} dateType="Interviewed" />
-                                </p>
-                            </li>
-                            <ul className="mb-2 flex gap-4">
-                                {interview.interviewerList?.map((interviewer, index) => {
-                                    return (
-                                        <li
-                                            className="max-w-[200px] rounded-md bg-[#63bcfd] px-3 py-[5px] text-[12px] text-white"
-                                            key={`${interviewer}-${index}`}
-                                        >
-                                            {interviewer}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                            <ul className="flex gap-4">
-                                {interview.typeList?.map((type, index) => {
-                                    return (
-                                        <li
-                                            className="max-w-[200px] rounded-md bg-[#63bcfd] px-3 py-[5px] text-[12px] text-white"
-                                            key={`${type}-${index}`}
-                                        >
-                                            {type}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    );
-                })}
-                {!job.interviews?.length && <>No Interviews Yet</>}
-            </ul>
+            <InterviewListDisplay interviews={job.interviewList} />
             <form onSubmit={saveInterview}>
                 <fieldset disabled={saving} className="disabled:pointer-events-none disabled:opacity-50">
                     <label htmlFor="interviewDate" className="mb-2 block">

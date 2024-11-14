@@ -1,4 +1,3 @@
-import { ExternalLinkIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import { JobStatusType, JobType } from "../lib/types";
 
 import AddJob from "./AddJob";
@@ -8,6 +7,7 @@ import JobSalary from "./JobSalary";
 import JobStatus from "./JobStatus";
 import Link from "./ui/Link";
 import Modal from "./Modal";
+import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -49,16 +49,7 @@ const Job = ({ job, removeJob }: Thing) => {
         >
             <div className="mb-2">
                 <h2 className="text-xl font-bold">
-                    {job.jobLink ? (
-                        <a href={job.jobLink} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-                            {job.jobTitle}
-                            <span className="pl-1 align-super text-xs">
-                                <ExternalLinkIcon />
-                            </span>
-                        </a>
-                    ) : (
-                        job.jobTitle
-                    )}
+                    {job.jobLink ? <Link text={job.jobTitle} link={job.jobLink} /> : job.jobTitle}
                 </h2>
             </div>
             <div className="mb-1">
@@ -86,16 +77,16 @@ const Job = ({ job, removeJob }: Thing) => {
                 <p className="font-bold">Status</p>
                 <JobStatus job={job} />
             </div>
-            <div>
+            {/* <div>
                 <Modal open={interviewListOpen} onOpenChange={setInterviewListOpen}>
                     <Modal.Button className="flex items-center gap-1">
-                        Interviews ({job.interviews?.length || 0}) <Pencil1Icon />
+                        Interviews ({job.interviewList?.length || 0}) <Pencil1Icon />
                     </Modal.Button>
                     <Modal.Content title="Edit Interview List">
                         <InterviewList job={job} afterSave={() => setEditIsOpen(false)} />
                     </Modal.Content>
                 </Modal>
-            </div>
+            </div> */}
             <div className="mt-2 flex justify-around border-t-2 border-dotted border-black pt-2">
                 <button className="w-32 bg-slate-200 py-2 font-bold" onClick={removeJobClick}>
                     Remove
@@ -103,7 +94,10 @@ const Job = ({ job, removeJob }: Thing) => {
                 <div>
                     <Modal open={editOpen} onOpenChange={setEditIsOpen}>
                         <Modal.Button>
-                            <button className="w-32 bg-slate-200 py-2 font-bold">Edit</button>
+                            <div className="flex w-32 items-center justify-center bg-slate-200 py-2 font-bold">
+                                Edit&nbsp;
+                                <Pencil1Icon />
+                            </div>
                         </Modal.Button>
                         <Modal.Content title="Edit Job">
                             <AddJob currentJob={job} afterSave={() => setEditIsOpen(false)} />

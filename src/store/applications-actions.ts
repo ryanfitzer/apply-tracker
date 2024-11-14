@@ -55,12 +55,7 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                 "Senior Front-End React Software Engineer"
             ];
             const fakeJobCompanies = ["Pixel Forge", "Login Loom"];
-            const fakeJobStatuses = [
-                "applied",
-                "onHold",
-                "denied",
-                "recruiterContacted"
-            ];
+            const fakeJobStatuses = ["applied", "onHold", "denied", "recruiterContacted"];
             const fakeJobAppliedFrom = [
                 "linkedin",
                 "recruiter",
@@ -73,33 +68,61 @@ export const fetchApplicationData = (isDemo: boolean = false) => {
                 "other",
                 ""
             ];
+            const getSalaryType = () => {
+                return Math.random() > 0.5 ? "hr" : "yr";
+            };
+            const getSalary = () => {
+                if (Math.random() < 0.2) return {};
+
+                const type = getSalaryType();
+                const minYr = Math.floor(Math.random() * 100000);
+                if (type === "yr") {
+                    return {
+                        type,
+                        min: Math.random() > 0.2 ? minYr : null,
+                        max: minYr + 20000
+                    };
+                }
+
+                const minHr = Math.floor(Math.random() * 100);
+
+                return {
+                    type,
+                    min: Math.random() > 0.2 ? minHr : null,
+                    max: minHr + 20
+                };
+            };
             const getFake = (array: Array<string>): string => {
                 return array[Math.floor(Math.random() * array.length)];
             };
 
             for (let i = 0; i < 30; i++) {
                 const jobId = uuid();
+                const salary = getSalary();
                 const job = {
                     jobTitle: getFake(fakeJobsTitles),
                     jobCompany: getFake(fakeJobCompanies),
                     jobApplyDate: "2024-08-16",
                     jobCompanyLink: "",
                     jobLink: "",
-                    jobSalaryMin: 70.1,
-                    jobSalaryMax: 0,
-                    jobSalaryType: "hr",
+                    jobSalaryMin: salary.min,
+                    jobSalaryMax: salary.max,
+                    jobSalaryType: salary.type,
                     jobStatus: getFake(fakeJobStatuses),
                     jobId,
                     jobAppliedFrom: getFake(fakeJobAppliedFrom),
-                    interviews: [
-                            {
-                                date: "2024-08-05",
-                                interviewerList: ["joe", "mike"],
-                                typeList: ["video"],
-                                recruiter: false,
-                                final: true
-                            }
-                        ]
+                    interviews:
+                        Math.random() > 0.5
+                            ? [
+                                  {
+                                      date: "2024-08-05",
+                                      interviewerList: ["joe", "mike"],
+                                      typeList: ["video"],
+                                      recruiter: false,
+                                      final: true
+                                  }
+                              ]
+                            : []
                 };
 
                 fakeJobs[jobId] = job;
