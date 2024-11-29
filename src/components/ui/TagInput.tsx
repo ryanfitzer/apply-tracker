@@ -13,6 +13,7 @@ interface Tag {
 /* Need to have a type here so we can use the getTags function. */
 export interface TagInputComponent extends React.ForwardRefExoticComponent<{ defaultList: string[] }> {
     getTags: () => string[];
+    resetTags: () => void;
 }
 
 const TagInput = forwardRef(
@@ -26,7 +27,8 @@ const TagInput = forwardRef(
     ) => {
         const [tags, setTags] = useState<Tag[]>([]);
         useImperativeHandle(ref, () => ({
-            getTags: () => tags.map((tag) => (tag.id ? tag.id : ""))
+            getTags: () => tags.map((tag) => (tag.id ? tag.id : "")),
+            resetTags: () => setTags([])
         }));
         useMemo(() => {
             if (defaultList && defaultList.length > 0) {
@@ -72,8 +74,6 @@ const TagInput = forwardRef(
                     allowDragDrop={false}
                     editable={true}
                     onTagUpdate={onTagUpdate}
-                    clearAll={true}
-                    onClearAll={onClearAll}
                     separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
                     suggestions={suggestions || []}
                     maxTags={10}

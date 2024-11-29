@@ -13,7 +13,7 @@ const InterviewListDisplay = ({
     deleteInterview: (arg0: Interview) => () => void;
 }) => {
     return (
-        <>
+        <div className="flex w-80 flex-col">
             <p>Interview List</p>
             {interviews && interviews.length > 0 && (
                 <ul>
@@ -28,10 +28,22 @@ const InterviewListDisplay = ({
                                         <TrashIcon />
                                     </button>
                                     <p>
-                                        <DateFormatted date={interview.date} dateType="Interviewed" />
+                                        <DateFormatted date={interview.date} dateType="" />
                                     </p>
                                 </div>
-                                <ul className="mb-2 flex gap-4">
+                                <div className="mb-2 flex gap-4">
+                                    {interview.recruiter && (
+                                        <div className="max-w-[200px] rounded-md bg-[#63bcfd] px-3 py-[5px] text-[12px] text-white">
+                                            Recruiter
+                                        </div>
+                                    )}
+                                    {interview.final && (
+                                        <div className="bg-red max-w-[200px] rounded-md bg-red-500 px-3 py-[5px] text-[12px] text-white">
+                                            Final
+                                        </div>
+                                    )}
+                                </div>
+                                <ul className="mb-2 flex flex-wrap gap-4">
                                     {interview.interviewerList?.map((interviewer, index) => {
                                         return (
                                             <li
@@ -43,7 +55,7 @@ const InterviewListDisplay = ({
                                         );
                                     })}
                                 </ul>
-                                <ul className="flex gap-4">
+                                <ul className="flex flex-wrap gap-4">
                                     {interview.typeList?.map((type, index) => {
                                         return (
                                             <li
@@ -61,7 +73,7 @@ const InterviewListDisplay = ({
                 </ul>
             )}
             {(!interviews || !interviews.length) && <>No Interviews Yet</>}
-        </>
+        </div>
     );
 };
 

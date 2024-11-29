@@ -45,6 +45,10 @@
     display: inline-flex;
 }
 
+#tags .ReactTags__editTagInput .ReactTags__tagInputField {
+    width: 100%;
+}
+
 #tags .ReactTags__selected span.ReactTags__tag {
     border: 1px solid #ddd;
     background: #63bcfd;
