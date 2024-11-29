@@ -12,24 +12,51 @@ const InterviewListDisplay = ({
     editInterview: (arg0: Interview) => () => void;
     deleteInterview: (arg0: Interview) => () => void;
 }) => {
+    const getInterviews = () => {
+        if (!interviews || interviews.length === 0) {
+            return [];
+        }
+
+        return [...interviews].sort(sortInterviews);
+    };
+    const sortInterviews = (a: Interview, b: Interview) => {
+        // Sort circuit here if there aren't two interviews
+        if (!a || !b) {
+            return 0;
+        }
+
+        const aDate = new Date(a.date).getTime();
+        const bDate = new Date(b.date).getTime();
+
+        if (aDate === bDate) {
+            return 0;
+        }
+
+        if (aDate < bDate) {
+            return -1;
+        }
+
+        return 1;
+    };
+
     return (
         <div className="flex w-80 flex-col">
-            <p>Interview List</p>
+            <p>Interviewed</p>
             {interviews && interviews.length > 0 && (
                 <ul>
-                    {interviews.map((interview) => {
+                    {getInterviews().map((interview) => {
                         return (
                             <li key={interview.interviewId}>
                                 <div className="flex">
+                                    <p>
+                                        <DateFormatted date={interview.date} dateType="" />
+                                    </p>
                                     <button onClick={editInterview(interview)} className="cursor-pointer">
                                         <Pencil1Icon />
                                     </button>
                                     <button onClick={deleteInterview(interview)} className="cursor-pointer">
                                         <TrashIcon />
                                     </button>
-                                    <p>
-                                        <DateFormatted date={interview.date} dateType="" />
-                                    </p>
                                 </div>
                                 <div className="mb-2 flex gap-4">
                                     {interview.recruiter && (
