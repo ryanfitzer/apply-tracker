@@ -84,8 +84,8 @@ const InterviewList = ({ job, afterSave }: { job: JobType; afterSave: (arg0: boo
     };
 
     return (
-        <div className="flex">
-            <form onSubmit={saveInterview} className="w-80">
+        <div className="flex gap-4">
+            <form onSubmit={saveInterview} className="flex w-80 flex-col">
                 <fieldset disabled={saving} className="disabled:pointer-events-none disabled:opacity-50">
                     <label htmlFor="interviewDate" className="mb-2 block">
                         <p>Date*</p>
@@ -152,12 +152,14 @@ const InterviewList = ({ job, afterSave }: { job: JobType; afterSave: (arg0: boo
                         />
                     </label>
                 </fieldset>
-                <button className="mt-3" type="reset" onClick={clear}>
-                    Clear
-                </button>
-                <button className="mt-3" type="submit">
-                    {selectedInterview ? "Save" : "Add"}
-                </button>
+                <div className="flex justify-end gap-4">
+                    <button className="mt-3" type="reset" onClick={clear}>
+                        Clear
+                    </button>
+                    <button className="mt-3" type="submit">
+                        {selectedInterview ? "Save" : "Add"}
+                    </button>
+                </div>
             </form>
             <InterviewListDisplay
                 interviews={job.interviewList}
