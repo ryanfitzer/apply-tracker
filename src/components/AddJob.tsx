@@ -1,7 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { JobAppliedFrom, JobSalaryType, JobStatusType, JobType } from "../lib/types";
 
-import AddKey from "./Modal";
 import { applicationsActions } from "../store/applications-slice";
 import { useAppDispatch } from "../hooks/hooks";
 import { useTranslation } from "react-i18next";
@@ -72,6 +71,13 @@ const AddJob = ({ currentJob, afterSave }: { currentJob?: JobType; afterSave: ()
 
         dispatch(applicationsActions.addItem(newJob2));
         afterSave();
+    };
+
+    const handleClear = () => {
+        setFormData({
+            ...defaultJob,
+            jobApplyDate: currentDateParsed
+        });
     };
 
     return (
@@ -199,8 +205,15 @@ const AddJob = ({ currentJob, afterSave }: { currentJob?: JobType; afterSave: ()
                 </label>
             </div>
             <div className="mt-4 flex justify-around border-t-2 py-2">
-                <AddKey.Close>Close</AddKey.Close>
-                <button data-testid="buttonSubmit" className="w-32 bg-blue-300 py-2 font-bold text-white">
+                <button
+                    data-testid="buttonClear"
+                    type="reset"
+                    className="w-32 bg-blue-300 py-2 font-bold text-white"
+                    onClick={handleClear}
+                >
+                    Clear
+                </button>
+                <button data-testid="buttonSubmit" type="submit" className="w-32 bg-blue-300 py-2 font-bold text-white">
                     Save
                 </button>
             </div>

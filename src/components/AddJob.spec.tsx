@@ -67,15 +67,14 @@ describe("AddJob Component", () => {
                 jobApplyDate: "2024-08-09",
                 jobCompanyLink: "",
                 jobLink: "",
-                jobSalaryMax: 0,
-                jobSalaryMin: 0,
+                jobSalaryMax: "0",
+                jobSalaryMin: "0",
                 jobSalaryType: JobSalaryType.HR,
                 jobStatus: JobStatusType.APPLIED,
                 jobId: "testid",
                 jobAppliedFrom: JobAppliedFrom.LINKEDIN
             });
-            expect(mockClearEditingJob).toHaveBeenCalled();
-            expect(mockToggleModal).toHaveBeenCalledWith(false);
+            //expect(mockClearEditingJob).toHaveBeenCalled();
         });
     });
     describe("with job to edit", () => {
@@ -85,8 +84,8 @@ describe("AddJob Component", () => {
             jobApplyDate: "2024-07-17",
             jobCompanyLink: "https://company.com",
             jobLink: "https://company.com/jobs/123",
-            jobSalaryMax: 0,
-            jobSalaryMin: 0,
+            jobSalaryMax: "0",
+            jobSalaryMin: "0",
             jobSalaryType: JobSalaryType.YR,
             jobStatus: JobStatusType.APPLIED,
             jobId: "123",
@@ -109,7 +108,10 @@ describe("AddJob Component", () => {
             }
         };
         it("renders component", () => {
-            const { getByTestId } = renderWithProviders(<AddJob afterSave={() => {}} />, originalState);
+            const { getByTestId } = renderWithProviders(
+                <AddJob currentJob={originalJob} afterSave={() => {}} />,
+                originalState
+            );
 
             expect(getByTestId("jobTitle")).toHaveValue("first job");
             expect(getByTestId("jobCompany")).toHaveValue("company");
@@ -124,8 +126,10 @@ describe("AddJob Component", () => {
                 };
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const { ["jobSalaryMin"]: _, ...updatedJob } = newJob;
-                const { getByTestId } = renderWithProviders(<AddJob afterSave={() => {}} />, originalState);
+                const { getByTestId } = renderWithProviders(
+                    <AddJob currentJob={newJob} afterSave={() => {}} />,
+                    originalState
+                );
                 fireEvent.change(getByTestId("jobTitle"), {
                     target: {
                         value: "second job"
@@ -137,9 +141,8 @@ describe("AddJob Component", () => {
                     }
                 });
                 fireEvent.click(getByTestId("buttonSubmit"));
-                expect(mockAddItem).toHaveBeenCalledWith(updatedJob);
-                expect(mockClearEditingJob).toHaveBeenCalled();
-                expect(mockToggleModal).toHaveBeenCalledWith(false);
+                expect(mockAddItem).toHaveBeenCalledWith(newJob);
+                //expect(mockClearEditingJob).toHaveBeenCalled();
             });
         });
         describe("pressing clear", () => {

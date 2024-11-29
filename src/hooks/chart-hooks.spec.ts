@@ -1,7 +1,4 @@
-import {
-    defaultPreloadedState,
-    renderHookWithProviders
-} from "../utils/test-utils";
+import { defaultPreloadedState, renderHookWithProviders } from "../utils/test-utils";
 
 import { act } from "react";
 import useCharts from "./chart-hooks";
@@ -9,12 +6,8 @@ import useCharts from "./chart-hooks";
 describe("chart-hook", () => {
     it("sets data for charts", async () => {
         const render = await act(() => {
-            return renderHookWithProviders(
-                () => useCharts(),
-                defaultPreloadedState
-            );
+            return renderHookWithProviders(() => useCharts(), defaultPreloadedState);
         });
-        console.log(render);
         expect(render.result.current).toEqual([
             {
                 meta: {
@@ -32,6 +25,7 @@ describe("chart-hook", () => {
                     ["Rejected (0)", 0],
                     ["On Hold (0)", 0],
                     ["Interviewed Scheldued (0)", 0],
+                    ["Interviewing (0)", 0],
                     ["Interviewed (0)", 0],
                     ["Offered (0)", 0],
                     ["Recruiter Contacted (0)", 0]
