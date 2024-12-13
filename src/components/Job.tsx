@@ -120,7 +120,7 @@ const Job = ({ job, removeJob }: Thing) => {
                     Remove
                 </button>
                 <button
-                    className="bg-blue-300 text-white w-32 py-2 font-bold"
+                    className="bg-blue-600 text-white w-32 py-2 font-bold"
                     onClick={editJobClick}
                 >
                     Edit
